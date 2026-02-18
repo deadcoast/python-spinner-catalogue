@@ -812,6 +812,7 @@
     </div>
   </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/figlet@1.8.2/lib/figlet.min.js"></script>
 <script>
 const SPINNERS = {
   dots: { frames: ["\u280b", "\u2819", "\u2839", "\u2838", "\u283c", "\u2834", "\u2826", "\u2827", "\u2807", "\u280f"], interval: 80, category: "Dots", lib: "cli-spinners" },
@@ -1804,6 +1805,23 @@ let progressFrames = {};
 const figletRenderCache = {};
 let figletRenderToken = 0;
 let figletInputTimer = null;
+let figletConfigured = false;
+const figletLoadedFonts = new Set();
+const FIGLET_CDN_FONT_PATH = 'https://cdn.jsdelivr.net/npm/figlet@1.8.2/fonts/';
+const FONT_NAME_MAP = {
+  standard: 'Standard', big: 'Big', small: 'Small', mini: 'Mini', banner: 'Banner', block: 'Block',
+  lean: 'Lean', slant: 'Slant', shadow: 'Shadow', '3-d': '3-D', '3x5': '3x5', '5x7': '5x7',
+  '4max': '4Max', chunky: 'Chunky', digital: 'Digital', lcd: 'LCD', stampatello: 'Stampatello',
+  smkeyboard: 'SmKeyboard', 'banner3-D': 'Banner3-D', colossal: 'Colossal', doom: 'Doom', epic: 'Epic',
+  georgia11: 'Georgia11', roman: 'Roman', starwars: 'Star Wars', script: 'Script', cursive: 'Cursive',
+  contessa: 'Contessa', cybermedium: 'Cybermedium', larry3d: 'Larry 3D', ogre: 'Ogre',
+  rectangles: 'Rectangles', alligator: 'Alligator', bubble: 'Bubble', bulbhead: 'Bulbhead',
+  graffiti: 'Graffiti', isometric1: 'Isometric1', letters: 'Letters', poison: 'Poison', speed: 'Speed',
+  alphabet: 'Alphabet', binary: 'Binary', morse: 'Morse', o8: 'o8', pagga: 'Pagga', runic: 'Runic',
+  short: 'Short', term: 'Term', thin: 'Thin', ansi_regular: 'ANSI Regular', ansi_shadow: 'ANSI Shadow',
+  cyberlarge: 'Cyberlarge', hex: 'Hex', lockergnome: 'Lockergnome', univers: 'Univers',
+  js_stick_letters: 'JS Stick Letters'
+};
 
 const SPINNER_CATEGORY_ORDER = ['Dots','Classic','Arrows','Bars & Blocks','Progress','Indeterminate','Scenes','Misc','Emoji Spinners'];
 const PROGRESS_CATEGORY_ORDER = ['ASCII Classic','Unicode Smooth','Retro','Indeterminate'];
@@ -2207,14 +2225,62 @@ async function fetchFigletSample(name, text) {
   return payload.lines;
 }
 
+function getFigletRuntimeName(name) {
+  return FONT_NAME_MAP[name] || name;
+}
+
+function initFigletRuntime() {
+  if (figletConfigured || typeof figlet === 'undefined') return;
+  figlet.defaults({ fontPath: FIGLET_CDN_FONT_PATH });
+  figletConfigured = true;
+}
+
+async function renderFigletClient(name, text) {
+  if (typeof figlet === 'undefined') return null;
+  initFigletRuntime();
+  const runtimeName = getFigletRuntimeName(name);
+  if (figletLoadedFonts.has(runtimeName)) {
+    try {
+      return figlet.textSync(text, { font: runtimeName });
+    } catch {}
+  }
+  try {
+    const result = await new Promise((resolve, reject) => {
+      figlet.text(text, { font: runtimeName }, (err, data) => {
+        if (err || !data) reject(err || new Error('No figlet data'));
+        else resolve(data);
+      });
+    });
+    figletLoadedFonts.add(runtimeName);
+    return result;
+  } catch {
+    return null;
+  }
+}
+
 async function hydrateFigletSamples(fontNames) {
   const text = figletText.trim() || 'Hello';
-  if (text === 'Hello') return;
   const token = ++figletRenderToken;
   const names = Array.isArray(fontNames) ? fontNames : [];
   await Promise.all(names.map(async name => {
     try {
-      const lines = await fetchFigletSample(name, text);
+      const key = `${name}::${text}`;
+      if (figletRenderCache[key]) {
+        if (token !== figletRenderToken || activeTab !== 'figlet') return;
+        const elCached = document.getElementById(`figlet-${name}`);
+        if (elCached) elCached.textContent = figletRenderCache[key].join('\n');
+        return;
+      }
+      let lines = null;
+      const clientRender = await renderFigletClient(name, text);
+      if (typeof clientRender === 'string' && clientRender.trim()) {
+        lines = clientRender.replace(/\r/g, '').split('\n');
+        while (lines.length && lines[lines.length - 1] === '') lines.pop();
+      }
+      if (!lines || !lines.length) {
+        lines = await fetchFigletSample(name, text);
+      }
+      figletRenderCache[key] = lines;
       if (token !== figletRenderToken || activeTab !== 'figlet') return;
       const el = document.getElementById(`figlet-${name}`);
       if (el) el.textContent = lines.join('\n');
