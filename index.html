@@ -185,7 +185,10 @@
     cursor: pointer;
   }
   .figlet-input-bar,
-  .figlet-sort-control {
+  .figlet-sort-control,
+  .table-sort-control,
+  .table-data-control,
+  .box-input-control {
     display: none;
     align-items: center;
     gap: 0.55rem;
@@ -200,7 +203,10 @@
     text-transform: uppercase;
   }
   .figlet-input-bar input,
-  .figlet-sort-control select {
+  .figlet-sort-control select,
+  .table-sort-control select,
+  .table-data-control input,
+  .box-input-control input {
     background: #0d1118;
     border: 1px solid #2a3147;
     border-radius: 8px;
@@ -212,7 +218,10 @@
     transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
   }
   .figlet-input-bar input:focus,
-  .figlet-sort-control select:focus {
+  .figlet-sort-control select:focus,
+  .table-sort-control select:focus,
+  .table-data-control input:focus,
+  .box-input-control input:focus {
     border-color: var(--accent);
     box-shadow: 0 0 0 3px rgba(100, 255, 180, 0.14);
     background: #0b1118;
@@ -233,6 +242,81 @@
   }
   .figlet-sort-control select {
     cursor: pointer;
+  }
+  .table-sort-control select {
+    cursor: pointer;
+  }
+  .table-data-control {
+    gap: 0.5rem;
+    padding: 0.42rem 0.52rem;
+    border: 1px solid #243657;
+    border-radius: 10px;
+    background: linear-gradient(180deg, rgba(16, 25, 40, 0.92), rgba(13, 21, 34, 0.82));
+  }
+  .table-data-title {
+    color: #9ab4d6;
+    font-size: 0.68rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+  .table-data-grid {
+    display: inline-grid;
+    grid-template-columns: repeat(4, minmax(70px, 1fr));
+    gap: 0.4rem;
+    align-items: center;
+  }
+  .table-data-control input {
+    width: 100%;
+    min-width: 0;
+    font-size: 0.72rem;
+    padding: 0.34rem 0.5rem;
+  }
+  .table-data-reset {
+    background: linear-gradient(180deg, #18253d, #132037);
+    border: 1px solid #2f4468;
+    border-radius: 7px;
+    color: #b7c4df;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    line-height: 1;
+    padding: 0.32rem 0.46rem;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s, transform 0.18s, background 0.2s;
+  }
+  .table-data-reset:hover {
+    border-color: var(--accent-secondary);
+    color: var(--accent-secondary);
+    transform: translateY(-1px);
+  }
+  .box-input-control {
+    gap: 0.45rem;
+    padding: 0.42rem 0.52rem;
+    border: 1px solid #304228;
+    border-radius: 10px;
+    background: linear-gradient(180deg, rgba(15, 26, 17, 0.92), rgba(13, 22, 14, 0.82));
+  }
+  .box-input-control input {
+    width: 150px;
+    min-width: 0;
+    font-size: 0.72rem;
+    padding: 0.34rem 0.5rem;
+  }
+  .box-input-reset {
+    background: linear-gradient(180deg, #1f3520, #172c1b);
+    border: 1px solid #3b6040;
+    border-radius: 7px;
+    color: #bad9bf;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    line-height: 1;
+    padding: 0.32rem 0.46rem;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s, transform 0.18s, background 0.2s;
+  }
+  .box-input-reset:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-1px);
   }
   .figlet-char-count {
     color: #96a5c7;
@@ -265,6 +349,9 @@
   body.tab-progress .progress-width-control { display: flex; }
   body.tab-figlet .figlet-input-bar,
   body.tab-figlet .figlet-sort-control { display: flex; }
+  body.tab-tables .table-sort-control { display: flex; }
+  body.tab-tables .table-data-control { display: inline-flex; }
+  body.tab-boxes .box-input-control { display: inline-flex; }
   .filter-tags {
     display: flex;
     gap: 0.5rem;
@@ -524,6 +611,67 @@
     0% { background-position: 200% 0; }
     100% { background-position: 0 0; }
   }
+  .table-card .table-preview {
+    margin: 0;
+    white-space: pre;
+    line-height: 1.12;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: #9be4ff;
+    text-shadow: 0 0 8px rgba(88, 178, 255, 0.16);
+    overflow: auto;
+    min-height: 116px;
+    max-height: 180px;
+    padding: 0.65rem 0.72rem;
+    background: linear-gradient(180deg, #090c14, #080b11);
+    border: 1px solid #1f2940;
+    border-radius: 9px;
+  }
+  .table-card .spinner-name {
+    color: #86deff;
+  }
+  .table-card .spinner-lib {
+    border-color: #2a4060;
+    color: #9cb4d1;
+    background: rgba(18, 31, 48, 0.66);
+  }
+  .box-card .box-preview {
+    margin: 0;
+    white-space: pre;
+    line-height: 1.08;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: #a8ffb8;
+    text-shadow: 0 0 8px rgba(100, 255, 180, 0.16);
+    overflow: auto;
+    min-height: 112px;
+    max-height: 182px;
+    padding: 0.65rem 0.72rem;
+    background: linear-gradient(180deg, #090f0a, #081008);
+    border: 1px solid #213424;
+    border-radius: 9px;
+  }
+  .box-card .spinner-name {
+    color: #96f7a9;
+  }
+  .box-card .spinner-lib {
+    border-color: #32513a;
+    color: #b8d8bf;
+    background: rgba(17, 31, 19, 0.66);
+  }
+  .box-card .card-meta {
+    gap: 0.42rem;
+  }
+  .box-card .box-char-map {
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    border-color: #35553d;
+    color: #abd8b5;
+    background: rgba(13, 22, 15, 0.74);
+  }
   .category-header h2 {
     font-size: 1.1rem;
     font-weight: 600;
@@ -723,6 +871,29 @@
     padding: 0.5rem 0.66rem;
     font-size: 0.51rem;
   }
+  body.view-minimal .table-card .table-preview {
+    min-height: 74px;
+    max-height: 112px;
+    font-size: 0.6rem;
+    padding: 0.46rem 0.56rem;
+  }
+  body.view-minimal .box-card .box-preview {
+    min-height: 74px;
+    max-height: 112px;
+    font-size: 0.6rem;
+    padding: 0.46rem 0.56rem;
+  }
+  body.view-minimal .box-card .card-meta {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    column-gap: 0.35rem;
+  }
+  body.view-minimal .box-card .box-char-map {
+    min-width: 0;
+    width: 100%;
+    text-align: left;
+  }
   body.view-minimal .progress-card .spinner-char {
     letter-spacing: 0.02em;
   }
@@ -793,6 +964,54 @@
   body.view-list .font-card .font-card-footer {
     justify-content: flex-end;
     align-items: center;
+  }
+  body.view-list .table-card {
+    grid-template-columns: minmax(145px, 190px) minmax(180px, 1fr) auto;
+  }
+  body.view-list .table-card .spinner-display {
+    padding: 0;
+    min-height: auto;
+    background: transparent;
+    border: 0;
+  }
+  body.view-list .table-card .table-preview {
+    margin: 0;
+    min-height: 56px;
+    max-height: 96px;
+    font-size: 0.58rem;
+    line-height: 1.08;
+    overflow: hidden;
+  }
+  body.view-list .box-card {
+    grid-template-columns: minmax(145px, 190px) minmax(180px, 1fr) auto;
+  }
+  body.view-list .box-card .spinner-display {
+    padding: 0;
+    min-height: auto;
+    background: transparent;
+    border: 0;
+  }
+  body.view-list .box-card .box-preview {
+    margin: 0;
+    min-height: 56px;
+    max-height: 96px;
+    font-size: 0.56rem;
+    line-height: 1.05;
+    overflow: hidden;
+  }
+  body.view-list .box-card .card-meta {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 0.3rem;
+    justify-items: stretch;
+    width: min(320px, 100%);
+  }
+  body.view-list .box-card .card-meta span {
+    min-width: 0;
+  }
+  body.view-list .box-card .box-char-map {
+    text-align: left;
   }
   body.view-list .spinner-char { min-width: 1.6ch; }
   body.view-list .card-meta {
@@ -950,6 +1169,59 @@
       min-height: 36px;
       font-size: 0.75rem;
     }
+    .table-sort-control {
+      width: 100%;
+      justify-content: space-between;
+      padding: 0.15rem 0.1rem 0 0.1rem;
+    }
+    .table-sort-control select {
+      flex: 1;
+      min-height: 36px;
+      font-size: 0.75rem;
+    }
+    .table-data-control {
+      width: 100%;
+      align-items: stretch;
+      gap: 0.45rem;
+      flex-wrap: wrap;
+      padding: 0.52rem 0.56rem;
+    }
+    .table-data-title {
+      width: 100%;
+      margin-bottom: 0.05rem;
+    }
+    .table-data-grid {
+      width: 100%;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.36rem;
+    }
+    .table-data-control input {
+      min-height: 36px;
+      font-size: 0.74rem;
+    }
+    .table-data-reset {
+      min-height: 36px;
+      min-width: 36px;
+      margin-left: auto;
+    }
+    .box-input-control {
+      width: 100%;
+      align-items: center;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      padding: 0.5rem 0.56rem;
+    }
+    .box-input-control input {
+      flex: 1 1 calc(50% - 0.35rem);
+      min-height: 36px;
+      font-size: 0.74rem;
+      min-width: 0;
+    }
+    .box-input-reset {
+      min-height: 36px;
+      min-width: 36px;
+      margin-left: auto;
+    }
     .font-card {
       padding: 0.9rem 0.85rem;
       border-radius: 12px;
@@ -994,6 +1266,32 @@
       max-height: 126px;
       font-size: 0.43rem;
     }
+    .table-card .table-preview {
+      min-height: 92px;
+      max-height: 150px;
+      font-size: 0.56rem;
+      padding: 0.56rem 0.6rem;
+    }
+    body.view-list .table-card .table-preview {
+      min-height: 64px;
+      max-height: 92px;
+      font-size: 0.52rem;
+    }
+    .box-card .box-preview {
+      min-height: 90px;
+      max-height: 148px;
+      font-size: 0.56rem;
+      padding: 0.56rem 0.6rem;
+    }
+    body.view-list .box-card .box-preview {
+      min-height: 64px;
+      max-height: 92px;
+      font-size: 0.52rem;
+    }
+    body.view-list .box-card .card-meta {
+      width: 100%;
+      margin-top: 0.18rem;
+    }
   }
 </style>
 </head>
@@ -1007,6 +1305,8 @@
       <button class="top-tab active" type="button" data-tab="spinners">Spinners</button>
       <button class="top-tab" type="button" data-tab="progress">Progress Bars</button>
       <button class="top-tab" type="button" data-tab="figlet">ASCII / Figlet</button>
+      <button class="top-tab" type="button" data-tab="tables">Table Borders</button>
+      <button class="top-tab" type="button" data-tab="boxes">Box Panels</button>
     </div>
   </header>
   <div class="controls">
@@ -1037,6 +1337,28 @@
         <option value="height">Height</option>
         <option value="width">Width</option>
       </select>
+    </div>
+    <div class="table-sort-control" id="tableSortControl">
+      <span>Sort</span>
+      <select id="tableSortSelect">
+        <option value="visual">Visual Weight</option>
+        <option value="name">Name</option>
+      </select>
+    </div>
+    <div class="table-data-control" id="tableDataControl">
+      <span class="table-data-title">Sample Data</span>
+      <div class="table-data-grid">
+        <input type="text" id="tableName1" maxlength="16" autocomplete="off" spellcheck="false" placeholder="Name 1">
+        <input type="text" id="tableScore1" maxlength="8" autocomplete="off" spellcheck="false" placeholder="Score 1">
+        <input type="text" id="tableName2" maxlength="16" autocomplete="off" spellcheck="false" placeholder="Name 2">
+        <input type="text" id="tableScore2" maxlength="8" autocomplete="off" spellcheck="false" placeholder="Score 2">
+      </div>
+      <button class="table-data-reset" id="tableDataReset" type="button" title="Reset table sample data">↺</button>
+    </div>
+    <div class="box-input-control" id="boxInputControl">
+      <input type="text" id="boxLine1" maxlength="24" autocomplete="off" spellcheck="false" placeholder="Line 1">
+      <input type="text" id="boxLine2" maxlength="24" autocomplete="off" spellcheck="false" placeholder="Line 2">
+      <button class="box-input-reset" id="boxInputReset" type="button" title="Reset box preview text">↺</button>
     </div>
   </div>
   <div class="filter-tags" id="filterTags"></div>
@@ -1210,6 +1532,549 @@ const PROGRESS_BARS = {
   arrowFill: { fill: "▸", empty: "▹", tip: "", borders: ["",""], width: 20, category: "Retro", lib: "custom", python: "print(f'{\"▸\" * done}{\"▹\" * remaining}')" },
   underscoreSlide: { fill: "▬", empty: "─", tip: "▶", borders: ["",""], width: 20, category: "Retro", lib: "custom", python: "# Minimal underline progress indicator" },
   brailleBar: { fill: "⣿", empty: "⣀", tip: "⣶", borders: ["⡇","⢸"], width: 20, category: "Retro", lib: "custom", python: "# Braille dot-matrix progress bar" }
+};
+
+const BOX_STYLES = {
+  'light': { category: 'Unicode', lib: 'unicode', chars: '┌ ─ ┐ │ └ ┘ ├ ┤ ┬ ┴ ┼', render: [
+    "┌──────────────────┐",
+    "│  Hello, World!   │",
+    "│  Line two here   │",
+    "└──────────────────┘"
+  ] },
+  'heavy': { category: 'Unicode', lib: 'unicode', chars: '┏ ━ ┓ ┃ ┗ ┛ ┣ ┫ ┳ ┻ ╋', render: [
+    "┏━━━━━━━━━━━━━━━━━━┓",
+    "┃  Hello, World!   ┃",
+    "┃  Line two here   ┃",
+    "┗━━━━━━━━━━━━━━━━━━┛"
+  ] },
+  'double': { category: 'Unicode', lib: 'unicode', chars: '╔ ═ ╗ ║ ╚ ╝ ╠ ╣ ╦ ╩ ╬', render: [
+    "╔══════════════════╗",
+    "║  Hello, World!   ║",
+    "║  Line two here   ║",
+    "╚══════════════════╝"
+  ] },
+  'rounded': { category: 'Unicode', lib: 'unicode', chars: '╭ ─ ╮ │ ╰ ╯', render: [
+    "╭──────────────────╮",
+    "│  Hello, World!   │",
+    "│  Line two here   │",
+    "╰──────────────────╯"
+  ] },
+  'light-heavy-mixed': { category: 'Unicode', lib: 'unicode', chars: '┎ ─ ┒ ┃ ┖ ┚', render: [
+    "┎──────────────────┒",
+    "┃  Hello, World!   ┃",
+    "┃  Line two here   ┃",
+    "┖──────────────────┚"
+  ] },
+  'heavy-light-mixed': { category: 'Unicode', lib: 'unicode', chars: '┍ ━ ┑ │ ┕ ┙', render: [
+    "┍━━━━━━━━━━━━━━━━━━┑",
+    "│  Hello, World!   │",
+    "│  Line two here   │",
+    "┕━━━━━━━━━━━━━━━━━━┙"
+  ] },
+  'double-light-mixed': { category: 'Unicode', lib: 'unicode', chars: '╔ ─ ╗ ║ ╚ ╝', render: [
+    "╔──────────────────╗",
+    "║  Hello, World!   ║",
+    "║  Line two here   ║",
+    "╚──────────────────╝"
+  ] },
+  'dashed-light': { category: 'Unicode', lib: 'unicode', chars: '┌ ╌ ┐ ╎ └ ┘', render: [
+    "┌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┐",
+    "╎  Hello, World!   ╎",
+    "╎  Line two here   ╎",
+    "└╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┘"
+  ] },
+  'dashed-heavy': { category: 'Unicode', lib: 'unicode', chars: '┏ ╍ ┓ ╏ ┗ ┛', render: [
+    "┏╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍┓",
+    "╏  Hello, World!   ╏",
+    "╏  Line two here   ╏",
+    "┗╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍┛"
+  ] },
+  'triple-dash-light': { category: 'Unicode', lib: 'unicode', chars: '┌ ┄ ┐ ┆ └ ┘', render: [
+    "┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┐",
+    "┆  Hello, World!   ┆",
+    "┆  Line two here   ┆",
+    "└┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┘"
+  ] },
+  'triple-dash-heavy': { category: 'Unicode', lib: 'unicode', chars: '┏ ┅ ┓ ┇ ┗ ┛', render: [
+    "┏┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┓",
+    "┇  Hello, World!   ┇",
+    "┇  Line two here   ┇",
+    "┗┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┛"
+  ] },
+  'quad-dash-light': { category: 'Unicode', lib: 'unicode', chars: '┌ ┈ ┐ ┊ └ ┘', render: [
+    "┌┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┐",
+    "┊  Hello, World!   ┊",
+    "┊  Line two here   ┊",
+    "└┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┘"
+  ] },
+  'rich-rounded': { category: 'Rich', lib: 'rich', chars: '╭ ─ ╮ │ ╰ ╯', render: [
+    "╭──────────────────╮",
+    "│  Hello, World!   │",
+    "╰──────────────────╯"
+  ] },
+  'rich-square': { category: 'Rich', lib: 'rich', chars: '┌ ─ ┐ │ └ ┘', render: [
+    "┌──────────────────┐",
+    "│  Hello, World!   │",
+    "└──────────────────┘"
+  ] },
+  'rich-heavy': { category: 'Rich', lib: 'rich', chars: '┏ ━ ┓ ┃ ┗ ┛', render: [
+    "┏━━━━━━━━━━━━━━━━━━┓",
+    "┃  Hello, World!   ┃",
+    "┗━━━━━━━━━━━━━━━━━━┛"
+  ] },
+  'rich-double': { category: 'Rich', lib: 'rich', chars: '╔ ═ ╗ ║ ╚ ╝', render: [
+    "╔══════════════════╗",
+    "║  Hello, World!   ║",
+    "╚══════════════════╝"
+  ] },
+  'rich-ascii': { category: 'Rich', lib: 'rich', chars: '+ - + | + +', render: [
+    "+------------------+",
+    "|  Hello, World!   |",
+    "+------------------+"
+  ] },
+  'rich-with-title': { category: 'Rich', lib: 'rich', chars: '╭ title ╮ ... ╰ ╯', render: [
+    "╭── Title ─────────╮",
+    "│  Hello, World!   │",
+    "╰──────────────────╯"
+  ] },
+  'rich-with-title-subtitle': { category: 'Rich', lib: 'rich', chars: '╭ title ╮ ... ╰ subtitle ╯', render: [
+    "╭── Title ─────────╮",
+    "│  Hello, World!   │",
+    "╰── Subtitle ──────╯"
+  ] },
+  'ascii-basic': { category: 'ASCII', lib: 'custom', chars: '+ - |', render: [
+    "+------------------+",
+    "|  Hello, World!   |",
+    "+------------------+"
+  ] },
+  'ascii-hash': { category: 'ASCII', lib: 'custom', chars: '#', render: [
+    "####################",
+    "#  Hello, World!   #",
+    "####################"
+  ] },
+  'ascii-star': { category: 'ASCII', lib: 'custom', chars: '*', render: [
+    "********************",
+    "*  Hello, World!   *",
+    "********************"
+  ] },
+  'ascii-equals': { category: 'ASCII', lib: 'custom', chars: '= |', render: [
+    "====================",
+    "|  Hello, World!   |",
+    "===================="
+  ] },
+  'ascii-tilde': { category: 'ASCII', lib: 'custom', chars: '~ |', render: [
+    "~~~~~~~~~~~~~~~~~~~~",
+    "|  Hello, World!   |",
+    "~~~~~~~~~~~~~~~~~~~~"
+  ] },
+  'dos-single': { category: 'ASCII', lib: 'custom', chars: '┌ ─ ┐ │ ├ ┤ └ ┘', render: [
+    "┌──────────────────┐",
+    "│  Hello, World!   │",
+    "├──────────────────┤",
+    "│  Line two here   │",
+    "└──────────────────┘"
+  ] },
+  'dos-double': { category: 'ASCII', lib: 'custom', chars: '╔ ═ ╗ ║ ╠ ╣ ╚ ╝', render: [
+    "╔══════════════════╗",
+    "║  Hello, World!   ║",
+    "╠══════════════════╣",
+    "║  Line two here   ║",
+    "╚══════════════════╝"
+  ] },
+  'shadow-box': { category: 'Special', lib: 'custom', chars: '┌ ─ ┐ │ ▒', render: [
+    "┌──────────────────┐",
+    "│  Hello, World!   │▒",
+    "│  Line two here   │▒",
+    "└──────────────────┘▒",
+    " ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒"
+  ] },
+  'block-shadow': { category: 'Special', lib: 'custom', chars: '█ ░', render: [
+    "██████████████████████",
+    "█  Hello, World!   █░",
+    "█  Line two here   █░",
+    "██████████████████████░",
+    " ░░░░░░░░░░░░░░░░░░░░░"
+  ] },
+  'braille-frame': { category: 'Braille', lib: 'custom', chars: '⡏ ⠉ ⢹ ⡇ ⢸ ⣇ ⣀ ⣸', render: [
+    "⡏⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⢹",
+    "⡇  Hello, World!   ⢸",
+    "⡇  Line two here   ⢸",
+    "⣇⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣸"
+  ] },
+  'parenthetical': { category: 'ASCII', lib: 'custom', chars: '( )', render: [
+    "(                    )",
+    "(  Hello, World!     )",
+    "(  Line two here     )",
+    "(                    )"
+  ] },
+  'curly': { category: 'ASCII', lib: 'custom', chars: '{ }', render: [
+    "{                    }",
+    "{  Hello, World!     }",
+    "{  Line two here     }",
+    "{                    }"
+  ] },
+};
+
+const TABLE_STYLES = {
+  'plain': { lib: 'tabulate', category: 'tabulate', weight: 1, render: [
+    "Name     Score",
+    "Alice       95",
+    "Bob         87"
+  ] },
+  'simple': { lib: 'tabulate', category: 'tabulate', weight: 1, render: [
+    "Name     Score",
+    "------  ------",
+    "Alice       95",
+    "Bob         87"
+  ] },
+  'grid': { lib: 'tabulate', category: 'tabulate', weight: 1, render: [
+    "+--------+---------+",
+    "| Name   |   Score |",
+    "+========+=========+",
+    "| Alice  |      95 |",
+    "+--------+---------+",
+    "| Bob    |      87 |",
+    "+--------+---------+"
+  ] },
+  'simple_grid': { lib: 'tabulate', category: 'tabulate', weight: 1, render: [
+    "┌────────┬─────────┐",
+    "│ Name   │   Score │",
+    "├────────┼─────────┤",
+    "│ Alice  │      95 │",
+    "├────────┼─────────┤",
+    "│ Bob    │      87 │",
+    "└────────┴─────────┘"
+  ] },
+  'rounded_grid': { lib: 'tabulate', category: 'tabulate', weight: 1, render: [
+    "╭────────┬─────────╮",
+    "│ Name   │   Score │",
+    "├────────┼─────────┤",
+    "│ Alice  │      95 │",
+    "├────────┼─────────┤",
+    "│ Bob    │      87 │",
+    "╰────────┴─────────╯"
+  ] },
+  'heavy_grid': { lib: 'tabulate', category: 'tabulate', weight: 1, render: [
+    "┏━━━━━━━━┳━━━━━━━━━┓",
+    "┃ Name   ┃   Score ┃",
+    "┣━━━━━━━━╋━━━━━━━━━┫",
+    "┃ Alice  ┃      95 ┃",
+    "┣━━━━━━━━╋━━━━━━━━━┫",
+    "┃ Bob    ┃      87 ┃",
+    "┗━━━━━━━━┻━━━━━━━━━┛"
+  ] },
+  'mixed_grid': { lib: 'tabulate', category: 'tabulate', weight: 1, render: [
+    "┍━━━━━━━━┯━━━━━━━━━┑",
+    "│ Name   │   Score │",
+    "┝━━━━━━━━┿━━━━━━━━━┥",
+    "│ Alice  │      95 │",
+    "├────────┼─────────┤",
+    "│ Bob    │      87 │",
+    "┕━━━━━━━━┷━━━━━━━━━┙"
+  ] },
+  'double_grid': { lib: 'tabulate', category: 'tabulate', weight: 1, render: [
+    "╔════════╦═════════╗",
+    "║ Name   ║   Score ║",
+    "╠════════╬═════════╣",
+    "║ Alice  ║      95 ║",
+    "╠════════╬═════════╣",
+    "║ Bob    ║      87 ║",
+    "╚════════╩═════════╝"
+  ] },
+  'fancy_grid': { lib: 'tabulate', category: 'tabulate', weight: 1, render: [
+    "╒════════╤═════════╕",
+    "│ Name   │   Score │",
+    "╞════════╪═════════╡",
+    "│ Alice  │      95 │",
+    "├────────┼─────────┤",
+    "│ Bob    │      87 │",
+    "╘════════╧═════════╛"
+  ] },
+  'colon_grid': { lib: 'tabulate', category: 'tabulate', weight: 1, render: [
+    "┌────────┬─────────┐",
+    "│ Name   │   Score │",
+    "┞════════╪═════════┦",
+    "│ Alice  │      95 │",
+    "├────────┼─────────┤",
+    "│ Bob    │      87 │",
+    "└────────┴─────────┘"
+  ] },
+  'pipe': { lib: 'tabulate', category: 'tabulate', weight: 1, render: [
+    "| Name   |   Score |",
+    "|:-------|--------:|",
+    "| Alice  |      95 |",
+    "| Bob    |      87 |"
+  ] },
+  'orgtbl': { lib: 'tabulate', category: 'tabulate', weight: 1, render: [
+    "| Name   |   Score |",
+    "|--------+---------|",
+    "| Alice  |      95 |",
+    "| Bob    |      87 |"
+  ] },
+  'presto': { lib: 'tabulate', category: 'tabulate', weight: 1, render: [
+    " Name   |   Score",
+    "--------+---------",
+    " Alice  |      95",
+    " Bob    |      87"
+  ] },
+  'psql': { lib: 'tabulate', category: 'tabulate', weight: 1, render: [
+    "+--------+---------+",
+    "| Name   |   Score |",
+    "|--------+---------|",
+    "| Alice  |      95 |",
+    "| Bob    |      87 |",
+    "+--------+---------+"
+  ] },
+  'pretty': { lib: 'tabulate', category: 'tabulate', weight: 1, render: [
+    "+-------+-------+",
+    "| Name  | Score |",
+    "+-------+-------+",
+    "| Alice |  95   |",
+    "|  Bob  |  87   |",
+    "+-------+-------+"
+  ] },
+  'rst': { lib: 'tabulate', category: 'tabulate', weight: 1, render: [
+    "======  =======",
+    "Name      Score",
+    "======  =======",
+    "Alice        95",
+    "Bob          87",
+    "======  ======="
+  ] },
+  'github': { lib: 'tabulate', category: 'tabulate', weight: 1, render: [
+    "| Name   |   Score |",
+    "|--------|---------|",
+    "| Alice  |      95 |",
+    "| Bob    |      87 |"
+  ] },
+  'jira': { lib: 'tabulate', category: 'tabulate', weight: 1, render: [
+    "|| Name   ||   Score ||",
+    "| Alice  |      95 |",
+    "| Bob    |      87 |"
+  ] },
+  'outline': { lib: 'tabulate', category: 'tabulate', weight: 1, render: [
+    "+--------+---------+",
+    "| Name   |   Score |",
+    "+========+=========+",
+    "| Alice  |      95 |",
+    "| Bob    |      87 |",
+    "+--------+---------+"
+  ] },
+  'simple_outline': { lib: 'tabulate', category: 'tabulate', weight: 1, render: [
+    "┌────────┬─────────┐",
+    "│ Name   │   Score │",
+    "├────────┼─────────┤",
+    "│ Alice  │      95 │",
+    "│ Bob    │      87 │",
+    "└────────┴─────────┘"
+  ] },
+  'rounded_outline': { lib: 'tabulate', category: 'tabulate', weight: 1, render: [
+    "╭────────┬─────────╮",
+    "│ Name   │   Score │",
+    "├────────┼─────────┤",
+    "│ Alice  │      95 │",
+    "│ Bob    │      87 │",
+    "╰────────┴─────────╯"
+  ] },
+  'heavy_outline': { lib: 'tabulate', category: 'tabulate', weight: 1, render: [
+    "┏━━━━━━━━┳━━━━━━━━━┓",
+    "┃ Name   ┃   Score ┃",
+    "┣━━━━━━━━╋━━━━━━━━━┫",
+    "┃ Alice  ┃      95 ┃",
+    "┃ Bob    ┃      87 ┃",
+    "┗━━━━━━━━┻━━━━━━━━━┛"
+  ] },
+  'double_outline': { lib: 'tabulate', category: 'tabulate', weight: 1, render: [
+    "╔════════╦═════════╗",
+    "║ Name   ║   Score ║",
+    "╠════════╬═════════╣",
+    "║ Alice  ║      95 ║",
+    "║ Bob    ║      87 ║",
+    "╚════════╩═════════╝"
+  ] },
+  'box.ASCII': { lib: 'rich', category: 'rich', weight: 2, render: [
+    "+--------+---------+",
+    "| Name   | Score   |",
+    "|--------+---------|",
+    "| Alice  | 95      |",
+    "| Bob    | 87      |",
+    "+--------+---------+"
+  ] },
+  'box.ASCII2': { lib: 'rich', category: 'rich', weight: 2, render: [
+    "+---------+---------+",
+    "| Name    | Score   |",
+    "+---------+---------+",
+    "| Alice   | 95      |",
+    "| Bob     | 87      |",
+    "+---------+---------+"
+  ] },
+  'box.ASCII_DOUBLE_HEAD': { lib: 'rich', category: 'rich', weight: 2, render: [
+    "+---------+---------+",
+    "| Name    | Score   |",
+    "+=========+=========+",
+    "| Alice   | 95      |",
+    "| Bob     | 87      |",
+    "+---------+---------+"
+  ] },
+  'box.SQUARE': { lib: 'rich', category: 'rich', weight: 2, render: [
+    "┌────────┬─────────┐",
+    "│ Name   │ Score   │",
+    "├────────┼─────────┤",
+    "│ Alice  │ 95      │",
+    "│ Bob    │ 87      │",
+    "└────────┴─────────┘"
+  ] },
+  'box.SQUARE_DOUBLE_HEAD': { lib: 'rich', category: 'rich', weight: 2, render: [
+    "┌────────┬─────────┐",
+    "│ Name   │ Score   │",
+    "╞════════╪═════════╡",
+    "│ Alice  │ 95      │",
+    "│ Bob    │ 87      │",
+    "└────────┴─────────┘"
+  ] },
+  'box.ROUNDED': { lib: 'rich', category: 'rich', weight: 2, render: [
+    "╭────────┬─────────╮",
+    "│ Name   │ Score   │",
+    "├────────┼─────────┤",
+    "│ Alice  │ 95      │",
+    "│ Bob    │ 87      │",
+    "╰────────┴─────────╯"
+  ] },
+  'box.HEAVY': { lib: 'rich', category: 'rich', weight: 2, render: [
+    "┏━━━━━━━━┳━━━━━━━━━┓",
+    "┃ Name   ┃ Score   ┃",
+    "┣━━━━━━━━╋━━━━━━━━━┫",
+    "┃ Alice  ┃ 95      ┃",
+    "┃ Bob    ┃ 87      ┃",
+    "┗━━━━━━━━┻━━━━━━━━━┛"
+  ] },
+  'box.HEAVY_HEAD': { lib: 'rich', category: 'rich', weight: 2, render: [
+    "┏━━━━━━━━┳━━━━━━━━━┓",
+    "┃ Name   ┃ Score   ┃",
+    "┡━━━━━━━━╇━━━━━━━━━┩",
+    "│ Alice  │ 95      │",
+    "│ Bob    │ 87      │",
+    "└────────┴─────────┘"
+  ] },
+  'box.HEAVY_EDGE': { lib: 'rich', category: 'rich', weight: 2, render: [
+    "┏━━━━━━━━┳━━━━━━━━━┓",
+    "┃ Name   ┃ Score   ┃",
+    "├────────┼─────────┤",
+    "│ Alice  │ 95      │",
+    "│ Bob    │ 87      │",
+    "┗━━━━━━━━┻━━━━━━━━━┛"
+  ] },
+  'box.DOUBLE': { lib: 'rich', category: 'rich', weight: 2, render: [
+    "╔════════╦═════════╗",
+    "║ Name   ║ Score   ║",
+    "╠════════╬═════════╣",
+    "║ Alice  ║ 95      ║",
+    "║ Bob    ║ 87      ║",
+    "╚════════╩═════════╝"
+  ] },
+  'box.DOUBLE_EDGE': { lib: 'rich', category: 'rich', weight: 2, render: [
+    "╔════════╤═════════╗",
+    "║ Name   │ Score   ║",
+    "╟────────┼─────────╢",
+    "║ Alice  │ 95      ║",
+    "║ Bob    │ 87      ║",
+    "╚════════╧═════════╝"
+  ] },
+  'box.MINIMAL': { lib: 'rich', category: 'rich', weight: 2, render: [
+    "        ╷",
+    " Name   │ Score",
+    " ╶──────┼────────╴",
+    " Alice  │ 95",
+    " Bob    │ 87",
+    "        ╵"
+  ] },
+  'box.MINIMAL_HEAVY_HEAD': { lib: 'rich', category: 'rich', weight: 2, render: [
+    "        ╷",
+    " Name   │ Score",
+    " ╺━━━━━━┿━━━━━━━━╸",
+    " Alice  │ 95",
+    " Bob    │ 87",
+    "        ╵"
+  ] },
+  'box.MINIMAL_DOUBLE_HEAD': { lib: 'rich', category: 'rich', weight: 2, render: [
+    "        ╷",
+    " Name   │ Score",
+    " ═══════╪════════",
+    " Alice  │ 95",
+    " Bob    │ 87",
+    "        ╵"
+  ] },
+  'box.SIMPLE': { lib: 'rich', category: 'rich', weight: 2, render: [
+    "                  ",
+    " Name    Score    ",
+    " ──────  ──────── ",
+    " Alice   95       ",
+    " Bob     87       ",
+    " ──────  ──────── "
+  ] },
+  'box.SIMPLE_HEAD': { lib: 'rich', category: 'rich', weight: 2, render: [
+    " Name    Score",
+    " ──────  ────────",
+    " Alice   95",
+    " Bob     87"
+  ] },
+  'box.SIMPLE_HEAVY': { lib: 'rich', category: 'rich', weight: 2, render: [
+    " Name    Score",
+    " ━━━━━━  ━━━━━━━━",
+    " Alice   95",
+    " Bob     87",
+    " ━━━━━━  ━━━━━━━━"
+  ] },
+  'box.HORIZONTALS': { lib: 'rich', category: 'rich', weight: 2, render: [
+    " ──────────────────",
+    " Name    Score",
+    " ──────────────────",
+    " Alice   95",
+    " ──────────────────",
+    " Bob     87",
+    " ──────────────────"
+  ] },
+  'box.MARKDOWN': { lib: 'rich', category: 'rich', weight: 2, render: [
+    "| Name   | Score   |",
+    "|--------|---------|",
+    "| Alice  | 95      |",
+    "| Bob    | 87      |"
+  ] },
+  'pt.DEFAULT': { lib: 'prettytable', category: 'prettytable', weight: 3, render: [
+    "+-------+-------+",
+    "| Name  | Score |",
+    "+-------+-------+",
+    "| Alice |  95   |",
+    "|  Bob  |  87   |",
+    "+-------+-------+"
+  ] },
+  'pt.PLAIN_COLUMNS': { lib: 'prettytable', category: 'prettytable', weight: 3, render: [
+    " Name     Score ",
+    " Alice       95 ",
+    " Bob         87 "
+  ] },
+  'pt.MARKDOWN': { lib: 'prettytable', category: 'prettytable', weight: 3, render: [
+    "| Name  | Score |",
+    "|-------|-------|",
+    "| Alice |  95   |",
+    "| Bob   |  87   |"
+  ] },
+  'pt.SINGLE_BORDER': { lib: 'prettytable', category: 'prettytable', weight: 3, render: [
+    "┌───────┬───────┐",
+    "│ Name  │ Score │",
+    "├───────┼───────┤",
+    "│ Alice │  95   │",
+    "│  Bob  │  87   │",
+    "└───────┴───────┘"
+  ] },
+  'pt.DOUBLE_BORDER': { lib: 'prettytable', category: 'prettytable', weight: 3, render: [
+    "╔═══════╦═══════╗",
+    "║ Name  ║ Score ║",
+    "╠═══════╬═══════╣",
+    "║ Alice ║  95   ║",
+    "║  Bob  ║  87   ║",
+    "╚═══════╩═══════╝"
+  ] },
 };
 
 const FIGLET_FONTS = {
@@ -2018,6 +2883,60 @@ for i in range(total + 1):
 print()`
 };
 
+const TABLE_METHOD_SNIPPETS = {
+  tabulate: `from tabulate import tabulate
+
+data = [["Alice", 95], ["Bob", 87]]
+headers = ["Name", "Score"]
+print(tabulate(data, headers, tablefmt="grid"))`,
+  rich: `from rich.console import Console
+from rich.table import Table
+from rich import box
+
+console = Console()
+table = Table(box=box.ROUNDED)
+table.add_column("Name")
+table.add_column("Score")
+table.add_row("Alice", "95")
+table.add_row("Bob", "87")
+console.print(table)`,
+  prettytable: `from prettytable import PrettyTable, SINGLE_BORDER
+
+pt = PrettyTable()
+pt.field_names = ["Name", "Score"]
+pt.add_row(["Alice", 95])
+pt.add_row(["Bob", 87])
+pt.set_style(SINGLE_BORDER)
+print(pt)`
+};
+
+const BOX_METHOD_SNIPPETS = {
+  rich: `from rich.console import Console
+from rich.panel import Panel
+from rich import box
+
+console = Console()
+console.print(Panel("Hello, World!", box=box.ROUNDED))
+console.print(Panel("Hello, World!", title="My Panel", box=box.DOUBLE, border_style="green"))`,
+  manual: `def draw_box(text, style="light"):
+    chars = {
+        "light":   ("┌","─","┐","│","└","┘"),
+        "heavy":   ("┏","━","┓","┃","┗","┛"),
+        "double":  ("╔","═","╗","║","╚","╝"),
+        "rounded": ("╭","─","╮","│","╰","╯"),
+        "ascii":   ("+","-","+","|","+","+"),
+    }
+    tl, h, tr, v, bl, br = chars[style]
+    lines = text.split("\\n")
+    width = max(len(l) for l in lines) + 2
+    print(tl + h * width + tr)
+    for line in lines:
+        print(f"{v} {line:<{width-1}}{v}")
+    print(bl + h * width + br)
+
+draw_box("Hello, World!\\nLine two", style="rounded")`
+};
+
 let speedMultiplier = 1;
 let progressBarWidth = parseInt(localStorage.getItem('progressBarWidth') || '20', 10);
 progressBarWidth = Number.isFinite(progressBarWidth) ? Math.min(40, Math.max(8, progressBarWidth)) : 20;
@@ -2025,9 +2944,41 @@ let figletText = localStorage.getItem('figletSampleText') || 'Hello';
 if (!figletText.trim()) figletText = 'Hello';
 let figletSort = localStorage.getItem('figletSort') || 'name';
 if (!['name', 'height', 'width'].includes(figletSort)) figletSort = 'name';
+let tableSort = localStorage.getItem('tableSort') || 'visual';
+if (!['visual', 'name'].includes(tableSort)) tableSort = 'visual';
+const BOX_TEXT_DEFAULTS = { line1: 'Hello, World!', line2: 'Line two here' };
+function normalizeBoxText(input) {
+  const source = input && typeof input === 'object' ? input : {};
+  return {
+    line1: String(source.line1 ?? BOX_TEXT_DEFAULTS.line1).slice(0, 24),
+    line2: String(source.line2 ?? BOX_TEXT_DEFAULTS.line2).slice(0, 24)
+  };
+}
+let boxText = BOX_TEXT_DEFAULTS;
+try {
+  boxText = normalizeBoxText(JSON.parse(localStorage.getItem('boxPreviewText') || '{}'));
+} catch {
+  boxText = { ...BOX_TEXT_DEFAULTS };
+}
+const TABLE_SAMPLE_DEFAULTS = { name1: 'Alice', score1: '95', name2: 'Bob', score2: '87' };
+function normalizeTableSample(input) {
+  const source = input && typeof input === 'object' ? input : {};
+  return {
+    name1: String(source.name1 ?? TABLE_SAMPLE_DEFAULTS.name1).slice(0, 16),
+    score1: String(source.score1 ?? TABLE_SAMPLE_DEFAULTS.score1).slice(0, 8),
+    name2: String(source.name2 ?? TABLE_SAMPLE_DEFAULTS.name2).slice(0, 16),
+    score2: String(source.score2 ?? TABLE_SAMPLE_DEFAULTS.score2).slice(0, 8)
+  };
+}
+let tableSample = TABLE_SAMPLE_DEFAULTS;
+try {
+  tableSample = normalizeTableSample(JSON.parse(localStorage.getItem('tableSampleData') || '{}'));
+} catch {
+  tableSample = { ...TABLE_SAMPLE_DEFAULTS };
+}
 let activeTab = localStorage.getItem('activeTab');
-if (!['spinners', 'progress', 'figlet'].includes(activeTab)) activeTab = 'spinners';
-let activeCategoryByTab = { spinners: 'All', progress: 'All', figlet: 'All' };
+if (!['spinners', 'progress', 'figlet', 'tables', 'boxes'].includes(activeTab)) activeTab = 'spinners';
+let activeCategoryByTab = { spinners: 'All', progress: 'All', figlet: 'All', tables: 'All', boxes: 'All' };
 try {
   const stored = JSON.parse(localStorage.getItem('activeCategoryByTab') || '{}');
   if (stored && typeof stored === 'object') activeCategoryByTab = { ...activeCategoryByTab, ...stored };
@@ -2068,17 +3019,36 @@ const PRIORITY_FIGLET_KEYS = ['standard', 'big', 'small', 'slant', 'shadow', 'ba
 const SPINNER_CATEGORY_ORDER = ['Dots','Classic','Arrows','Bars & Blocks','Progress','Indeterminate','Scenes','Misc','Emoji Spinners'];
 const PROGRESS_CATEGORY_ORDER = ['ASCII Classic','Unicode Smooth','Retro','Indeterminate'];
 const FIGLET_CATEGORY_ORDER = ['Essentials', 'Retro & Pixel', 'Big & Bold', 'Script & Cursive', 'Decorative', 'Minimal & Compact', 'Tech & Hacker'];
+const TABLE_CATEGORY_ORDER = ['tabulate', 'rich', 'prettytable'];
+const BOX_CATEGORY_ORDER = ['Unicode', 'Rich', 'ASCII', 'Braille', 'Special'];
+const TABLE_VISUAL_ORDER = [
+  'plain','simple','rst','presto',
+  'pipe','orgtbl','github','box.MARKDOWN','pt.MARKDOWN',
+  'grid','psql','pretty','outline',
+  'simple_grid','rounded_grid','fancy_grid','box.SQUARE','box.ROUNDED',
+  'heavy_grid','mixed_grid','colon_grid','heavy_outline','box.HEAVY','box.HEAVY_HEAD','box.HEAVY_EDGE',
+  'double_grid','double_outline','box.DOUBLE','box.DOUBLE_EDGE','pt.DOUBLE_BORDER',
+  'simple_outline','rounded_outline',
+  'box.ASCII','box.ASCII2','box.ASCII_DOUBLE_HEAD','box.SQUARE_DOUBLE_HEAD',
+  'box.MINIMAL','box.MINIMAL_HEAVY_HEAD','box.MINIMAL_DOUBLE_HEAD',
+  'box.SIMPLE','box.SIMPLE_HEAD','box.SIMPLE_HEAVY','box.HORIZONTALS',
+  'pt.DEFAULT','pt.PLAIN_COLUMNS','pt.SINGLE_BORDER'
+];
 const HIGHLIGHTED = ['growUp','growUpOnly','verticalBars'];
 
 function getCategoryOrder() {
   if (activeTab === 'progress') return PROGRESS_CATEGORY_ORDER;
   if (activeTab === 'figlet') return FIGLET_CATEGORY_ORDER;
+  if (activeTab === 'tables') return TABLE_CATEGORY_ORDER;
+  if (activeTab === 'boxes') return BOX_CATEGORY_ORDER;
   return SPINNER_CATEGORY_ORDER;
 }
 
 function getActiveData() {
   if (activeTab === 'progress') return PROGRESS_BARS;
   if (activeTab === 'figlet') return FIGLET_FONTS;
+  if (activeTab === 'tables') return TABLE_STYLES;
+  if (activeTab === 'boxes') return BOX_STYLES;
   return SPINNERS;
 }
 
@@ -2108,27 +3078,44 @@ function updateTabUI() {
   document.body.classList.toggle('tab-progress', activeTab === 'progress');
   document.body.classList.toggle('tab-spinners', activeTab === 'spinners');
   document.body.classList.toggle('tab-figlet', activeTab === 'figlet');
+  document.body.classList.toggle('tab-tables', activeTab === 'tables');
+  document.body.classList.toggle('tab-boxes', activeTab === 'boxes');
   const subtitle = document.getElementById('appSubtitle');
   subtitle.textContent = activeTab === 'progress'
     ? 'Animated terminal progress bar styles with determinate sweep previews and configurable width.'
     : activeTab === 'figlet'
       ? 'Dynamic ASCII Figlet font gallery rendered in-browser with lazy font loading and live sample text.'
+      : activeTab === 'tables'
+        ? 'Reference gallery of terminal table border styles across tabulate, rich, and prettytable.'
+        : activeTab === 'boxes'
+          ? 'Panel and frame style reference using Unicode box drawing, Rich panel borders, and retro ASCII frames.'
       : 'Live-animated preview of spinner styles from Python CLI libraries and custom terminal aesthetics.';
   const searchInput = document.getElementById('searchInput');
   searchInput.placeholder = activeTab === 'progress'
     ? 'Search progress bars by name, category, or library...'
     : activeTab === 'figlet'
       ? 'Search figlet fonts by name, category, or library...'
+      : activeTab === 'tables'
+        ? 'Search table styles by name, category, library, or sample content...'
+        : activeTab === 'boxes'
+          ? 'Search box styles by name, category, library, characters, or sample content...'
       : 'Search spinners by name, category, or library...';
   document.getElementById('barWidthSlider').value = progressBarWidth;
   document.getElementById('barWidthLabel').textContent = progressBarWidth;
   document.getElementById('figlet-text').value = figletText;
   document.getElementById('figletCharCount').textContent = `${(figletText || '').length}/${FIGLET_MAX_LENGTH}`;
   document.getElementById('figletSortSelect').value = figletSort;
+  document.getElementById('tableSortSelect').value = tableSort;
+  document.getElementById('tableName1').value = tableSample.name1;
+  document.getElementById('tableScore1').value = tableSample.score1;
+  document.getElementById('tableName2').value = tableSample.name2;
+  document.getElementById('tableScore2').value = tableSample.score2;
+  document.getElementById('boxLine1').value = boxText.line1;
+  document.getElementById('boxLine2').value = boxText.line2;
 }
 
 function switchTab(tab) {
-  if (!['spinners', 'progress', 'figlet'].includes(tab)) return;
+  if (!['spinners', 'progress', 'figlet', 'tables', 'boxes'].includes(tab)) return;
   closeAllViewMenus();
   activeTab = tab;
   localStorage.setItem('activeTab', activeTab);
@@ -2188,7 +3175,9 @@ function renderGrid() {
     const matchSearch = !search || name.toLowerCase().includes(search) ||
       item.category.toLowerCase().includes(search) ||
       item.lib.toLowerCase().includes(search) ||
-      (activeTab === 'figlet' && item.sample.join(' ').toLowerCase().includes(search));
+      (activeTab === 'figlet' && item.sample.join(' ').toLowerCase().includes(search)) ||
+      (activeTab === 'tables' && item.render.join(' ').toLowerCase().includes(search)) ||
+      (activeTab === 'boxes' && (item.render.join(' ').toLowerCase().includes(search) || String(item.chars || '').toLowerCase().includes(search)));
     return matchCat && matchSearch;
   });
 
@@ -2198,12 +3187,24 @@ function renderGrid() {
       if (figletSort === 'width') return a[1].width - b[1].width || a[0].localeCompare(b[0]);
       return a[0].localeCompare(b[0]);
     });
+  } else if (activeTab === 'tables') {
+    const orderMap = new Map(TABLE_VISUAL_ORDER.map((key, idx) => [key, idx]));
+    filtered.sort((a, b) => {
+      if (tableSort === 'name') return a[0].localeCompare(b[0]);
+      const aw = orderMap.has(a[0]) ? orderMap.get(a[0]) : 10_000 + a[1].weight;
+      const bw = orderMap.has(b[0]) ? orderMap.get(b[0]) : 10_000 + b[1].weight;
+      return (aw - bw) || a[0].localeCompare(b[0]);
+    });
   }
 
   document.getElementById('statsBar').innerHTML = activeTab === 'progress'
     ? `Showing <span>${filtered.length}</span> of <span>${totalCount}</span> progress bars`
     : activeTab === 'figlet'
       ? `Showing <span>${filtered.length}</span> of <span>${totalCount}</span> figlet fonts`
+      : activeTab === 'tables'
+        ? `Showing <span>${filtered.length}</span> of <span>${totalCount}</span> table border styles`
+        : activeTab === 'boxes'
+          ? `Showing <span>${filtered.length}</span> of <span>${totalCount}</span> box/panel styles`
       : `Showing <span>${filtered.length}</span> of <span>${totalCount}</span> spinners`;
 
   if (filtered.length === 0) {
@@ -2211,6 +3212,10 @@ function renderGrid() {
       ? '<div class="no-results">No progress bars match your search.</div>'
       : activeTab === 'figlet'
         ? '<div class="no-results">No figlet fonts match your search.</div>'
+        : activeTab === 'tables'
+          ? '<div class="no-results">No table border styles match your search.</div>'
+          : activeTab === 'boxes'
+            ? '<div class="no-results">No box/panel styles match your search.</div>'
         : '<div class="no-results">No spinners match your search.</div>';
     return;
   }
@@ -2292,7 +3297,7 @@ function renderGrid() {
               <span>${item.interval || 60}ms</span>
             </div>
           </div>`;
-        } else {
+        } else if (activeTab === 'figlet') {
           html += `
           <div class="card figlet-card font-card" data-name="${name}" data-font="${name}" data-category="${item.category}" onclick="showFigletCode('${name}')">
             <div class="font-card-header">
@@ -2306,6 +3311,41 @@ function renderGrid() {
                 <button class="btn-copy-art" type="button" onclick="event.stopPropagation(); copyFigletSample('${name}', this)" title="Copy ASCII art">Copy</button>
                 <button class="btn-show-code" type="button" onclick="event.stopPropagation(); showFigletCode('${name}')" title="Show Python code">Code</button>
               </div>
+            </div>
+          </div>`;
+        } else if (activeTab === 'tables') {
+          const renderedTable = renderTableSample(item);
+          html += `
+          <div class="card table-card" data-name="${name}" onclick="showTableCode('${name}')">
+            <button class="copy-btn" onclick="event.stopPropagation(); copyTableRender('${name}', this)" title="Copy table output">copy</button>
+            <div class="card-header">
+              <span class="spinner-name">${name}</span>
+              <span class="spinner-lib">${item.lib}</span>
+            </div>
+            <div class="spinner-display">
+              <pre class="table-preview" id="table-${name}">${escapeHtml(renderedTable.join('\n'))}</pre>
+            </div>
+            <div class="card-meta">
+              <span>${renderedTable.length} lines</span>
+              <span>w:${Math.max(...renderedTable.map(line => line.length))}</span>
+              <span>${item.category}</span>
+            </div>
+          </div>`;
+        } else {
+          const renderedBox = renderBoxPreview(item);
+          html += `
+          <div class="card box-card" data-name="${name}" onclick="showBoxCode('${name}')">
+            <button class="copy-btn" onclick="event.stopPropagation(); copyBoxRender('${name}', this)" title="Copy box output">copy</button>
+            <div class="card-header">
+              <span class="spinner-name">${name}</span>
+              <span class="spinner-lib">${item.lib}</span>
+            </div>
+            <div class="spinner-display">
+              <pre class="box-preview" id="box-${name}">${escapeHtml(renderedBox.join('\n'))}</pre>
+            </div>
+            <div class="card-meta">
+              <span>${item.category}</span>
+              <span class="box-char-map" title="${escapeHtml(item.chars || 'chars n/a')}">${item.chars || 'chars n/a'}</span>
             </div>
           </div>`;
         }
@@ -2404,6 +3444,31 @@ function escapeHtml(value) {
     .replace(/>/g, '&gt;');
 }
 
+function renderTableSample(style) {
+  const base = Array.isArray(style?.render) ? style.render : [];
+  const name1 = String(tableSample.name1 ?? '');
+  const score1 = String(tableSample.score1 ?? '');
+  const name2 = String(tableSample.name2 ?? '');
+  const score2 = String(tableSample.score2 ?? '');
+  return base.map(line => line
+    .split('Alice').join(name1)
+    .split('95').join(score1)
+    .split('Bob').join(name2)
+    .split('87').join(score2)
+  );
+}
+
+function renderBoxPreview(style) {
+  const base = Array.isArray(style?.render) ? style.render : [];
+  const line1 = String(boxText.line1 ?? '');
+  const line2 = String(boxText.line2 ?? '');
+  return base.map(line => line
+    .split('Hello, World!').join(line1)
+    .split('Line two here').join(line2)
+    .split('Sample text').join(line2)
+  );
+}
+
 function copyFrames(name, btn) {
   const spinner = SPINNERS[name];
   navigator.clipboard.writeText(JSON.stringify(spinner.frames)).then(() => {
@@ -2431,6 +3496,102 @@ function copyFigletSample(name, btn) {
     btn.classList.add('copied');
     setTimeout(() => { btn.textContent = prev || 'Copy'; btn.classList.remove('copied'); }, 1500);
   });
+}
+
+function copyTableRender(name, btn) {
+  const table = TABLE_STYLES[name];
+  if (!table) return;
+  navigator.clipboard.writeText(renderTableSample(table).join('\n')).then(() => {
+    btn.textContent = '✓';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 1500);
+  });
+}
+
+function copyBoxRender(name, btn) {
+  const box = BOX_STYLES[name];
+  if (!box) return;
+  navigator.clipboard.writeText(renderBoxPreview(box).join('\n')).then(() => {
+    btn.textContent = '✓';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 1500);
+  });
+}
+
+function getTableCode(name) {
+  const table = TABLE_STYLES[name];
+  const sample = renderTableSample(table).join('\n');
+  const snippet = table.lib === 'rich'
+    ? TABLE_METHOD_SNIPPETS.rich
+    : table.lib === 'prettytable'
+      ? TABLE_METHOD_SNIPPETS.prettytable
+      : TABLE_METHOD_SNIPPETS.tabulate;
+  return `# -- Table Border Style --------------------------------------
+name = "${name}"
+library = "${table.lib}"
+
+# -- Current sample rows --------------------------------------
+data = [
+  ["${tableSample.name1.replace(/"/g, '\\"')}", "${tableSample.score1.replace(/"/g, '\\"')}"],
+  ["${tableSample.name2.replace(/"/g, '\\"')}", "${tableSample.score2.replace(/"/g, '\\"')}"]
+]
+
+# -- Python snippet -------------------------------------------
+${snippet}
+
+# -- Sample render from catalogue -----------------------------
+sample = """${sample.replace(/"""/g, '\\"\\"\\"')}"""
+print(sample)`;
+}
+
+function getBoxCode(name) {
+  const box = BOX_STYLES[name];
+  const sample = renderBoxPreview(box).join('\n');
+  return `# -- Box / Panel Style ---------------------------------------
+name = "${name}"
+category = "${box.category}"
+library = "${box.lib}"
+characters = "${(box.chars || '').replace(/"/g, '\\"')}"
+
+# -- Current preview text -------------------------------------
+line1 = "${String(boxText.line1).replace(/"/g, '\\"')}"
+line2 = "${String(boxText.line2).replace(/"/g, '\\"')}"
+
+# -- Rich panel method ----------------------------------------
+${BOX_METHOD_SNIPPETS.rich}
+
+# -- Manual draw method ---------------------------------------
+${BOX_METHOD_SNIPPETS.manual}
+
+# -- Sample render from catalogue -----------------------------
+sample = """${sample.replace(/"""/g, '\\"\\"\\"')}"""
+print(sample)`;
+}
+
+function showTableCode(name) {
+  const modal = document.getElementById('modalOverlay');
+  document.getElementById('modalTitle').textContent = `table :: ${name}`;
+  document.getElementById('modalCode').textContent = getTableCode(name);
+  modal.classList.add('active');
+}
+
+function showBoxCode(name) {
+  const modal = document.getElementById('modalOverlay');
+  document.getElementById('modalTitle').textContent = `box :: ${name}`;
+  document.getElementById('modalCode').textContent = getBoxCode(name);
+  modal.classList.add('active');
+}
+
+function setTableSampleData(patch) {
+  tableSample = normalizeTableSample({ ...tableSample, ...patch });
+  localStorage.setItem('tableSampleData', JSON.stringify(tableSample));
+  if (activeTab === 'tables') renderGrid();
+}
+
+function setBoxTextData(patch) {
+  boxText = normalizeBoxText({ ...boxText, ...patch });
+  localStorage.setItem('boxPreviewText', JSON.stringify(boxText));
+  if (activeTab === 'boxes') renderGrid();
 }
 
 function getFigletCode(name) {
@@ -2839,6 +4000,41 @@ document.getElementById('figletSortSelect').addEventListener('change', e => {
   figletSort = e.target.value;
   localStorage.setItem('figletSort', figletSort);
   if (activeTab === 'figlet') renderGrid();
+});
+document.getElementById('tableSortSelect').addEventListener('change', e => {
+  tableSort = e.target.value;
+  localStorage.setItem('tableSort', tableSort);
+  if (activeTab === 'tables') renderGrid();
+});
+document.getElementById('tableName1').addEventListener('input', e => {
+  setTableSampleData({ name1: e.target.value });
+});
+document.getElementById('tableScore1').addEventListener('input', e => {
+  setTableSampleData({ score1: e.target.value });
+});
+document.getElementById('tableName2').addEventListener('input', e => {
+  setTableSampleData({ name2: e.target.value });
+});
+document.getElementById('tableScore2').addEventListener('input', e => {
+  setTableSampleData({ score2: e.target.value });
+});
+document.getElementById('tableDataReset').addEventListener('click', () => {
+  tableSample = { ...TABLE_SAMPLE_DEFAULTS };
+  localStorage.setItem('tableSampleData', JSON.stringify(tableSample));
+  updateTabUI();
+  if (activeTab === 'tables') renderGrid();
+});
+document.getElementById('boxLine1').addEventListener('input', e => {
+  setBoxTextData({ line1: e.target.value });
+});
+document.getElementById('boxLine2').addEventListener('input', e => {
+  setBoxTextData({ line2: e.target.value });
+});
+document.getElementById('boxInputReset').addEventListener('click', () => {
+  boxText = { ...BOX_TEXT_DEFAULTS };
+  localStorage.setItem('boxPreviewText', JSON.stringify(boxText));
+  updateTabUI();
+  if (activeTab === 'boxes') renderGrid();
 });
 
 FigletRenderer.init();
