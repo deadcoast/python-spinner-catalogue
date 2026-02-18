@@ -1,24 +1,23 @@
-# Spinners & Progress Bars — Additions Dev Doc
+# Project Architecture
 
+## Overview
+
+> Lists of methods on display in the project
 > **Purpose:** Injectable data for the Python Spinners Catalogue v3.  
 > **Format:** Each entry is a JS object literal ready to paste into the `SPINNERS` or `PROGRESS_BARS` const.  
 > **Convention:** `frames[]` / `interval` (ms) / `category` / `lib` (source attribution)  
 > **Priority:** ASCII & Unicode first. Emoji only if exceptional.
 
----
-
-## Table of Contents
-
-1. [New Spinners — ASCII/Unicode](#1-new-spinners--asciiunicode)
-2. [New Progress Bars](#2-new-progress-bars)
-3. [Structural Notes](#3-structural-notes)
-4. [Python Code Snippets Per Bar Style](#4-python-code-snippets-per-bar-style)
+- [x] [New Spinners - ASCII/Unicode](#new-spinners-ascii-unicode)
+- [x] [New Progress Bars](#new-progress-bars)
+- [x] [Structural Notes](#structural-notes)
+- [x] [Python Code Snippets Per Bar Style](#python-code-snippets-per-bar-style)
 
 ---
+<a id="new-spinners-ascii-unicode"></a>
+### [x] 1. New Spinners - ASCII/Unicode
 
-## 1. New Spinners — ASCII/Unicode
-
-### 1.1 `radar`
+### [x] 1.1 `radar`
 
 Quarter-circle rotation. Clean single-char, very retro CRT feel.
 
@@ -31,7 +30,7 @@ radar: {
 }
 ```
 
-### 1.2 `boxSpin`
+### [x] 1.2 `boxSpin`
 
 Box-drawing corner rotation. Looks like a cursor tracing a box.
 
@@ -44,7 +43,7 @@ boxSpin: {
 }
 ```
 
-### 1.3 `boxSpinDouble`
+### [x] 1.3 `boxSpinDouble`
 
 Double-line variant for heavier visual weight.
 
@@ -57,7 +56,7 @@ boxSpinDouble: {
 }
 ```
 
-### 1.4 `boxSpinRound`
+### [x] 1.4 `boxSpinRound`
 
 Rounded corner variant. Softer look.
 
@@ -70,7 +69,7 @@ boxSpinRound: {
 }
 ```
 
-### 1.5 `snake`
+### [x] 1.5 `snake`
 
 Box-drawing snake crawling through a cycle.
 
@@ -83,7 +82,7 @@ snake: {
 }
 ```
 
-### 1.6 `loadingDots`
+### [x] 1.6 `loadingDots`
 
 Classic `Loading...` with cycling ellipsis erasure.
 
@@ -96,7 +95,7 @@ loadingDots: {
 }
 ```
 
-### 1.7 `matrix`
+### [x] 1.7 `matrix`
 
 Random half-width katakana cycling — terminal rain aesthetic.
 
@@ -109,7 +108,7 @@ matrix: {
 }
 ```
 
-### 1.8 `brailleWave`
+### [x] 1.8 `brailleWave`
 
 Multi-char braille bar — equalizer ripple across 4 cells.
 
@@ -125,7 +124,7 @@ brailleWave: {
 }
 ```
 
-### 1.9 `brailleScroll`
+### [x] 1.9 `brailleScroll`
 
 Single braille cell — vertical sweep pattern.
 
@@ -138,7 +137,7 @@ brailleScroll: {
 }
 ```
 
-### 1.10 `crosshair`
+### [x] 1.10 `crosshair`
 
 Targeting reticle rotation.
 
@@ -151,7 +150,7 @@ crosshair: {
 }
 ```
 
-### 1.11 `shadeBlock`
+### [x] 1.11 `shadeBlock`
 
 Cycling through shade block characters — smooth density pulse.
 
@@ -164,7 +163,7 @@ shadeBlock: {
 }
 ```
 
-### 1.12 `verticalSweep`
+### [x] 1.12 `verticalSweep`
 
 Three-cell vertical bar sweep — the VU meter look.
 
@@ -180,7 +179,7 @@ verticalSweep: {
 }
 ```
 
-### 1.13 `equalizerWide`
+### [x] 1.13 `equalizerWide`
 
 Five-cell equalizer bounce — full audio visualizer aesthetic.
 
@@ -197,7 +196,7 @@ equalizerWide: {
 }
 ```
 
-### 1.14 `pipeFlow`
+### [x] 1.14 `pipeFlow`
 
 Pipe characters showing directional flow.
 
@@ -210,7 +209,7 @@ pipeFlow: {
 }
 ```
 
-### 1.15 `arrowPulse`
+### [x] 1.15 `arrowPulse`
 
 Arrow head bouncing left/right in a field.
 
@@ -226,7 +225,7 @@ arrowPulse: {
 }
 ```
 
-### 1.16 `dotWave`
+### [x] 1.16 `dotWave`
 
 Cycling dots with rising/falling density.
 
@@ -239,7 +238,7 @@ dotWave: {
 }
 ```
 
-### 1.17 `spinner2x2`
+### [x] 1.17 `spinner2x2`
 
 2×2 block quadrant rotation — satisfying chunky pixel feel.
 
@@ -252,7 +251,7 @@ spinner2x2: {
 }
 ```
 
-### 1.18 `spinner2x2Fill`
+### [x] 1.18 `spinner2x2Fill`
 
 2×2 block filling up then emptying.
 
@@ -265,7 +264,7 @@ spinner2x2Fill: {
 }
 ```
 
-### 1.19 `xo`
+### [x] 1.19 `xo`
 
 Classic retro `x` and `o` toggle. Dead simple.
 
@@ -278,7 +277,7 @@ xo: {
 }
 ```
 
-### 1.20 `bulletTrain`
+### [x] 1.20 `bulletTrain`
 
 Scrolling arrow characters — velocity feel.
 
@@ -297,14 +296,15 @@ bulletTrain: {
 
 ---
 
-## 2. New Progress Bars
+<a id="new-progress-bars"></a>
+### [x] 2. New Progress Bars
 
 > Progress bars are fundamentally different from spinners:  
 > they represent **percentage completion** (0→100%) rather than indeterminate activity.  
 > Each entry below defines the **fill character(s)**, **empty character(s)**, **tip/head character**, and optional **border** characters.  
 > The catalogue should animate these by sweeping fill from 0% to 100% in a loop.
 
-### Data Format
+### [x] Data Format
 
 ```js
 // Progress bar entry structure
@@ -321,9 +321,9 @@ bulletTrain: {
 }
 ```
 
-### 2.1 Classic ASCII
+### [x] 2.1 Classic ASCII
 
-#### `hashBar`
+### [x] `hashBar`
 
 The OG. wget, curl, every 90s/2000s download manager.
 
@@ -340,7 +340,7 @@ hashBar: {
 }
 ```
 
-#### `equalsBar`
+### [x] `equalsBar`
 
 Arrow-head style. Seen in wget, apt, old pip.
 
@@ -357,7 +357,7 @@ equalsBar: {
 }
 ```
 
-#### `dotFill`
+### [x] `dotFill`
 
 Period-based fill. Minimal, clean.
 
@@ -374,7 +374,7 @@ dotFill: {
 }
 ```
 
-#### `numericFill`
+### [x] `numericFill`
 
 tqdm's ASCII fallback: fills with digits 1→9 then `#`.
 
@@ -391,7 +391,7 @@ numericFill: {
 }
 ```
 
-#### `poundBar`
+### [x] `poundBar`
 
 Simple pound/hash with no framing. Pure 80s terminal.
 
@@ -408,9 +408,9 @@ poundBar: {
 }
 ```
 
-### 2.2 Unicode Smooth
+### [x] 2.2 Unicode Smooth
 
-#### `smoothBlock`
+### [x] `smoothBlock`
 
 tqdm default. Sub-character smooth fill via block elements.  
 Uses partial blocks `▏▎▍▌▋▊▉█` for fractional fill.
@@ -429,7 +429,7 @@ smoothBlock: {
 }
 ```
 
-#### `thinBar`
+### [x] `thinBar`
 
 Rich/pip modern style. Thin horizontal line aesthetic.
 
@@ -448,7 +448,7 @@ thinBar: {
 }
 ```
 
-#### `roundBlock`
+### [x] `roundBlock`
 
 Smooth blocks with rounded cap.
 
@@ -465,7 +465,7 @@ roundBlock: {
 }
 ```
 
-#### `bubbleFill`
+### [x] `bubbleFill`
 
 tqdm `.oO0` style — bubbly fill pattern.
 
@@ -483,7 +483,7 @@ bubbleFill: {
 }
 ```
 
-#### `pixelSmooth`
+### [x] `pixelSmooth`
 
 Sub-character fill using eighth blocks for ultra-smooth.
 
@@ -501,9 +501,9 @@ pixelSmooth: {
 }
 ```
 
-### 2.3 Retro / Themed
+### [x] 2.3 Retro / Themed
 
-#### `heartBar`
+### [x] `heartBar`
 
 HP bar energy — hearts filling up.
 
@@ -520,7 +520,7 @@ heartBar: {
 }
 ```
 
-#### `starBar`
+### [x] `starBar`
 
 Rating / XP style.
 
@@ -537,7 +537,7 @@ starBar: {
 }
 ```
 
-#### `diamondBar`
+### [x] `diamondBar`
 
 Crystal/gem collect aesthetic.
 
@@ -554,7 +554,7 @@ diamondBar: {
 }
 ```
 
-#### `dotCircle`
+### [x] `dotCircle`
 
 Filled vs hollow dots — clean monospace look.
 
@@ -571,7 +571,7 @@ dotCircle: {
 }
 ```
 
-#### `shadeBar`
+### [x] `shadeBar`
 
 Density gradient: full→dark→medium→light shade.
 
@@ -588,7 +588,7 @@ shadeBar: {
 }
 ```
 
-#### `boxFrame`
+### [x] `boxFrame`
 
 Box-drawing framed bar. Very DOS/BIOS look.
 
@@ -605,7 +605,7 @@ boxFrame: {
 }
 ```
 
-#### `boxFrameDouble`
+### [x] `boxFrameDouble`
 
 Double-line box-drawing frame for extra weight.
 
@@ -622,7 +622,7 @@ boxFrameDouble: {
 }
 ```
 
-#### `bracePipe`
+### [x] `bracePipe`
 
 Curly brace + pipe. Lisp energy.
 
@@ -639,7 +639,7 @@ bracePipe: {
 }
 ```
 
-#### `arrowFill`
+### [x] `arrowFill`
 
 Directional arrow fill — convoy style.
 
@@ -656,7 +656,7 @@ arrowFill: {
 }
 ```
 
-#### `underscoreSlide`
+### [x] `underscoreSlide`
 
 Minimalist underline-style progress. Feels like a terminal cursor.
 
@@ -673,7 +673,7 @@ underscoreSlide: {
 }
 ```
 
-#### `brailleBar`
+### [x] `brailleBar`
 
 Braille-based progress fill — stays in dot matrix aesthetic.
 
@@ -690,11 +690,11 @@ brailleBar: {
 }
 ```
 
-### 2.4 Indeterminate / Bouncing Bars
+### [x] 2.4 Indeterminate / Bouncing Bars
 
 > These loop continuously like spinners — they represent **unknown duration**.
 
-#### `bouncingBlock`
+### [x] `bouncingBlock`
 
 Single block sliding back and forth inside brackets.
 
@@ -710,7 +710,7 @@ bouncingBlock: {
 }
 ```
 
-#### `bouncingDash`
+### [x] `bouncingDash`
 
 Lightweight dash variant of the bouncing pattern.
 
@@ -726,7 +726,7 @@ bouncingDash: {
 }
 ```
 
-#### `scanLine`
+### [x] `scanLine`
 
 Knight Rider / KITT — scanning bar that grows and shrinks as it bounces.
 
@@ -746,7 +746,7 @@ scanLine: {
 }
 ```
 
-#### `pulseBar`
+### [x] `pulseBar`
 
 Pulsing density — block fills and fades.
 
@@ -764,7 +764,7 @@ pulseBar: {
 }
 ```
 
-#### `elasticBar`
+### [x] `elasticBar`
 
 Stretches out and snaps back. Rubber band feel.
 
@@ -785,9 +785,10 @@ elasticBar: {
 
 ---
 
-## 3. Structural Notes
+<a id="structural-notes"></a>
+### [x] 3. Structural Notes
 
-### 3.1 Category Taxonomy
+### [x] 3.1 Category Taxonomy
 
 **Spinners** (existing + additions):
 
@@ -801,7 +802,7 @@ Dots, Classic, Arrows, Bars & Blocks, Progress, Scenes, Misc, Emoji Spinners
 ASCII Classic, Unicode Smooth, Retro, Indeterminate
 ```
 
-### 3.2 Tab Architecture
+### [x] 3.2 Tab Architecture
 
 The catalogue should have two top-level views:
 
@@ -816,7 +817,7 @@ The catalogue should have two top-level views:
   - Bar cards include: name, fill/empty chars preview, Python snippet, bar width slider
   - For Indeterminate bars: loop frames like spinners
 
-### 3.3 Progress Bar Animation Logic
+### [x] 3.3 Progress Bar Animation Logic
 
 Determinate bars (those with `fill`/`empty` rather than `frames`) animate on a loop:
 
@@ -861,7 +862,7 @@ function renderSmoothBar(bar, progress) {
 }
 ```
 
-### 3.4 Speed & Width Controls (Progress Bars)
+### [x] 3.4 Speed & Width Controls (Progress Bars)
 
 ```plaintext
 Speed  [===●======] 1×      Width  [=====●====] 20
@@ -872,9 +873,10 @@ Speed  [===●======] 1×      Width  [=====●====] 20
 
 ---
 
-## 4. Python Code Snippets Per Bar Style
+<a id="python-code-snippets-per-bar-style"></a>
+### [x] 4. Python Code Snippets Per Bar Style
 
-### tqdm — ASCII
+### [x] tqdm — ASCII
 
 ```python
 from tqdm import tqdm
@@ -885,7 +887,7 @@ for i in tqdm(range(100), ascii=True):
 # Output: |####5     | 50/100 [00:01<00:01, 50.0it/s]
 ```
 
-### tqdm — Unicode (default)
+### [x] tqdm — Unicode (default)
 
 ```python
 from tqdm import tqdm
@@ -896,7 +898,7 @@ for i in tqdm(range(100)):
 # Output: |█████░░░░░| 50/100 [00:01<00:01, 50.0it/s]
 ```
 
-### tqdm — Custom characters
+### [x] tqdm — Custom characters
 
 ```python
 from tqdm import tqdm
@@ -907,7 +909,7 @@ for i in tqdm(range(100), ascii=" .oO0"):
 # Output: |000Oo.    | 50/100
 ```
 
-### Rich — Default bar
+### [x] Rich — Default bar
 
 ```python
 from rich.progress import track
@@ -918,7 +920,7 @@ for step in track(range(100), description="Processing..."):
 # Output: Processing... ━━━━━━━━━━╸━━━━━━━━━━  50%
 ```
 
-### Rich — Custom bar
+### [x] Rich — Custom bar
 
 ```python
 from rich.progress import Progress, BarColumn, TextColumn
@@ -934,7 +936,7 @@ with Progress(
         progress.advance(task)
 ```
 
-### alive-progress
+### [x] alive-progress
 
 ```python
 from alive_progress import alive_bar
@@ -947,7 +949,7 @@ with alive_bar(100, bar='smooth') as bar:
 # Also try: bar='classic', bar='blocks', bar='bubbles', bar='fish'
 ```
 
-### Manual ASCII bar (zero deps)
+### [x] Manual ASCII bar (zero deps)
 
 ```python
 import sys, time
@@ -962,7 +964,7 @@ for i in range(total + 1):
 print()
 ```
 
-### Manual box-framed bar (zero deps)
+### [x] Manual box-framed bar (zero deps)
 
 ```python
 import sys, time
@@ -1046,10 +1048,5 @@ const PROGRESS_BARS = {
   brailleBar:     { fill: "⣿", empty: "⣀", tip: "⣶", borders: ["⡇","⢸"], width: 20, category: "Retro", lib: "custom" },
 };
 ```
-
----
-
-*Generated for Python Spinners Catalogue v4 injection.*  
-*ASCII first. Retro forever.*
 
 ---

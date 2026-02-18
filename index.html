@@ -93,6 +93,33 @@
     margin: 0 auto;
     line-height: 1.6;
   }
+  .top-tabs {
+    display: inline-flex;
+    gap: 0.4rem;
+    margin: 1.35rem auto 0.2rem;
+    padding: 0.3rem;
+    background: #0f1320;
+    border: 1px solid var(--tag-border);
+    border-radius: 11px;
+  }
+  .top-tab {
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text-secondary);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 0.42rem 0.78rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .top-tab:hover { color: var(--text-primary); }
+  .top-tab.active {
+    background: var(--accent-dim);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
   .controls {
     display: flex;
     gap: 1rem;
@@ -144,6 +171,48 @@
     accent-color: var(--accent);
     cursor: pointer;
   }
+  .progress-width-control {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .progress-width-control input[type="range"] {
+    width: 100px;
+    accent-color: var(--accent-secondary);
+    cursor: pointer;
+  }
+  .figlet-text-control,
+  .figlet-sort-control {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .figlet-text-control input,
+  .figlet-sort-control select {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    padding: 0.36rem 0.48rem;
+    outline: none;
+  }
+  .figlet-text-control input {
+    width: 150px;
+  }
+  .figlet-sort-control select {
+    cursor: pointer;
+  }
+  body.tab-progress .progress-width-control { display: flex; }
+  body.tab-figlet .figlet-text-control,
+  body.tab-figlet .figlet-sort-control { display: flex; }
   .filter-tags {
     display: flex;
     gap: 0.5rem;
@@ -290,6 +359,25 @@
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
+  }
+  .figlet-card .spinner-display {
+    display: block;
+    min-height: 112px;
+    padding: 0.62rem 0.72rem;
+  }
+  .figlet-preview {
+    margin: 0;
+    white-space: pre;
+    line-height: 1.04;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.56rem;
+    color: #89ffcb;
+    text-shadow: 0 0 10px rgba(100, 255, 180, 0.16);
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  .figlet-meta {
+    color: var(--accent-secondary);
   }
   .category-header h2 {
     font-size: 1.1rem;
@@ -481,6 +569,20 @@
     opacity: 1;
     transform: translateY(0);
   }
+  body.view-minimal .progress-card .spinner-text {
+    opacity: 0.85;
+    color: var(--accent-secondary);
+  }
+  body.view-minimal .figlet-card .spinner-display {
+    min-height: 96px;
+    padding: 0.5rem 0.62rem;
+  }
+  body.view-minimal .figlet-preview {
+    font-size: 0.51rem;
+  }
+  body.view-minimal .progress-card .spinner-char {
+    letter-spacing: 0.02em;
+  }
   body.view-list .grid {
     gap: 0.45rem;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -515,6 +617,32 @@
     gap: 0.6rem;
   }
   body.view-list .spinner-text { display: none; }
+  body.view-list .progress-card .spinner-text {
+    display: inline-block;
+    min-width: 3.2ch;
+    text-align: right;
+    opacity: 0.9;
+    color: var(--accent-secondary);
+    font-size: 0.72rem;
+  }
+  body.view-list .progress-card .spinner-char {
+    font-size: 1.22rem;
+    letter-spacing: 0.015em;
+    flex: 1;
+  }
+  body.view-list .figlet-card {
+    grid-template-columns: minmax(145px, 180px) minmax(140px, 1fr) auto;
+  }
+  body.view-list .figlet-card .spinner-display {
+    min-height: 62px;
+    padding: 0.36rem 0.5rem;
+  }
+  body.view-list .figlet-preview {
+    font-size: 0.45rem;
+    line-height: 1.02;
+    max-height: 4.4em;
+    overflow: hidden;
+  }
   body.view-list .spinner-char { min-width: 1.6ch; }
   body.view-list .card-meta {
     gap: 0.35rem;
@@ -635,7 +763,12 @@
   <header>
     <div class="logo-line">/// reference · v2.0</div>
     <h1>Python Spinners Catalogue</h1>
-    <p class="subtitle">Live-animated preview of every spinner available in Python CLI libraries. 97 spinners from cli-spinners, Rich, Halo, Yaspin & alive-progress — no terminal required.</p>
+    <p class="subtitle" id="appSubtitle">Live-animated preview of every spinner and progress style available in Python CLI libraries.</p>
+    <div class="top-tabs" id="topTabs">
+      <button class="top-tab active" type="button" data-tab="spinners">Spinners</button>
+      <button class="top-tab" type="button" data-tab="progress">Progress Bars</button>
+      <button class="top-tab" type="button" data-tab="figlet">ASCII / Figlet</button>
+    </div>
   </header>
   <div class="controls">
     <div class="search-wrap">
@@ -646,6 +779,23 @@
       <span>Speed</span>
       <input type="range" id="speedSlider" min="0.25" max="3" step="0.25" value="1">
       <span id="speedLabel">1×</span>
+    </div>
+    <div class="progress-width-control" id="progressWidthControl">
+      <span>Width</span>
+      <input type="range" id="barWidthSlider" min="8" max="40" step="1" value="20">
+      <span id="barWidthLabel">20</span>
+    </div>
+    <div class="figlet-text-control" id="figletTextControl">
+      <span>Sample</span>
+      <input type="text" id="figletTextInput" value="Hello" maxlength="24">
+    </div>
+    <div class="figlet-sort-control" id="figletSortControl">
+      <span>Sort</span>
+      <select id="figletSortSelect">
+        <option value="name">Name</option>
+        <option value="height">Height</option>
+        <option value="width">Width</option>
+      </select>
     </div>
   </div>
   <div class="filter-tags" id="filterTags"></div>
@@ -765,74 +915,1053 @@ const SPINNERS = {
   pulse: { frames: [".", "o", "O", "o"], interval: 120, category: "Misc", lib: "alive-progress" },
   classic: { frames: ["|","/","-","\\"], interval: 100, category: "Classic", lib: "alive-progress" },
   waves: { frames: ["▁","▂","▃","▄","▅","▆","▇","█","▇","▆","▅","▄","▃","▂"], interval: 100, category: "Misc", lib: "alive-progress" },
-  hourglass: { frames: ["⏳","⌛"], interval: 400, category: "Emoji Spinners", lib: "custom" }
+  hourglass: { frames: ["⏳","⌛"], interval: 400, category: "Emoji Spinners", lib: "custom" },
+  radar: { frames: ["◐","◓","◑","◒"], interval: 120, category: "Classic", lib: "custom" },
+  boxSpin: { frames: ["┌","┐","┘","└"], interval: 100, category: "Classic", lib: "custom" },
+  boxSpinDouble: { frames: ["╔","╗","╝","╚"], interval: 100, category: "Classic", lib: "custom" },
+  boxSpinRound: { frames: ["╭","╮","╯","╰"], interval: 100, category: "Classic", lib: "custom" },
+  snake: { frames: ["╶─╴","╺━╸","╶─╴","╺━╸"], interval: 200, category: "Classic", lib: "custom" },
+  loadingDots: { frames: ["   ","·  ","·· ","···"," ··","  ·","   "], interval: 160, category: "Classic", lib: "custom" },
+  matrix: { frames: ["ｦ","ｱ","ｳ","ｴ","ｵ","ｶ","ｷ","ｹ","ｺ","ｻ","ｼ","ｽ","ｾ","ｿ","ﾀ","ﾁ","ﾂ","ﾃ","ﾅ","ﾆ","ﾇ","ﾈ","ﾊ","ﾋ","ﾎ","ﾏ","ﾐ","ﾑ","ﾒ","ﾓ","ﾔ","ﾕ","ﾗ","ﾘ","ﾜ"], interval: 60, category: "Misc", lib: "custom" },
+  brailleWave: { frames: ["⣾⣷⣯⣟","⣽⣾⣷⣯","⣻⣽⣾⣷","⢿⣻⣽⣾","⡿⢿⣻⣽","⣟⡿⢿⣻","⣯⣟⡿⢿","⣷⣯⣟⡿"], interval: 80, category: "Dots", lib: "custom" },
+  brailleScroll: { frames: ["⠁","⠂","⠄","⡀","⡈","⡐","⡠","⣀","⣁","⣂","⣄","⣌","⣔","⣤","⣥","⣦","⣮","⣶","⣷","⣿","⢿","⠿","⢻","⠻","⢹","⠹","⢸","⠸","⠰","⠠","⠀"], interval: 60, category: "Dots", lib: "custom" },
+  crosshair: { frames: ["⊹","✚","⊹","✚"], interval: 200, category: "Classic", lib: "custom" },
+  shadeBlock: { frames: ["░","▒","▓","█","▓","▒"], interval: 120, category: "Bars & Blocks", lib: "custom" },
+  verticalSweep: { frames: ["▁▁▁","▂▁▁","▃▂▁","▄▃▂","▅▄▃","▆▅▄","▇▆▅","█▇▆","▇█▇","▆▇█","▅▆▇","▄▅▆","▃▄▅","▂▃▄","▁▂▃","▁▁▂"], interval: 80, category: "Bars & Blocks", lib: "custom" },
+  equalizerWide: { frames: ["▁▃▅▃▁","▂▄▆▄▂","▃▅▇▅▃","▄▆█▆▄","▅▇█▇▅","▆█▇█▆","▇█▆█▇","█▇▅▇█","▇▆▄▆▇","▆▅▃▅▆","▅▄▂▄▅","▄▃▁▃▄","▃▂▁▂▃","▂▁▁▁▂"], interval: 80, category: "Bars & Blocks", lib: "custom" },
+  pipeFlow: { frames: ["┃","┃","╽","╿","╻","╹","╸","╺","╻","╿","╽","┃"], interval: 100, category: "Classic", lib: "custom" },
+  arrowPulse: { frames: ["▸▹▹▹▹","▹▸▹▹▹","▹▹▸▹▹","▹▹▹▸▹","▹▹▹▹▸","▹▹▹▸▹","▹▹▸▹▹","▹▸▹▹▹"], interval: 100, category: "Arrows", lib: "custom" },
+  dotWave: { frames: ["⠈","⠐","⠠","⢀","⡀","⠄","⠂","⠁"], interval: 100, category: "Dots", lib: "custom" },
+  spinner2x2: { frames: ["▘","▝","▗","▖"], interval: 120, category: "Bars & Blocks", lib: "custom" },
+  spinner2x2Fill: { frames: ["▖","▞","▛","█","▜","▚","▘"," "], interval: 120, category: "Bars & Blocks", lib: "custom" },
+  xo: { frames: ["×","○"], interval: 200, category: "Classic", lib: "custom" },
+  bulletTrain: { frames: ["        ▶","       ▶ ","      ▶  ","     ▶   ","    ▶    ","   ▶     ","  ▶      "," ▶       ","▶        "], interval: 70, category: "Arrows", lib: "custom" },
+  bouncingBlock: { frames: ["[█·····]","[·█····]","[··█···]","[···█··]","[····█·]","[·····█]","[····█·]","[···█··]","[··█···]","[·█····]"], interval: 80, category: "Indeterminate", lib: "custom" },
+  bouncingDash: { frames: ["[—     ]","[ —    ]","[  —   ]","[   —  ]","[    — ]","[     —]","[    — ]","[   —  ]","[  —   ]","[ —    ]"], interval: 80, category: "Indeterminate", lib: "custom" },
+  scanLine: { frames: ["[=         ]","[==        ]","[===       ]","[ ===      ]","[  ===     ]","[   ===    ]","[    ===   ]","[     ===  ]","[      === ]","[       ===]","[        ==]","[         =]","[        ==]","[       ===]","[      === ]","[     ===  ]","[    ===   ]","[   ===    ]","[  ===     ]","[ ===      ]","[===       ]","[==        ]"], interval: 70, category: "Indeterminate", lib: "custom" },
+  pulseBar: { frames: ["░░░░░░░░░░","▒░░░░░░░░░","▓▒░░░░░░░░","█▓▒░░░░░░░","░█▓▒░░░░░░","░░█▓▒░░░░░","░░░█▓▒░░░░","░░░░█▓▒░░░","░░░░░█▓▒░░","░░░░░░█▓▒░","░░░░░░░█▓▒","░░░░░░░░█▓","░░░░░░░░░█","░░░░░░░░░░"], interval: 80, category: "Indeterminate", lib: "custom" },
+  elasticBar: { frames: ["[■         ]","[■■        ]","[■■■       ]","[■■■■      ]","[ ■■■■     ]","[  ■■■■    ]","[   ■■■    ]","[    ■■    ]","[     ■■   ]","[      ■■  ]","[       ■■ ]","[        ■■]","[        ■ ]","[       ■  ]","[      ■   ]","[     ■    ]","[    ■     ]","[   ■      ]","[  ■       ]","[ ■        ]"], interval: 70, category: "Indeterminate", lib: "custom" }
 };
 
 // ═══════════════════════════════════════════
 //  APP STATE & LOGIC
 // ═══════════════════════════════════════════
+const PROGRESS_BARS = {
+  hashBar: { fill: "#", empty: "-", tip: ">", borders: ["[","]"], width: 20, category: "ASCII Classic", lib: "custom", python: "print(f'[{\"#\" * done}>{\"-\" * remaining}] {pct}%')" },
+  equalsBar: { fill: "=", empty: " ", tip: ">", borders: ["[","]"], width: 20, category: "ASCII Classic", lib: "custom", python: "print(f'[{\"=\" * done}>{\" \" * remaining}]')" },
+  dotFill: { fill: ".", empty: " ", tip: "", borders: ["[","]"], width: 20, category: "ASCII Classic", lib: "custom", python: "print(f'[{\".\" * done}{\" \" * remaining}]')" },
+  numericFill: { fill: "123456789#", empty: " ", tip: "", borders: ["|","|"], width: 20, subchars: [" ","1","2","3","4","5","6","7","8","9","#"], category: "ASCII Classic", lib: "tqdm", python: "from tqdm import tqdm; [None for _ in tqdm(range(100), ascii=True)]" },
+  poundBar: { fill: "█", empty: "·", tip: "", borders: ["",""], width: 20, category: "ASCII Classic", lib: "custom", python: "print(f'{\"█\" * done}{\"·\" * remaining} {pct}%')" },
+  smoothBlock: { fill: "█", empty: "░", tip: "▓", borders: ["|","|"], width: 20, subchars: ["▏","▎","▍","▌","▋","▊","▉","█"], category: "Unicode Smooth", lib: "tqdm", python: "from tqdm import tqdm; [None for _ in tqdm(range(100))]" },
+  thinBar: { fill: "━", empty: "╌", tip: "╸", borders: ["",""], width: 20, category: "Unicode Smooth", lib: "rich", python: "from rich.progress import track; [None for _ in track(range(100))]" },
+  roundBlock: { fill: "█", empty: "░", tip: "▌", borders: ["▐","▌"], width: 20, category: "Unicode Smooth", lib: "custom", python: "# Custom bar with rounded borders" },
+  bubbleFill: { fill: "0", empty: " ", tip: "O", borders: ["|","|"], width: 20, subchars: [" ",".","o","O","0"], category: "Unicode Smooth", lib: "tqdm", python: "from tqdm import tqdm; [None for _ in tqdm(range(100), ascii=' .oO0')]" },
+  pixelSmooth: { fill: "█", empty: " ", tip: "", borders: ["▕","▏"], width: 20, subchars: [" ","▏","▎","▍","▌","▋","▊","▉"], category: "Unicode Smooth", lib: "custom", python: "# Smooth pixel fill using partial block characters" },
+  heartBar: { fill: "♥", empty: "♡", tip: "", borders: ["",""], width: 10, category: "Retro", lib: "custom", python: "print(f'{\"♥\" * hp}{\"♡\" * (max_hp - hp)}')" },
+  starBar: { fill: "★", empty: "☆", tip: "", borders: ["",""], width: 10, category: "Retro", lib: "custom", python: "print(f'{\"★\" * done}{\"☆\" * remaining}')" },
+  diamondBar: { fill: "◆", empty: "◇", tip: "", borders: ["",""], width: 10, category: "Retro", lib: "custom", python: "print(f'{\"◆\" * done}{\"◇\" * remaining}')" },
+  dotCircle: { fill: "●", empty: "○", tip: "", borders: ["",""], width: 10, category: "Retro", lib: "custom", python: "print(f'{\"●\" * done}{\"○\" * remaining}')" },
+  shadeBar: { fill: "█", empty: "░", tip: "▒", borders: ["▐","▌"], width: 20, category: "Retro", lib: "custom", python: "# Shade density gradient bar" },
+  boxFrame: { fill: "█", empty: "░", tip: "▓", borders: ["╢","╟"], width: 20, category: "Retro", lib: "custom", python: "# DOS-style box-framed progress bar" },
+  boxFrameDouble: { fill: "█", empty: " ", tip: "▌", borders: ["╠","╣"], width: 20, category: "Retro", lib: "custom", python: "# Double-line box frame progress bar" },
+  bracePipe: { fill: "|", empty: " ", tip: "|", borders: ["{","}"], width: 20, category: "Retro", lib: "custom", python: "print(f'{{{\"|\" * done}{\" \" * remaining}}}')" },
+  arrowFill: { fill: "▸", empty: "▹", tip: "", borders: ["",""], width: 20, category: "Retro", lib: "custom", python: "print(f'{\"▸\" * done}{\"▹\" * remaining}')" },
+  underscoreSlide: { fill: "▬", empty: "─", tip: "▶", borders: ["",""], width: 20, category: "Retro", lib: "custom", python: "# Minimal underline progress indicator" },
+  brailleBar: { fill: "⣿", empty: "⣀", tip: "⣶", borders: ["⡇","⢸"], width: 20, category: "Retro", lib: "custom", python: "# Braille dot-matrix progress bar" }
+};
+
+const FIGLET_FONTS = {
+  // fontName: { category, height, width, sample: "pre-rendered lines", lib }
+  // ── Essentials ──
+  "standard": {
+    category: "Essentials",
+    height: 5,
+    width: 22,
+    lib: "pyfiglet",
+    sample: [
+      " _   _      _ _       ",
+      "| | | | ___| | | ___  ",
+      "| |_| |/ _ \\ | |/ _ \\ ",
+      "|  _  |  __/ | | (_) |",
+      "|_| |_|\\___|_|_|\\___/",
+    ]
+  },
+  "big": {
+    category: "Essentials",
+    height: 6,
+    width: 23,
+    lib: "pyfiglet",
+    sample: [
+      " _    _      _ _       ",
+      "| |  | |    | | |      ",
+      "| |__| | ___| | | ___  ",
+      "|  __  |/ _ \\ | |/ _ \\ ",
+      "| |  | |  __/ | | (_) |",
+      "|_|  |_|\\___|_|_|\\___/",
+    ]
+  },
+  "small": {
+    category: "Essentials",
+    height: 4,
+    width: 18,
+    lib: "pyfiglet",
+    sample: [
+      " _  _     _ _     ",
+      "| || |___| | |___ ",
+      "| __ / -_) | / _ \\",
+      "|_||_\\___|_|_\\___/",
+    ]
+  },
+  "mini": {
+    category: "Essentials",
+    height: 3,
+    width: 12,
+    lib: "pyfiglet",
+    sample: [
+      "            ",
+      "|_| _ || _  ",
+      "| |(/_||(_)",
+    ]
+  },
+  "banner": {
+    category: "Essentials",
+    height: 7,
+    width: 36,
+    lib: "pyfiglet",
+    sample: [
+      "#     #                             ",
+      "#     # ###### #      #       ####  ",
+      "#     # #      #      #      #    # ",
+      "####### #####  #      #      #    # ",
+      "#     # #      #      #      #    # ",
+      "#     # #      #      #      #    # ",
+      "#     # ###### ###### ######  ####",
+    ]
+  },
+  "block": {
+    category: "Essentials",
+    height: 6,
+    width: 38,
+    lib: "pyfiglet",
+    sample: [
+      "                                      ",
+      "_|    _|            _|  _|            ",
+      "_|    _|    _|_|    _|  _|    _|_|    ",
+      "_|_|_|_|  _|_|_|_|  _|  _|  _|    _|  ",
+      "_|    _|  _|        _|  _|  _|    _|  ",
+      "_|    _|    _|_|_|  _|  _|    _|_|",
+    ]
+  },
+  "lean": {
+    category: "Essentials",
+    height: 6,
+    width: 41,
+    lib: "pyfiglet",
+    sample: [
+      "                                         ",
+      "    _/    _/            _/  _/           ",
+      "   _/    _/    _/_/    _/  _/    _/_/    ",
+      "  _/_/_/_/  _/_/_/_/  _/  _/  _/    _/   ",
+      " _/    _/  _/        _/  _/  _/    _/    ",
+      "_/    _/    _/_/_/  _/  _/    _/_/",
+    ]
+  },
+  "slant": {
+    category: "Essentials",
+    height: 5,
+    width: 23,
+    lib: "pyfiglet",
+    sample: [
+      "    __  __     ____    ",
+      "   / / / /__  / / /___ ",
+      "  / /_/ / _ \\/ / / __ \\",
+      " / __  /  __/ / / /_/ /",
+      "/_/ /_/\\___/_/_/\\____/",
+    ]
+  },
+  "shadow": {
+    category: "Essentials",
+    height: 4,
+    width: 22,
+    lib: "pyfiglet",
+    sample: [
+      " |   |      | |       ",
+      " |   |  _ \\ | |  _ \\  ",
+      " ___ |  __/ | | (   | ",
+      "_|  _|\\___|_|_|\\___/",
+    ]
+  },
+  // ── Retro & Pixel ──
+  "3-d": {
+    category: "Retro & Pixel",
+    height: 8,
+    width: 36,
+    lib: "pyfiglet",
+    sample: [
+      " **      **          **  **         ",
+      "/**     /**         /** /**         ",
+      "/**     /**  *****  /** /**  ****** ",
+      "/********** **///** /** /** **////**",
+      "/**//////**/******* /** /**/**   /**",
+      "/**     /**/**////  /** /**/**   /**",
+      "/**     /**//****** *** ***//****** ",
+      "//      //  ////// /// ///  //////",
+    ]
+  },
+  "3x5": {
+    category: "Retro & Pixel",
+    height: 6,
+    width: 20,
+    lib: "pyfiglet",
+    sample: [
+      "                    ",
+      "# #      #   #      ",
+      "# # ###  #   #  ### ",
+      "### ##   #   #  # # ",
+      "# # ###  ##  ## ### ",
+      "# #",
+    ]
+  },
+  "5x7": {
+    category: "Retro & Pixel",
+    height: 6,
+    width: 30,
+    lib: "pyfiglet",
+    sample: [
+      "#  #        ##    ##          ",
+      "#  #         #     #          ",
+      "####   ##    #     #     ##   ",
+      "#  #  # ##   #     #    #  #  ",
+      "#  #  ##     #     #    #  #  ",
+      "#  #   ##   ###   ###    ##",
+    ]
+  },
+  "4max": {
+    category: "Retro & Pixel",
+    height: 4,
+    width: 36,
+    lib: "pyfiglet",
+    sample: [
+      "88  88 888888 88     88      dP\"Yb  ",
+      "88  88 88__   88     88     dP   Yb ",
+      "888888 88\"\"   88  .o 88  .o Yb   dP ",
+      "88  88 888888 88ood8 88ood8  YbodP",
+    ]
+  },
+  "chunky": {
+    category: "Retro & Pixel",
+    height: 4,
+    width: 30,
+    lib: "pyfiglet",
+    sample: [
+      " _______         __ __        ",
+      "|   |   |.-----.|  |  |.-----.",
+      "|       ||  -__||  |  ||  _  |",
+      "|___|___||_____||__|__||_____|",
+    ]
+  },
+  "digital": {
+    category: "Retro & Pixel",
+    height: 3,
+    width: 11,
+    lib: "pyfiglet",
+    sample: [
+      "+-+-+-+-+-+",
+      "|H|e|l|l|o|",
+      "+-+-+-+-+-+",
+    ]
+  },
+  "lcd": {
+    category: "Retro & Pixel",
+    height: 5,
+    width: 30,
+    lib: "pyfiglet",
+    sample: [
+      "                              ",
+      "|   |         |     |         ",
+      "|-+-|  -      +     +    -    ",
+      "|   | |/      |     |   | |   ",
+      "       --     -     -    -",
+    ]
+  },
+  "stampatello": {
+    category: "Retro & Pixel",
+    height: 4,
+    width: 21,
+    lib: "pyfiglet",
+    sample: [
+      ",-_/,.     .  .      ",
+      "' |_|/ ,-. |  |  ,-. ",
+      " /| |  |-' |  |  | | ",
+      " `' `' `-' `' `' `-'",
+    ]
+  },
+  "smkeyboard": {
+    category: "Retro & Pixel",
+    height: 4,
+    width: 26,
+    lib: "pyfiglet",
+    sample: [
+      " ____ ____ ____ ____ ____ ",
+      "||H |||e |||l |||l |||o ||",
+      "||__|||__|||__|||__|||__||",
+      "|/__\\|/__\\|/__\\|/__\\|/__\\|",
+    ]
+  },
+  // ── Big & Bold ──
+  "banner3-D": {
+    category: "Big & Bold",
+    height: 8,
+    width: 52,
+    lib: "pyfiglet",
+    sample: [
+      "'##::::'##:'########:'##:::::::'##::::::::'#######::",
+      " ##:::: ##: ##.....:: ##::::::: ##:::::::'##.... ##:",
+      " ##:::: ##: ##::::::: ##::::::: ##::::::: ##:::: ##:",
+      " #########: ######::: ##::::::: ##::::::: ##:::: ##:",
+      " ##.... ##: ##...:::: ##::::::: ##::::::: ##:::: ##:",
+      " ##:::: ##: ##::::::: ##::::::: ##::::::: ##:::: ##:",
+      " ##:::: ##: ########: ########: ########:. #######::",
+      "..:::::..::........::........::........:::.......:::",
+    ]
+  },
+  "colossal": {
+    category: "Big & Bold",
+    height: 8,
+    width: 33,
+    lib: "pyfiglet",
+    sample: [
+      "888    888        888888         ",
+      "888    888        888888         ",
+      "888    888        888888         ",
+      "8888888888 .d88b. 888888 .d88b.  ",
+      "888    888d8P  Y8b888888d88\"\"88b ",
+      "888    88888888888888888888  888 ",
+      "888    888Y8b.    888888Y88..88P ",
+      "888    888 \"Y8888 888888 \"Y88P\"",
+    ]
+  },
+  "doom": {
+    category: "Big & Bold",
+    height: 6,
+    width: 22,
+    lib: "pyfiglet",
+    sample: [
+      " _   _      _ _       ",
+      "| | | |    | | |      ",
+      "| |_| | ___| | | ___  ",
+      "|  _  |/ _ \\ | |/ _ \\ ",
+      "| | | |  __/ | | (_) |",
+      "\\_| |_/\\___|_|_|\\___/",
+    ]
+  },
+  "epic": {
+    category: "Big & Bold",
+    height: 8,
+    width: 45,
+    lib: "pyfiglet",
+    sample: [
+      "          _______  _        _        _______ ",
+      "|\\     /|(  ____ \\( \\      ( \\      (  ___  )",
+      "| )   ( || (    \\/| (      | (      | (   ) |",
+      "| (___) || (__    | |      | |      | |   | |",
+      "|  ___  ||  __)   | |      | |      | |   | |",
+      "| (   ) || (      | |      | |      | |   | |",
+      "| )   ( || (____/\\| (____/\\| (____/\\| (___) |",
+      "|/     \\|(_______/(_______/(_______/(_______)",
+    ]
+  },
+  "georgia11": {
+    category: "Big & Bold",
+    height: 9,
+    width: 42,
+    lib: "pyfiglet",
+    sample: [
+      "                                          ",
+      "                       ,,    ,,           ",
+      "`7MMF'  `7MMF'       `7MM  `7MM           ",
+      "  MM      MM           MM    MM           ",
+      "  MM      MM  .gP\"Ya   MM    MM  ,pW\"Wq.  ",
+      "  MMmmmmmmMM ,M'   Yb  MM    MM 6W'   `Wb ",
+      "  MM      MM 8M\"\"\"\"\"\"  MM    MM 8M     M8 ",
+      "  MM      MM YM.    ,  MM    MM YA.   ,A9 ",
+      ".JMML.  .JMML.`Mbmmd'.JMML..JMML.`Ybmd9'",
+    ]
+  },
+  "roman": {
+    category: "Big & Bold",
+    height: 7,
+    width: 46,
+    lib: "pyfiglet",
+    sample: [
+      "ooooo   ooooo           oooo  oooo            ",
+      "`888'   `888'           `888  `888            ",
+      " 888     888   .ooooo.   888   888   .ooooo.  ",
+      " 888ooooo888  d88' `88b  888   888  d88' `88b ",
+      " 888     888  888ooo888  888   888  888   888 ",
+      " 888     888  888    .o  888   888  888   888 ",
+      "o888o   o888o `Y8bod8P' o888o o888o `Y8bod8P'",
+    ]
+  },
+  "starwars": {
+    category: "Big & Bold",
+    height: 6,
+    width: 49,
+    lib: "pyfiglet",
+    sample: [
+      " __    __   _______  __       __        ______   ",
+      "|  |  |  | |   ____||  |     |  |      /  __  \\  ",
+      "|  |__|  | |  |__   |  |     |  |     |  |  |  | ",
+      "|   __   | |   __|  |  |     |  |     |  |  |  | ",
+      "|  |  |  | |  |____ |  `----.|  `----.|  `--'  | ",
+      "|__|  |__| |_______||_______||_______| \\______/",
+    ]
+  },
+  // ── Script & Cursive ──
+  "script": {
+    category: "Script & Cursive",
+    height: 5,
+    width: 24,
+    lib: "pyfiglet",
+    sample: [
+      " ,          _   _       ",
+      "/|   |     | | | |      ",
+      " |___|  _  | | | |  __  ",
+      " |   |\\|/  |/  |/  /  \\_",
+      " |   |/|__/|__/|__/\\__/",
+    ]
+  },
+  "cursive": {
+    category: "Script & Cursive",
+    height: 4,
+    width: 17,
+    lib: "pyfiglet",
+    sample: [
+      " _    ,    _  _  ",
+      "' )  /    // //  ",
+      " /--/ _  // // __",
+      "/  (_</_</_</_(_)",
+    ]
+  },
+  "contessa": {
+    category: "Script & Cursive",
+    height: 3,
+    width: 12,
+    lib: "pyfiglet",
+    sample: [
+      ".  .   ..   ",
+      "|__| _ || _ ",
+      "|  |(/,||(_)",
+    ]
+  },
+  "cybermedium": {
+    category: "Script & Cursive",
+    height: 3,
+    width: 25,
+    lib: "pyfiglet",
+    sample: [
+      "_  _ ____ _    _    ____ ",
+      "|__| |___ |    |    |  | ",
+      "|  | |___ |___ |___ |__|",
+    ]
+  },
+  "larry3d": {
+    category: "Script & Cursive",
+    height: 7,
+    width: 40,
+    lib: "pyfiglet",
+    sample: [
+      " __  __          ___    ___             ",
+      "/\\ \\/\\ \\        /\\_ \\  /\\_ \\            ",
+      "\\ \\ \\_\\ \\     __\\//\\ \\ \\//\\ \\     ___   ",
+      " \\ \\  _  \\  /'__`\\\\ \\ \\  \\ \\ \\   / __`\\ ",
+      "  \\ \\ \\ \\ \\/\\  __/ \\_\\ \\_ \\_\\ \\_/\\ \\L\\ \\",
+      "   \\ \\_\\ \\_\\ \\____\\/\\____\\/\\____\\ \\____/",
+      "    \\/_/\\/_/\\/____/\\/____/\\/____/\\/___/",
+    ]
+  },
+  "ogre": {
+    category: "Script & Cursive",
+    height: 5,
+    width: 22,
+    lib: "pyfiglet",
+    sample: [
+      "            _ _       ",
+      "  /\\  /\\___| | | ___  ",
+      " / /_/ / _ \\ | |/ _ \\ ",
+      "/ __  /  __/ | | (_) |",
+      "\\/ /_/ \\___|_|_|\\___/",
+    ]
+  },
+  "rectangles": {
+    category: "Script & Cursive",
+    height: 5,
+    width: 19,
+    lib: "pyfiglet",
+    sample: [
+      "                   ",
+      " _____     _ _     ",
+      "|  |  |___| | |___ ",
+      "|     | -_| | | . |",
+      "|__|__|___|_|_|___|",
+    ]
+  },
+  // ── Decorative ──
+  "alligator": {
+    category: "Decorative",
+    height: 7,
+    width: 55,
+    lib: "pyfiglet",
+    sample: [
+      "      :::    ::::::::::::::::       :::       :::::::: ",
+      "     :+:    :+::+:       :+:       :+:      :+:    :+: ",
+      "    +:+    +:++:+       +:+       +:+      +:+    +:+  ",
+      "   +#++:++#+++#++:++#  +#+       +#+      +#+    +:+   ",
+      "  +#+    +#++#+       +#+       +#+      +#+    +#+    ",
+      " #+#    #+##+#       #+#       #+#      #+#    #+#     ",
+      "###    #########################################",
+    ]
+  },
+  "bubble": {
+    category: "Decorative",
+    height: 4,
+    width: 21,
+    lib: "pyfiglet",
+    sample: [
+      "  _   _   _   _   _  ",
+      " / \\ / \\ / \\ / \\ / \\ ",
+      "( H | e | l | l | o )",
+      " \\_/ \\_/ \\_/ \\_/ \\_/",
+    ]
+  },
+  "bulbhead": {
+    category: "Decorative",
+    height: 4,
+    width: 32,
+    lib: "pyfiglet",
+    sample: [
+      " _   _  ____  __    __    _____ ",
+      "( )_( )( ___)(  )  (  )  (  _  )",
+      " ) _ (  )__)  )(__  )(__  )(_)( ",
+      "(_) (_)(____)(____)(____)(_____)",
+    ]
+  },
+  "graffiti": {
+    category: "Decorative",
+    height: 6,
+    width: 36,
+    lib: "pyfiglet",
+    sample: [
+      "  ___ ___         .__  .__          ",
+      " /   |   \\   ____ |  | |  |   ____  ",
+      "/    ~    \\_/ __ \\|  | |  |  /  _ \\ ",
+      "\\    Y    /\\  ___/|  |_|  |_(  <_> )",
+      " \\___|_  /  \\___  >____/____/\\____/ ",
+      "       \\/       \\/",
+    ]
+  },
+  "isometric1": {
+    category: "Decorative",
+    height: 11,
+    width: 62,
+    lib: "pyfiglet",
+    sample: [
+      "      ___           ___           ___       ___       ___     ",
+      "     /\\__\\         /\\  \\         /\\__\\     /\\__\\     /\\  \\    ",
+      "    /:/  /        /::\\  \\       /:/  /    /:/  /    /::\\  \\   ",
+      "   /:/__/        /:/\\:\\  \\     /:/  /    /:/  /    /:/\\:\\  \\  ",
+      "  /::\\  \\ ___   /::\\~\\:\\  \\   /:/  /    /:/  /    /:/  \\:\\  \\ ",
+      " /:/\\:\\  /\\__\\ /:/\\:\\ \\:\\__\\ /:/__/    /:/__/    /:/__/ \\:\\__\\",
+      " \\/__\\:\\/:/  / \\:\\~\\:\\ \\/__/ \\:\\  \\    \\:\\  \\    \\:\\  \\ /:/  /",
+      "      \\::/  /   \\:\\ \\:\\__\\    \\:\\  \\    \\:\\  \\    \\:\\  /:/  / ",
+      "      /:/  /     \\:\\ \\/__/     \\:\\  \\    \\:\\  \\    \\:\\/:/  /  ",
+      "     /:/  /       \\:\\__\\        \\:\\__\\    \\:\\__\\    \\::/  /   ",
+      "     \\/__/         \\/__/         \\/__/     \\/__/     \\/__/",
+    ]
+  },
+  "letters": {
+    category: "Decorative",
+    height: 5,
+    width: 30,
+    lib: "pyfiglet",
+    sample: [
+      "HH   HH        lll lll        ",
+      "HH   HH   eee  lll lll  oooo  ",
+      "HHHHHHH ee   e lll lll oo  oo ",
+      "HH   HH eeeee  lll lll oo  oo ",
+      "HH   HH  eeeee lll lll  oooo",
+    ]
+  },
+  "poison": {
+    category: "Decorative",
+    height: 11,
+    width: 50,
+    lib: "pyfiglet",
+    sample: [
+      "                                                  ",
+      "@@@  @@@  @@@@@@@@  @@@       @@@        @@@@@@   ",
+      "@@@  @@@  @@@@@@@@  @@@       @@@       @@@@@@@@  ",
+      "@@!  @@@  @@!       @@!       @@!       @@!  @@@  ",
+      "!@!  @!@  !@!       !@!       !@!       !@!  @!@  ",
+      "@!@!@!@!  @!!!:!    @!!       @!!       @!@  !@!  ",
+      "!!!@!!!!  !!!!!:    !!!       !!!       !@!  !!!  ",
+      "!!:  !!!  !!:       !!:       !!:       !!:  !!!  ",
+      ":!:  !:!  :!:        :!:       :!:      :!:  !:!  ",
+      "::   :::   :: ::::   :: ::::   :: ::::  ::::: ::  ",
+      " :   : :  : :: ::   : :: : :  : :: : :   : :  :",
+    ]
+  },
+  "speed": {
+    category: "Decorative",
+    height: 5,
+    width: 31,
+    lib: "pyfiglet",
+    sample: [
+      "______  __    ___________      ",
+      "___  / / /_______  /__  /_____ ",
+      "__  /_/ /_  _ \\_  /__  /_  __ \\",
+      "_  __  / /  __/  / _  / / /_/ /",
+      "/_/ /_/  \\___//_/  /_/  \\____/",
+    ]
+  },
+  // ── Minimal & Compact ──
+  "alphabet": {
+    category: "Minimal & Compact",
+    height: 5,
+    width: 17,
+    lib: "pyfiglet",
+    sample: [
+      "H  H     l l     ",
+      "H  H     l l     ",
+      "HHHH eee l l ooo ",
+      "H  H e e l l o o ",
+      "H  H ee  l l ooo",
+    ]
+  },
+  "binary": {
+    category: "Minimal & Compact",
+    height: 1,
+    width: 44,
+    lib: "pyfiglet",
+    sample: [
+      "01001000 01100101 01101100 01101100 01101111",
+    ]
+  },
+  "morse": {
+    category: "Minimal & Compact",
+    height: 1,
+    width: 20,
+    lib: "pyfiglet",
+    sample: [
+      ".... . .-.. .-.. ---",
+    ]
+  },
+  "o8": {
+    category: "Minimal & Compact",
+    height: 5,
+    width: 46,
+    lib: "pyfiglet",
+    sample: [
+      "ooooo ooooo            o888  o888             ",
+      " 888   888  ooooooooo8  888   888   ooooooo   ",
+      " 888ooo888 888oooooo8   888   888 888     888 ",
+      " 888   888 888          888   888 888     888 ",
+      "o888o o888o  88oooo888 o888o o888o  88ooo88",
+    ]
+  },
+  "pagga": {
+    category: "Minimal & Compact",
+    height: 3,
+    width: 20,
+    lib: "pyfiglet",
+    sample: [
+      "░█░█░█▀▀░█░░░█░░░█▀█",
+      "░█▀█░█▀▀░█░░░█░░░█░█",
+      "░▀░▀░▀▀▀░▀▀▀░▀▀▀░▀▀▀",
+    ]
+  },
+  "runic": {
+    category: "Minimal & Compact",
+    height: 6,
+    width: 7,
+    lib: "pyfiglet",
+    sample: [
+      "|    | ",
+      "|\\   | ",
+      "| \\  | ",
+      "|  \\ | ",
+      "|   \\| ",
+      "|    |",
+    ]
+  },
+  "short": {
+    category: "Minimal & Compact",
+    height: 2,
+    width: 10,
+    lib: "pyfiglet",
+    sample: [
+      "|_| _ ||  ",
+      "| |(/_||()",
+    ]
+  },
+  "term": {
+    category: "Minimal & Compact",
+    height: 1,
+    width: 5,
+    lib: "pyfiglet",
+    sample: [
+      "Hello",
+    ]
+  },
+  "thin": {
+    category: "Minimal & Compact",
+    height: 5,
+    width: 25,
+    lib: "pyfiglet",
+    sample: [
+      "                         ",
+      "|   |     |    |         ",
+      "|---|,---.|    |    ,---.",
+      "|   ||---'|    |    |   |",
+      "`   '`---'`---'`---'`---'",
+    ]
+  },
+  // ── Tech & Hacker ──
+  "ansi_regular": {
+    category: "Tech & Hacker",
+    height: 5,
+    width: 41,
+    lib: "pyfiglet",
+    sample: [
+      "██   ██ ███████ ██      ██       ██████  ",
+      "██   ██ ██      ██      ██      ██    ██ ",
+      "███████ █████   ██      ██      ██    ██ ",
+      "██   ██ ██      ██      ██      ██    ██ ",
+      "██   ██ ███████ ███████ ███████  ██████",
+    ]
+  },
+  "ansi_shadow": {
+    category: "Tech & Hacker",
+    height: 6,
+    width: 41,
+    lib: "pyfiglet",
+    sample: [
+      "██╗  ██╗███████╗██╗     ██╗      ██████╗ ",
+      "██║  ██║██╔════╝██║     ██║     ██╔═══██╗",
+      "███████║█████╗  ██║     ██║     ██║   ██║",
+      "██╔══██║██╔══╝  ██║     ██║     ██║   ██║",
+      "██║  ██║███████╗███████╗███████╗╚██████╔╝",
+      "╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝ ╚═════╝",
+    ]
+  },
+  "cyberlarge": {
+    category: "Tech & Hacker",
+    height: 3,
+    width: 38,
+    lib: "pyfiglet",
+    sample: [
+      " _     _ _______                _____ ",
+      " |_____| |______ |      |      |     |",
+      " |     | |______ |_____ |_____ |_____|",
+    ]
+  },
+  "hex": {
+    category: "Tech & Hacker",
+    height: 1,
+    width: 14,
+    lib: "pyfiglet",
+    sample: [
+      "48 65 6C 6C 6F",
+    ]
+  },
+  "lockergnome": {
+    category: "Tech & Hacker",
+    height: 3,
+    width: 23,
+    lib: "pyfiglet",
+    sample: [
+      "::| ::|     :| :|      ",
+      "::::::|:~~/ :| :| ,::\\ ",
+      "::| ::|:::, :| :| `::/",
+    ]
+  },
+  "univers": {
+    category: "Tech & Hacker",
+    height: 9,
+    width: 43,
+    lib: "pyfiglet",
+    sample: [
+      "                                           ",
+      "88        88            88 88              ",
+      "88        88            88 88              ",
+      "88        88            88 88              ",
+      "88aaaaaaaa88  ,adPPYba, 88 88  ,adPPYba,   ",
+      "88\"\"\"\"\"\"\"\"88 a8P_____88 88 88 a8\"     \"8a  ",
+      "88        88 8PP\"\"\"\"\"\"\" 88 88 8b       d8  ",
+      "88        88 \"8b,   ,aa 88 88 \"8a,   ,a8\"  ",
+      "88        88  `\"Ybbd8\"' 88 88  `\"YbbdP\"'",
+    ]
+  },
+  "js_stick_letters": {
+    category: "Tech & Hacker",
+    height: 3,
+    width: 25,
+    lib: "pyfiglet",
+    sample: [
+      "      ___            __  ",
+      "|__| |__  |    |    /  \\ ",
+      "|  | |___ |___ |___ \\__/",
+    ]
+  },
+};
+
+const PROGRESS_METHOD_SNIPPETS = {
+  tqdm_ascii: `from tqdm import tqdm
+import time
+
+for i in tqdm(range(100), ascii=True):
+    time.sleep(0.02)`,
+  tqdm_unicode: `from tqdm import tqdm
+import time
+
+for i in tqdm(range(100)):
+    time.sleep(0.02)`,
+  tqdm_custom: `from tqdm import tqdm
+import time
+
+for i in tqdm(range(100), ascii=" .oO0"):
+    time.sleep(0.02)`,
+  rich_default: `from rich.progress import track
+import time
+
+for step in track(range(100), description="Processing..."):
+    time.sleep(0.02)`,
+  rich_custom: `from rich.progress import Progress, BarColumn, TextColumn
+import time
+
+with Progress(
+    TextColumn("[bold]{task.description}"),
+    BarColumn(bar_width=30, complete_style="green", finished_style="bright_green"),
+) as progress:
+    task = progress.add_task("Loading", total=100)
+    for _ in range(100):
+        time.sleep(0.02)
+        progress.advance(task)`,
+  alive_default: `from alive_progress import alive_bar
+import time
+
+with alive_bar(100, bar='smooth') as bar:
+    for _ in range(100):
+        time.sleep(0.02)
+        bar()`,
+  manual_ascii: `import sys, time
+
+total = 100
+for i in range(total + 1):
+    filled = int(20 * i / total)
+    bar = f'[{"#" * filled}{"·" * (20 - filled)}] {i}%'
+    sys.stdout.write(f'\\r{bar}')
+    sys.stdout.flush()
+    time.sleep(0.03)
+print()`,
+  manual_box: `import sys, time
+
+total = 100
+for i in range(total + 1):
+    filled = int(20 * i / total)
+    bar = f'╢{"█" * filled}{"░" * (20 - filled)}╟ {i}%'
+    sys.stdout.write(f'\\r{bar}')
+    sys.stdout.flush()
+    time.sleep(0.03)
+print()`
+};
+
 let speedMultiplier = 1;
-let activeCategory = 'All';
+let progressBarWidth = parseInt(localStorage.getItem('progressBarWidth') || '20', 10);
+progressBarWidth = Number.isFinite(progressBarWidth) ? Math.min(40, Math.max(8, progressBarWidth)) : 20;
+let figletText = localStorage.getItem('figletSampleText') || 'Hello';
+if (!figletText.trim()) figletText = 'Hello';
+let figletSort = localStorage.getItem('figletSort') || 'name';
+if (!['name', 'height', 'width'].includes(figletSort)) figletSort = 'name';
+let activeTab = localStorage.getItem('activeTab');
+if (!['spinners', 'progress', 'figlet'].includes(activeTab)) activeTab = 'spinners';
+let activeCategoryByTab = { spinners: 'All', progress: 'All', figlet: 'All' };
+try {
+  const stored = JSON.parse(localStorage.getItem('activeCategoryByTab') || '{}');
+  if (stored && typeof stored === 'object') activeCategoryByTab = { ...activeCategoryByTab, ...stored };
+} catch {}
 let viewMode = localStorage.getItem('spinnerViewMode') || 'tile';
-let collapsedCategories = new Set(JSON.parse(localStorage.getItem('collapsedCategories') || '[]'));
+if (!['tile', 'minimal', 'list'].includes(viewMode)) viewMode = 'tile';
+let collapsedByTab = {};
+try {
+  const storedCollapsed = JSON.parse(localStorage.getItem('collapsedByTab') || '{}');
+  if (storedCollapsed && typeof storedCollapsed === 'object') collapsedByTab = storedCollapsed;
+} catch {}
+let collapsedCategories = new Set(Array.isArray(collapsedByTab[activeTab]) ? collapsedByTab[activeTab] : []);
 let intervalIds = {};
 let animationFrames = {};
-const CATEGORY_ORDER = ['Dots','Classic','Arrows','Bars & Blocks','Progress','Scenes','Misc','Emoji Spinners'];
-const categories = ['All', ...CATEGORY_ORDER];
-const totalCount = Object.keys(SPINNERS).length;
+let progressFrames = {};
+const figletRenderCache = {};
+let figletRenderToken = 0;
+let figletInputTimer = null;
+
+const SPINNER_CATEGORY_ORDER = ['Dots','Classic','Arrows','Bars & Blocks','Progress','Indeterminate','Scenes','Misc','Emoji Spinners'];
+const PROGRESS_CATEGORY_ORDER = ['ASCII Classic','Unicode Smooth','Retro','Indeterminate'];
+const FIGLET_CATEGORY_ORDER = ['Essentials', 'Retro & Pixel', 'Big & Bold', 'Script & Cursive', 'Decorative', 'Minimal & Compact', 'Tech & Hacker'];
 const HIGHLIGHTED = ['growUp','growUpOnly','verticalBars'];
+
+function getCategoryOrder() {
+  if (activeTab === 'progress') return PROGRESS_CATEGORY_ORDER;
+  if (activeTab === 'figlet') return FIGLET_CATEGORY_ORDER;
+  return SPINNER_CATEGORY_ORDER;
+}
+
+function getActiveData() {
+  if (activeTab === 'progress') return PROGRESS_BARS;
+  if (activeTab === 'figlet') return FIGLET_FONTS;
+  return SPINNERS;
+}
+
+function getActiveCategory() {
+  return activeCategoryByTab[activeTab] || 'All';
+}
+
+function setActiveCategory(category) {
+  activeCategoryByTab[activeTab] = category;
+  localStorage.setItem('activeCategoryByTab', JSON.stringify(activeCategoryByTab));
+}
+
+function persistCollapsed() {
+  collapsedByTab[activeTab] = [...collapsedCategories];
+  localStorage.setItem('collapsedByTab', JSON.stringify(collapsedByTab));
+}
+
+function buildTopTabs() {
+  document.querySelectorAll('#topTabs .top-tab').forEach(btn => {
+    const tab = btn.dataset.tab;
+    btn.classList.toggle('active', tab === activeTab);
+    btn.onclick = () => switchTab(tab);
+  });
+}
+
+function updateTabUI() {
+  document.body.classList.toggle('tab-progress', activeTab === 'progress');
+  document.body.classList.toggle('tab-spinners', activeTab === 'spinners');
+  document.body.classList.toggle('tab-figlet', activeTab === 'figlet');
+  const subtitle = document.getElementById('appSubtitle');
+  subtitle.textContent = activeTab === 'progress'
+    ? 'Animated terminal progress bar styles with determinate sweep previews and configurable width.'
+    : activeTab === 'figlet'
+      ? 'Pre-rendered ASCII Figlet font gallery with live text rendering from local Python when available.'
+      : 'Live-animated preview of spinner styles from Python CLI libraries and custom terminal aesthetics.';
+  const searchInput = document.getElementById('searchInput');
+  searchInput.placeholder = activeTab === 'progress'
+    ? 'Search progress bars by name, category, or library...'
+    : activeTab === 'figlet'
+      ? 'Search figlet fonts by name, category, or library...'
+      : 'Search spinners by name, category, or library...';
+  document.getElementById('barWidthSlider').value = progressBarWidth;
+  document.getElementById('barWidthLabel').textContent = progressBarWidth;
+  document.getElementById('figletTextInput').value = figletText;
+  document.getElementById('figletSortSelect').value = figletSort;
+}
+
+function switchTab(tab) {
+  if (!['spinners', 'progress', 'figlet'].includes(tab)) return;
+  closeAllViewMenus();
+  activeTab = tab;
+  localStorage.setItem('activeTab', activeTab);
+  collapsedCategories = new Set(Array.isArray(collapsedByTab[activeTab]) ? collapsedByTab[activeTab] : []);
+  const currentCategory = getActiveCategory();
+  if (currentCategory !== 'All' && !getCategoryOrder().includes(currentCategory)) {
+    setActiveCategory('All');
+  }
+  updateTabUI();
+  buildTopTabs();
+  buildFilterTags();
+  renderGrid();
+}
 
 function buildFilterTags() {
   const container = document.getElementById('filterTags');
+  const data = getActiveData();
+  const totalCount = Object.keys(data).length;
+  const categories = ['All', ...getCategoryOrder()];
+  container.innerHTML = '';
   categories.forEach(cat => {
     const tag = document.createElement('div');
-    tag.className = 'filter-tag' + (cat === 'All' ? ' active' : '');
-    const count = cat === 'All' ? totalCount : Object.values(SPINNERS).filter(s => s.category === cat).length;
+    tag.className = 'filter-tag' + (cat === getActiveCategory() ? ' active' : '');
+    const count = cat === 'All' ? totalCount : Object.values(data).filter(s => s.category === cat).length;
     tag.textContent = `${cat} (${count})`;
     tag.dataset.category = cat;
     tag.addEventListener('click', () => {
       document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
       tag.classList.add('active');
-      activeCategory = cat;
+      setActiveCategory(cat);
       renderGrid();
     });
     container.appendChild(tag);
   });
 }
 
-function renderGrid() {
-  const grid = document.getElementById('grid');
-  const search = document.getElementById('searchInput').value.toLowerCase();
-  document.body.classList.toggle('view-minimal', viewMode === 'minimal');
-  document.body.classList.toggle('view-list', viewMode === 'list');
-  closeAllViewMenus();
+function clearAnimations() {
   Object.values(intervalIds).forEach(id => clearInterval(id));
   intervalIds = {};
   animationFrames = {};
+  progressFrames = {};
+}
 
-  const filtered = Object.entries(SPINNERS).filter(([name, spinner]) => {
-    const matchCat = activeCategory === 'All' || spinner.category === activeCategory;
+function renderGrid() {
+  const grid = document.getElementById('grid');
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  const data = getActiveData();
+  const totalCount = Object.keys(data).length;
+  const activeCategory = getActiveCategory();
+  document.body.classList.toggle('view-minimal', viewMode === 'minimal');
+  document.body.classList.toggle('view-list', viewMode === 'list');
+  closeAllViewMenus();
+  clearAnimations();
+
+  const filtered = Object.entries(data).filter(([name, item]) => {
+    const matchCat = activeCategory === 'All' || item.category === activeCategory;
     const matchSearch = !search || name.toLowerCase().includes(search) ||
-      spinner.category.toLowerCase().includes(search) ||
-      spinner.lib.toLowerCase().includes(search);
+      item.category.toLowerCase().includes(search) ||
+      item.lib.toLowerCase().includes(search) ||
+      (activeTab === 'figlet' && item.sample.join(' ').toLowerCase().includes(search));
     return matchCat && matchSearch;
   });
 
-  document.getElementById('statsBar').innerHTML = `Showing <span>${filtered.length}</span> of <span>${totalCount}</span> spinners`;
+  if (activeTab === 'figlet') {
+    filtered.sort((a, b) => {
+      if (figletSort === 'height') return a[1].height - b[1].height || a[0].localeCompare(b[0]);
+      if (figletSort === 'width') return a[1].width - b[1].width || a[0].localeCompare(b[0]);
+      return a[0].localeCompare(b[0]);
+    });
+  }
+
+  document.getElementById('statsBar').innerHTML = activeTab === 'progress'
+    ? `Showing <span>${filtered.length}</span> of <span>${totalCount}</span> progress bars`
+    : activeTab === 'figlet'
+      ? `Showing <span>${filtered.length}</span> of <span>${totalCount}</span> figlet fonts`
+      : `Showing <span>${filtered.length}</span> of <span>${totalCount}</span> spinners`;
 
   if (filtered.length === 0) {
-    grid.innerHTML = '<div class="no-results">No spinners match your search.</div>';
+    grid.innerHTML = activeTab === 'progress'
+      ? '<div class="no-results">No progress bars match your search.</div>'
+      : activeTab === 'figlet'
+        ? '<div class="no-results">No figlet fonts match your search.</div>'
+        : '<div class="no-results">No spinners match your search.</div>';
     return;
   }
 
   const grouped = {};
-  filtered.forEach(([name, spinner]) => {
-    if (!grouped[spinner.category]) grouped[spinner.category] = [];
-    grouped[spinner.category].push([name, spinner]);
+  filtered.forEach(([name, item]) => {
+    if (!grouped[item.category]) grouped[item.category] = [];
+    grouped[item.category].push([name, item]);
   });
 
   let html = '';
-  const orderedCats = CATEGORY_ORDER.filter(c => grouped[c]);
+  const orderedCats = getCategoryOrder().filter(c => grouped[c]);
   for (const category of orderedCats) {
     const items = grouped[category];
     const isCollapsed = collapsedCategories.has(category);
@@ -863,32 +1992,80 @@ function renderGrid() {
         </div>
       </div>`;
     if (isCollapsed) continue;
-    items.forEach(([name, spinner]) => {
-      const badge = HIGHLIGHTED.includes(name) ? `<div class="highlight-badge">★ Vertical Bar</div>` : '';
-      html += `
-        <div class="card" data-name="${name}" onclick="showCode('${name}')">
-          ${badge}
-          <button class="copy-btn" onclick="event.stopPropagation(); copyFrames('${name}', this)" title="Copy frames">copy</button>
-          <div class="card-header">
-            <span class="spinner-name">${name}</span>
-            <span class="spinner-lib">${spinner.lib.split(' / ')[0]}</span>
-          </div>
-          <div class="spinner-display">
-            <span class="spinner-char" id="spin-${name}">${spinner.frames[0]}</span>
-            <span class="spinner-text">Loading...</span>
-          </div>
-          <div class="card-meta">
-            <span>${spinner.frames.length} frames</span>
-            <span>${spinner.interval}ms</span>
-          </div>
-        </div>`;
+    items.forEach(([name, item]) => {
+      if (activeTab === 'spinners') {
+        const badge = HIGHLIGHTED.includes(name) ? `<div class="highlight-badge">★ Vertical Bar</div>` : '';
+        html += `
+          <div class="card" data-name="${name}" onclick="showCode('${name}')">
+            ${badge}
+            <button class="copy-btn" onclick="event.stopPropagation(); copyFrames('${name}', this)" title="Copy frames">copy</button>
+            <div class="card-header">
+              <span class="spinner-name">${name}</span>
+              <span class="spinner-lib">${item.lib.split(' / ')[0]}</span>
+            </div>
+            <div class="spinner-display">
+              <span class="spinner-char" id="spin-${name}">${item.frames[0]}</span>
+              <span class="spinner-text">Loading...</span>
+            </div>
+            <div class="card-meta">
+              <span>${item.frames.length} frames</span>
+              <span>${item.interval}ms</span>
+            </div>
+          </div>`;
+      } else {
+        if (activeTab === 'progress') {
+          html += `
+          <div class="card progress-card" data-name="${name}" onclick="showProgressCode('${name}')">
+            <button class="copy-btn" onclick="event.stopPropagation(); copyProgressConfig('${name}', this)" title="Copy config">copy</button>
+            <div class="card-header">
+              <span class="spinner-name">${name}</span>
+              <span class="spinner-lib">${item.lib}</span>
+            </div>
+            <div class="spinner-display">
+              <span class="spinner-char" id="bar-${name}">${renderProgressBar(item, 0, progressBarWidth)}</span>
+              <span class="spinner-text" id="pct-${name}">0%</span>
+            </div>
+            <div class="card-meta">
+              <span>0→100% sweep</span>
+              <span>${progressBarWidth} cols</span>
+              <span>${item.interval || 60}ms</span>
+            </div>
+          </div>`;
+        } else {
+          html += `
+          <div class="card figlet-card" data-name="${name}" onclick="showFigletCode('${name}')">
+            <button class="copy-btn" onclick="event.stopPropagation(); copyFigletSample('${name}', this)" title="Copy sample">copy</button>
+            <div class="card-header">
+              <span class="spinner-name">${name}</span>
+              <span class="spinner-lib">${item.lib}</span>
+            </div>
+            <div class="spinner-display">
+              <pre class="figlet-preview" id="figlet-${name}">${escapeHtml(item.sample.join('\n'))}</pre>
+            </div>
+            <div class="card-meta">
+              <span class="figlet-meta">${item.height}h × ${item.width}w</span>
+              <span>${item.category}</span>
+            </div>
+          </div>`;
+        }
+      }
     });
   }
+
   grid.innerHTML = html;
-  filtered.forEach(([name, spinner]) => {
-    animationFrames[name] = 0;
-    startAnim(name, spinner);
+  filtered.forEach(([name, item]) => {
+    if (activeTab === 'spinners') {
+      animationFrames[name] = 0;
+      startAnim(name, item);
+    } else if (activeTab === 'progress') {
+      progressFrames[name] = 0;
+      startProgressAnim(name, item);
+    }
   });
+
+  if (activeTab === 'figlet') {
+    hydrateFigletSamples(filtered.map(([name]) => name));
+  }
 }
 
 function startAnim(name, spinner) {
@@ -900,13 +2077,70 @@ function startAnim(name, spinner) {
   }, spinner.interval / speedMultiplier);
 }
 
+function repeatToken(token, count) {
+  if (!token || count <= 0) return '';
+  return token.repeat(count);
+}
+
+function renderProgressBar(bar, progress, widthOverride) {
+  const width = Math.max(8, Math.min(40, widthOverride || bar.width || 20));
+  const borders = Array.isArray(bar.borders) ? bar.borders : ["", ""];
+  const leftBorder = borders[0] || '';
+  const rightBorder = borders[1] || '';
+
+  if (Array.isArray(bar.subchars) && bar.subchars.length > 0) {
+    const totalSubSteps = width * bar.subchars.length;
+    const filledSub = Math.round(progress * totalSubSteps);
+    const fullCells = Math.floor(filledSub / bar.subchars.length);
+    const remainder = filledSub % bar.subchars.length;
+    const fullFillChar = (bar.fill && bar.fill.length) ? bar.fill[bar.fill.length - 1] : '█';
+    const tipChar = (fullCells < width && remainder > 0)
+      ? bar.subchars[remainder - 1]
+      : ((fullCells < width && bar.tip) ? bar.tip : '');
+    const emptyCount = width - fullCells - (tipChar ? 1 : 0);
+    return leftBorder
+      + repeatToken(fullFillChar, fullCells)
+      + tipChar
+      + repeatToken(bar.empty || ' ', Math.max(0, emptyCount))
+      + rightBorder;
+  }
+
+  const fillCount = Math.round(progress * width);
+  const tipChar = (fillCount < width && bar.tip) ? bar.tip : '';
+  const emptyCount = width - fillCount - (tipChar ? 1 : 0);
+  return leftBorder
+    + repeatToken(bar.fill || '█', fillCount)
+    + tipChar
+    + repeatToken(bar.empty || ' ', Math.max(0, emptyCount))
+    + rightBorder;
+}
+
+function startProgressAnim(name, bar) {
+  const el = document.getElementById(`bar-${name}`);
+  const pct = document.getElementById(`pct-${name}`);
+  if (!el) return;
+
+  const tick = () => {
+    progressFrames[name] += 0.02;
+    if (progressFrames[name] > 1.15) progressFrames[name] = 0;
+    const clamped = Math.min(progressFrames[name], 1);
+    el.textContent = renderProgressBar(bar, clamped, progressBarWidth);
+    if (pct) pct.textContent = `${Math.round(clamped * 100)}%`;
+  };
+
+  tick();
+  intervalIds[name] = setInterval(tick, Math.max(16, (bar.interval || 60) / speedMultiplier));
+}
+
 function restartAll() {
-  Object.entries(SPINNERS).forEach(([name, spinner]) => {
-    if (intervalIds[name]) {
-      clearInterval(intervalIds[name]);
-      startAnim(name, spinner);
-    }
-  });
+  renderGrid();
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
 }
 
 function copyFrames(name, btn) {
@@ -916,6 +2150,78 @@ function copyFrames(name, btn) {
     btn.classList.add('copied');
     setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 1500);
   });
+}
+
+function copyProgressConfig(name, btn) {
+  const bar = PROGRESS_BARS[name];
+  navigator.clipboard.writeText(JSON.stringify(bar, null, 2)).then(() => {
+    btn.textContent = '✓';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 1500);
+  });
+}
+
+function copyFigletSample(name, btn) {
+  const font = FIGLET_FONTS[name];
+  const sample = (figletRenderCache[`${name}::${figletText}`] || font.sample).join('\n');
+  navigator.clipboard.writeText(sample).then(() => {
+    btn.textContent = '✓';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 1500);
+  });
+}
+
+function getFigletCode(name) {
+  const font = FIGLET_FONTS[name];
+  const text = figletText.trim() || 'Hello';
+  const localSample = (figletRenderCache[`${name}::${text}`] || font.sample).join('\n');
+  return `# -- pyfiglet -------------------------------------------------
+from pyfiglet import Figlet
+
+text = "${text}"
+font_name = "${name}"
+fig = Figlet(font=font_name)
+print(fig.renderText(text))
+
+# -- fallback sample bundled in catalogue --------------------
+sample = """${localSample.replace(/"""/g, '\\"\\"\\"')}"""
+print(sample)`;
+}
+
+function showFigletCode(name) {
+  const modal = document.getElementById('modalOverlay');
+  document.getElementById('modalTitle').textContent = `figlet :: ${name}`;
+  document.getElementById('modalCode').textContent = getFigletCode(name);
+  modal.classList.add('active');
+}
+
+async function fetchFigletSample(name, text) {
+  const key = `${name}::${text}`;
+  if (figletRenderCache[key]) return figletRenderCache[key];
+  const url = `/api/figlet?font=${encodeURIComponent(name)}&text=${encodeURIComponent(text)}`;
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  const payload = await response.json();
+  if (!payload || !Array.isArray(payload.lines) || payload.lines.length === 0) throw new Error('No figlet lines');
+  figletRenderCache[key] = payload.lines;
+  return payload.lines;
+}
+
+async function hydrateFigletSamples(fontNames) {
+  const text = figletText.trim() || 'Hello';
+  if (text === 'Hello') return;
+  const token = ++figletRenderToken;
+  const names = Array.isArray(fontNames) ? fontNames : [];
+  await Promise.all(names.map(async name => {
+    try {
+      const lines = await fetchFigletSample(name, text);
+      if (token !== figletRenderToken || activeTab !== 'figlet') return;
+      const el = document.getElementById(`figlet-${name}`);
+      if (el) el.textContent = lines.join('\n');
+    } catch {
+      // Keep bundled static sample when pyfiglet is unavailable.
+    }
+  }));
 }
 
 function closeAllViewMenus() {
@@ -962,19 +2268,19 @@ function toggleCategory(event, category) {
   } else {
     collapsedCategories.add(category);
   }
-  localStorage.setItem('collapsedCategories', JSON.stringify([...collapsedCategories]));
+  persistCollapsed();
   renderGrid();
 }
 
 function collapseAllCategories() {
-  collapsedCategories = new Set(CATEGORY_ORDER);
-  localStorage.setItem('collapsedCategories', JSON.stringify([...collapsedCategories]));
+  collapsedCategories = new Set(getCategoryOrder());
+  persistCollapsed();
   renderGrid();
 }
 
 function expandAllCategories() {
   collapsedCategories = new Set();
-  localStorage.setItem('collapsedCategories', JSON.stringify([]));
+  persistCollapsed();
   renderGrid();
 }
 
@@ -1011,6 +2317,52 @@ interval = ${spinner.interval}  # ms`;
   modal.classList.add('active');
 }
 
+function showProgressCode(name) {
+  const bar = PROGRESS_BARS[name];
+  const modal = document.getElementById('modalOverlay');
+  document.getElementById('modalTitle').textContent = `progress :: ${name}`;
+  const config = JSON.stringify(bar, null, 2);
+  const width = progressBarWidth;
+  const sample = renderProgressBar(bar, 0.5, width);
+  const snippetSet = bar.lib === 'tqdm'
+    ? `# ── tqdm (ASCII) ──────────────────────────
+${PROGRESS_METHOD_SNIPPETS.tqdm_ascii}
+
+# ── tqdm (Unicode) ────────────────────────
+${PROGRESS_METHOD_SNIPPETS.tqdm_unicode}
+
+# ── tqdm (Custom chars) ───────────────────
+${PROGRESS_METHOD_SNIPPETS.tqdm_custom}`
+    : bar.lib === 'rich'
+      ? `# ── Rich (Default) ───────────────────────
+${PROGRESS_METHOD_SNIPPETS.rich_default}
+
+# ── Rich (Custom Bar) ─────────────────────
+${PROGRESS_METHOD_SNIPPETS.rich_custom}`
+      : `# ── alive-progress ───────────────────────
+${PROGRESS_METHOD_SNIPPETS.alive_default}
+
+# ── Manual ASCII (zero deps) ──────────────
+${PROGRESS_METHOD_SNIPPETS.manual_ascii}
+
+# ── Manual Box (zero deps) ────────────────
+${PROGRESS_METHOD_SNIPPETS.manual_box}`;
+  const code = `# ── Progress Bar Style ───────────────────
+name = "${name}"
+sample = "${sample}"
+
+# ── Suggested Python snippet ──────────────
+${bar.python || '# custom progress logic'}
+
+# ── Methods From Catalogue ────────────────
+${snippetSet}
+
+# ── JS Config ─────────────────────────────
+${config}`;
+  document.getElementById('modalCode').textContent = code;
+  modal.classList.add('active');
+}
+
 function copyModalCode() {
   const code = document.getElementById('modalCode').textContent;
   navigator.clipboard.writeText(code).then(() => {
@@ -1030,9 +2382,35 @@ document.getElementById('speedSlider').addEventListener('input', e => {
   document.getElementById('speedLabel').textContent = speedMultiplier + '×';
   restartAll();
 });
+document.getElementById('barWidthSlider').addEventListener('input', e => {
+  progressBarWidth = parseInt(e.target.value, 10);
+  document.getElementById('barWidthLabel').textContent = progressBarWidth;
+  localStorage.setItem('progressBarWidth', String(progressBarWidth));
+  if (activeTab === 'progress') renderGrid();
+});
+document.getElementById('figletTextInput').addEventListener('input', e => {
+  const next = e.target.value.slice(0, 24);
+  figletText = next || 'Hello';
+  localStorage.setItem('figletSampleText', figletText);
+  if (figletInputTimer) clearTimeout(figletInputTimer);
+  figletInputTimer = setTimeout(() => {
+    if (activeTab === 'figlet') renderGrid();
+  }, 180);
+});
+document.getElementById('figletSortSelect').addEventListener('change', e => {
+  figletSort = e.target.value;
+  localStorage.setItem('figletSort', figletSort);
+  if (activeTab === 'figlet') renderGrid();
+});
 
+buildTopTabs();
+updateTabUI();
+if (getActiveCategory() !== 'All' && !getCategoryOrder().includes(getActiveCategory())) {
+  setActiveCategory('All');
+}
 buildFilterTags();
 renderGrid();
 </script>
 </body>
 </html>
+
