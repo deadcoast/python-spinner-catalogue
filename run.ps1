@@ -4,6 +4,9 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
+$AppRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+$ServerScript = Join-Path $AppRoot "serve_catlog.py"
+$IndexFile = Join-Path $AppRoot "index.html"
 
 function Write-Accent {
   param([string]$Text)
@@ -60,8 +63,8 @@ function Test-PortAvailable {
 function Render-Banner {
   Write-Host ""
   Write-Accent "======================================================================="
-  Write-Accent "  PYTHON SPINNERS CATALOGUE"
-  Write-Accent "  Fast local launcher for spinner and progress bar showcase"
+  Write-Accent "  PYTHON CAT-LOG"
+  Write-Accent "  The visual Python catalogue launcher"
   Write-Accent "======================================================================="
   Write-Host ""
 }
@@ -69,10 +72,16 @@ function Render-Banner {
 Render-Banner
 
 Write-Step "Preflight checks" "[..]"
-if (-not (Test-Path -Path "index.html")) {
+if (-not (Test-Path -Path $IndexFile)) {
   Write-Step "Preflight checks" "[FAIL]"
-  Write-Warn "Missing index.html in the current directory:"
-  Write-Host "  $((Get-Location).Path)"
+  Write-Warn "Missing index.html in app root:"
+  Write-Host "  $AppRoot"
+  exit 1
+}
+if (-not (Test-Path -Path $ServerScript)) {
+  Write-Step "Preflight checks" "[FAIL]"
+  Write-Warn "Missing serve_catlog.py in app root:"
+  Write-Host "  $AppRoot"
   exit 1
 }
 Write-Step "Preflight checks" "[OK]"
@@ -82,7 +91,7 @@ $python = Resolve-PythonCommand
 if ($null -eq $python) {
   Write-Step "Python detection" "[FAIL]"
   Write-Warn "Python was not found on PATH."
-  Write-Host "Install Python 3.x, then re-run: .\run"
+  Write-Host "Install Python 3.x, then re-run: pycatlog"
   exit 1
 }
 $pythonDisplay = ($python.File + " " + ($python.Args -join " ")).Trim()
@@ -90,7 +99,7 @@ Write-Step "Python detection" ("[OK] " + $pythonDisplay)
 
 if (-not (Test-PortAvailable -LocalPort $Port)) {
   Write-Step "Port check" ("[FAIL] localhost:" + $Port + " already in use")
-  Write-Warn "Pick another port, for example: .\run -Port 8080"
+  Write-Warn "Pick another port, for example: pycatlog -Port 8080"
   exit 1
 }
 Write-Step "Port check" ("[OK] localhost:" + $Port)
@@ -111,14 +120,18 @@ if (-not $NoOpen) {
 }
 
 Write-Host ""
-Write-Ok "Launching Python HTTP server..."
+Write-Ok "Launching quiet local server..."
 Write-Host "Press Ctrl+C to stop."
 Write-Host ""
 
 $serverArgs = @()
 $serverArgs += $python.Args
-$serverArgs += "-m"
-$serverArgs += "http.server"
+$serverArgs += $ServerScript
 $serverArgs += "$Port"
 
-& $python.File @serverArgs
+Push-Location $AppRoot
+try {
+  & $python.File @serverArgs
+} finally {
+  Pop-Location
+}

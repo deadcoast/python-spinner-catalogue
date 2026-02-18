@@ -286,6 +286,10 @@
     padding: 1.5rem 0 0.5rem;
     border-bottom: 1px solid var(--border);
     margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
   }
   .category-header h2 {
     font-size: 1.1rem;
@@ -293,11 +297,202 @@
     color: var(--text-primary);
     letter-spacing: -0.01em;
   }
+  .category-headline {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
   .category-header .cat-count {
     font-size: 0.75rem;
     color: var(--text-dim);
     font-weight: 400;
     margin-left: 0.5rem;
+  }
+  .view-control {
+    position: relative;
+    flex-shrink: 0;
+  }
+  .view-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.36rem 0.6rem;
+    border-radius: 9px;
+    border: 1px solid var(--tag-border);
+    background: linear-gradient(180deg, #121626, #0f1320);
+    color: var(--text-secondary);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s, transform 0.2s;
+  }
+  .view-toggle:hover {
+    border-color: var(--accent);
+    color: var(--text-primary);
+  }
+  .view-control.open .view-toggle {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-1px);
+  }
+  .view-value {
+    color: var(--accent);
+    text-transform: capitalize;
+  }
+  .view-caret {
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid currentColor;
+    margin-left: 0.1rem;
+    opacity: 0.75;
+  }
+  .view-menu {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 0.45rem);
+    min-width: 130px;
+    background: #0e1220f5;
+    border: 1px solid var(--tag-border);
+    border-radius: 10px;
+    padding: 0.35rem;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.35);
+    display: none;
+    z-index: 25;
+  }
+  .view-control.open .view-menu { display: block; }
+  .view-option {
+    width: 100%;
+    text-align: left;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    color: var(--text-secondary);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    padding: 0.45rem 0.55rem;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+  .view-option:hover {
+    background: var(--tag-bg);
+    color: var(--text-primary);
+  }
+  .view-option.active {
+    background: var(--accent-dim);
+    color: var(--accent);
+  }
+  body.view-minimal .grid {
+    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+  body.view-minimal .card {
+    padding: 0.85rem 0.95rem;
+    border-radius: 11px;
+  }
+  body.view-minimal .card-header {
+    margin-bottom: 0.52rem;
+    align-items: center;
+  }
+  body.view-minimal .spinner-display {
+    margin-bottom: 0;
+    min-height: 46px;
+    padding: 0.62rem 0.8rem;
+  }
+  body.view-minimal .spinner-lib {
+    position: absolute;
+    top: 10px;
+    right: 38px;
+    opacity: 0;
+    transform: translateY(-4px);
+    pointer-events: none;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+  }
+  body.view-minimal .card-meta {
+    position: absolute;
+    left: 0.95rem;
+    right: 0.95rem;
+    bottom: 0.55rem;
+    opacity: 0;
+    transform: translateY(6px);
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    padding-top: 0.25rem;
+    background: linear-gradient(180deg, transparent 0%, rgba(8,8,14,0.82) 70%);
+  }
+  body.view-minimal .card:hover .spinner-lib,
+  body.view-minimal .card:hover .card-meta,
+  body.view-minimal .card:focus-within .spinner-lib,
+  body.view-minimal .card:focus-within .card-meta {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  body.view-list .grid {
+    gap: 0.45rem;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+  body.view-list .card {
+    display: grid;
+    grid-template-columns: minmax(120px, 1fr) minmax(120px, 1fr) auto;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.5rem 0.65rem;
+    border-radius: 10px;
+  }
+  body.view-list .card-header {
+    margin: 0;
+    align-items: center;
+    gap: 0.45rem;
+    min-width: 0;
+  }
+  body.view-list .spinner-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  body.view-list .spinner-lib {
+    padding: 0.15rem 0.45rem;
+    font-size: 0.6rem;
+  }
+  body.view-list .spinner-display {
+    margin: 0;
+    min-height: 40px;
+    padding: 0.45rem 0.6rem;
+    gap: 0.6rem;
+  }
+  body.view-list .spinner-text { display: none; }
+  body.view-list .spinner-char { min-width: 1.6ch; }
+  body.view-list .card-meta {
+    gap: 0.35rem;
+    font-size: 0.66rem;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  body.view-list .card-meta span {
+    padding: 0.15rem 0.35rem;
+    border: 1px solid var(--tag-border);
+    border-radius: 6px;
+    background: rgba(12, 14, 22, 0.7);
+    white-space: nowrap;
+  }
+  body.view-list .copy-btn {
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    padding: 3px 5px;
+  }
+  body.view-list .highlight-badge { display: none; }
+  .grid,
+  .category-header,
+  .card {
+    transition: opacity 170ms ease, transform 190ms ease, filter 190ms ease;
+  }
+  body.view-transitioning .category-header,
+  body.view-transitioning .card {
+    opacity: 0.72;
+    transform: translateY(3px);
+    filter: saturate(0.92);
   }
   .no-results {
     grid-column: 1 / -1;
@@ -378,6 +573,7 @@
     .grid { grid-template-columns: 1fr; }
     .controls { flex-direction: column; }
     .search-wrap { flex: 1 1 100%; }
+    .category-header { align-items: flex-end; }
   }
 </style>
 </head>
@@ -524,6 +720,7 @@ const SPINNERS = {
 // ═══════════════════════════════════════════
 let speedMultiplier = 1;
 let activeCategory = 'All';
+let viewMode = localStorage.getItem('spinnerViewMode') || 'tile';
 let intervalIds = {};
 let animationFrames = {};
 const CATEGORY_ORDER = ['Dots','Classic','Arrows','Bars & Blocks','Progress','Scenes','Misc','Emoji Spinners'];
@@ -552,6 +749,9 @@ function buildFilterTags() {
 function renderGrid() {
   const grid = document.getElementById('grid');
   const search = document.getElementById('searchInput').value.toLowerCase();
+  document.body.classList.toggle('view-minimal', viewMode === 'minimal');
+  document.body.classList.toggle('view-list', viewMode === 'list');
+  closeAllViewMenus();
   Object.values(intervalIds).forEach(id => clearInterval(id));
   intervalIds = {};
   animationFrames = {};
@@ -581,7 +781,24 @@ function renderGrid() {
   const orderedCats = CATEGORY_ORDER.filter(c => grouped[c]);
   for (const category of orderedCats) {
     const items = grouped[category];
-    html += `<div class="category-header"><h2>${category}<span class="cat-count">${items.length}</span></h2></div>`;
+    html += `
+      <div class="category-header">
+        <div class="category-headline">
+          <h2>${category}<span class="cat-count">${items.length}</span></h2>
+        </div>
+        <div class="view-control">
+          <button class="view-toggle" type="button" onclick="toggleViewMenu(event)" aria-expanded="false">
+            <span>View</span>
+            <span class="view-value">${viewMode}</span>
+            <span class="view-caret"></span>
+          </button>
+          <div class="view-menu">
+            <button class="view-option ${viewMode === 'tile' ? 'active' : ''}" type="button" onclick="setViewMode('tile')">Tile</button>
+            <button class="view-option ${viewMode === 'minimal' ? 'active' : ''}" type="button" onclick="setViewMode('minimal')">Minimal</button>
+            <button class="view-option ${viewMode === 'list' ? 'active' : ''}" type="button" onclick="setViewMode('list')">List</button>
+          </div>
+        </div>
+      </div>`;
     items.forEach(([name, spinner]) => {
       const badge = HIGHLIGHTED.includes(name) ? `<div class="highlight-badge">★ Vertical Bar</div>` : '';
       html += `
@@ -637,6 +854,43 @@ function copyFrames(name, btn) {
   });
 }
 
+function closeAllViewMenus() {
+  document.querySelectorAll('.view-control.open').forEach(ctrl => {
+    ctrl.classList.remove('open');
+    const btn = ctrl.querySelector('.view-toggle');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+  });
+}
+
+function toggleViewMenu(event) {
+  event.stopPropagation();
+  const control = event.currentTarget.closest('.view-control');
+  if (!control) return;
+  const willOpen = !control.classList.contains('open');
+  closeAllViewMenus();
+  if (willOpen) {
+    control.classList.add('open');
+    event.currentTarget.setAttribute('aria-expanded', 'true');
+  }
+}
+
+function setViewMode(mode) {
+  if (!['tile', 'minimal', 'list'].includes(mode)) return;
+  if (viewMode === mode) {
+    closeAllViewMenus();
+    return;
+  }
+  document.body.classList.add('view-transitioning');
+  viewMode = mode;
+  localStorage.setItem('spinnerViewMode', mode);
+  requestAnimationFrame(() => {
+    renderGrid();
+    requestAnimationFrame(() => {
+      document.body.classList.remove('view-transitioning');
+    });
+  });
+}
+
 function showCode(name) {
   const spinner = SPINNERS[name];
   const modal = document.getElementById('modalOverlay');
@@ -682,6 +936,7 @@ function copyModalCode() {
 function closeModal() { document.getElementById('modalOverlay').classList.remove('active'); }
 document.getElementById('modalOverlay').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+document.addEventListener('click', () => closeAllViewMenus());
 document.getElementById('searchInput').addEventListener('input', () => renderGrid());
 document.getElementById('speedSlider').addEventListener('input', e => {
   speedMultiplier = parseFloat(e.target.value);

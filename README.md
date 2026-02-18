@@ -1,17 +1,23 @@
-# Python Spinners Catalogue
+# Python Cat-Log
 
-Interactive, browser-based catalogue of terminal spinner animations.
+Interactive, browser-based visual catalogue of terminal spinner animations and progress styles.
 
 This project is a single-page HTML app that previews spinner frames in real time and lets you search, filter, and copy frame arrays for reuse in Python CLI tools.
 
 ## Quickstart
 
-### One command (recommended)
+### One-time install, then one command (recommended)
 
 From the project root, run:
 
 ```powershell
-.\run
+.\install-pycatlog
+```
+
+Then open a new terminal and run:
+
+```powershell
+pycatlog
 ```
 
 This starts a local server and opens the catalogue at `http://localhost:8000`.
@@ -19,8 +25,8 @@ This starts a local server and opens the catalogue at `http://localhost:8000`.
 Optional flags:
 
 ```powershell
-.\run -Port 8080
-.\run -NoOpen
+pycatlog -Port 8080
+pycatlog -NoOpen
 ```
 
 ### Option 1: Open directly
@@ -52,8 +58,9 @@ Why local serving: some browsers restrict clipboard APIs on `file://` pages; ser
 ## Project Structure
 
 - `index.html`: App UI, styles, spinner dataset, and logic
-- `run.ps1`: Styled one-command launcher (checks, browser open, local server)
-- `run.cmd`: Thin wrapper so Windows users can run `.\run`
+- `run.ps1`: Styled launcher (checks, browser open, quiet local server)
+- `serve_catlog.py`: Quiet HTTP server (suppresses noisy request logs and favicon 404 spam)
+- `install-pycatlog.ps1`: Installs global `pycatlog` command into user PATH
 - `README.md`: Documentation
 
 ## Spinner Data Model
@@ -98,6 +105,6 @@ Current display order:
 ## Troubleshooting
 
 - Copy button does not work:
-  - Serve locally with `python -m http.server 8000` and retry.
+  - Use `pycatlog` (recommended) so clipboard permissions work under `localhost`.
 - Spinner glyphs look broken:
   - Use a browser/font setup with good Unicode support.
