@@ -8,49 +8,78 @@
 
 ---
 
-## Table of Contents
+## 1. <a name='TableofContents'></a>Table of Contents
 
-1. [Architecture Overview](#1-architecture-overview)
-2. [CDN & Font Loading Strategy](#2-cdn--font-loading-strategy)
-3. [Core Rendering Engine](#3-core-rendering-engine)
-4. [UI Components](#4-ui-components)
-5. [Complete Injectable Code](#5-complete-injectable-code)
-6. [Font Name Mapping](#6-font-name-mapping)
-7. [Performance Notes](#7-performance-notes)
+<!-- vscode-markdown-toc -->
+* 1. [Table of Contents](#TableofContents)
+* 2. [1. Architecture Overview](#ArchitectureOverview)
+	* 2.1. [Before (static)](#Beforestatic)
+	* 2.2. [After (dynamic)](#Afterdynamic)
+	* 2.3. [Key Decisions](#KeyDecisions)
+* 3. [2. CDN & Font Loading Strategy](#CDNFontLoadingStrategy)
+	* 3.1. [Script Tag](#ScriptTag)
+	* 3.2. [Font Path Configuration](#FontPathConfiguration)
+	* 3.3. [Preloading Priority Fonts](#PreloadingPriorityFonts)
+	* 3.4. [Lazy Loading Non-Priority Fonts](#LazyLoadingNon-PriorityFonts)
+* 4. [3. Core Rendering Engine](#CoreRenderingEngine)
+	* 4.1. [Single Font Render](#SingleFontRender)
+	* 4.2. [Batch Render All Visible Cards](#BatchRenderAllVisibleCards)
+	* 4.3. [Render Single Card (for lazy loading)](#RenderSingleCardforlazyloading)
+* 5. [4. UI Components](#UIComponents)
+	* 5.1. [4.1 Text Input Bar](#TextInputBar)
+	* 5.2. [4.2 Input Event Wiring](#InputEventWiring)
+	* 5.3. [4.3 Card HTML Structure (updated)](#CardHTMLStructureupdated)
+	* 5.4. [4.4 Loading States](#LoadingStates)
+	* 5.5. [4.5 Copy Current Render](#CopyCurrentRender)
+* 6. [5. Complete Injectable Code](#CompleteInjectableCode)
+* 7. [6. Font Name Mapping](#FontNameMapping)
+* 8. [7. Performance Notes](#PerformanceNotes)
+	* 8.1. [Font File Sizes (typical)](#FontFileSizestypical)
+	* 8.2. [Loading Timeline](#LoadingTimeline)
+	* 8.3. [Optimization Tips](#OptimizationTips)
+	* 8.4. [Fallback Chain](#FallbackChain)
+	* 8.5. [Memory Management](#MemoryManagement)
+* 9. [Appendix: Minimal Working Example](#Appendix:MinimalWorkingExample)
+
+<!-- vscode-markdown-toc-config
+	numbering=true
+	autoSave=true
+	/vscode-markdown-toc-config -->
+<!-- /vscode-markdown-toc -->
 
 ---
 
-## 1. Architecture Overview
+## 2. <a name='ArchitectureOverview'></a>1. Architecture Overview
 
-### Before (static)
+### 2.1. <a name='Beforestatic'></a>Before (static)
 ```
 Build time:  pyfiglet renders "Hello" → stored as JS string arrays
 Runtime:     Cards display static <pre> text, no interactivity
 ```
 
-### After (dynamic)
+### 2.2. <a name='Afterdynamic'></a>After (dynamic)
 ```
 Page load:   figlet.js loaded from CDN → preload top 9 "Essentials" fonts
 User types:  Input debounced 200ms → all visible cards re-render live
 Scroll:      Lazy-load fonts for cards entering viewport (IntersectionObserver)
 ```
 
-### Key Decisions
-- **No bundling fonts**: Fetch `.flf` files on demand from jsDelivr CDN (~2-10KB each)
-- **Preload essentials only**: Load 9 core fonts on page init, lazy-load the rest
-- **textSync for speed**: Once a font is loaded, use synchronous rendering (no flicker)
-- **Fallback**: If figlet.js fails to load, show static pre-rendered "Hello" from the original data
+### 2.3. <a name='KeyDecisions'></a>Key Decisions
+* **No bundling fonts**: Fetch `.flf` files on demand from jsDelivr CDN (~2-10KB each)
+* **Preload essentials only**: Load 9 core fonts on page init, lazy-load the rest
+* **textSync for speed**: Once a font is loaded, use synchronous rendering (no flicker)
+* **Fallback**: If figlet.js fails to load, show static pre-rendered "Hello" from the original data
 
 ---
 
-## 2. CDN & Font Loading Strategy
+## 3. <a name='CDNFontLoadingStrategy'></a>2. CDN & Font Loading Strategy
 
-### Script Tag
+### 3.1. <a name='ScriptTag'></a>Script Tag
 ```html
 <script src="https://cdn.jsdelivr.net/npm/figlet@1.8.2/lib/figlet.min.js"></script>
 ```
 
-### Font Path Configuration
+### 3.2. <a name='FontPathConfiguration'></a>Font Path Configuration
 ```js
 // Point figlet to jsDelivr for .flf font files
 figlet.defaults({
@@ -58,7 +87,7 @@ figlet.defaults({
 });
 ```
 
-### Preloading Priority Fonts
+### 3.3. <a name='PreloadingPriorityFonts'></a>Preloading Priority Fonts
 ```js
 const PRIORITY_FONTS = [
   "Standard", "Big", "Small", "Slant", "Shadow",
@@ -72,7 +101,7 @@ figlet.preloadFonts(PRIORITY_FONTS, () => {
 });
 ```
 
-### Lazy Loading Non-Priority Fonts
+### 3.4. <a name='LazyLoadingNon-PriorityFonts'></a>Lazy Loading Non-Priority Fonts
 ```js
 // figlet.js auto-fetches missing fonts when you call .text()
 // So lazy loading is built-in — just call render and it fetches if needed.
@@ -95,9 +124,9 @@ document.querySelectorAll(".font-card").forEach(card => {
 
 ---
 
-## 3. Core Rendering Engine
+## 4. <a name='CoreRenderingEngine'></a>3. Core Rendering Engine
 
-### Single Font Render
+### 4.1. <a name='SingleFontRender'></a>Single Font Render
 ```js
 /**
  * Render text in a specific font.
@@ -119,7 +148,7 @@ async function renderFont(text, fontName) {
 }
 ```
 
-### Batch Render All Visible Cards
+### 4.2. <a name='BatchRenderAllVisibleCards'></a>Batch Render All Visible Cards
 ```js
 let currentText = "Hello";
 let renderTimeout = null;
@@ -156,7 +185,7 @@ async function renderAllCards(text) {
 }
 ```
 
-### Render Single Card (for lazy loading)
+### 4.3. <a name='RenderSingleCardforlazyloading'></a>Render Single Card (for lazy loading)
 ```js
 async function renderCard(card, fontName, text) {
   const pre = card.querySelector("pre.font-preview");
@@ -174,9 +203,9 @@ async function renderCard(card, fontName, text) {
 
 ---
 
-## 4. UI Components
+## 5. <a name='UIComponents'></a>4. UI Components
 
-### 4.1 Text Input Bar
+### 5.1. <a name='TextInputBar'></a>4.1 Text Input Bar
 
 Sticky at the top of the Fonts tab. All cards update as you type.
 
@@ -251,7 +280,7 @@ Sticky at the top of the Fonts tab. All cards update as you type.
 }
 ```
 
-### 4.2 Input Event Wiring
+### 5.2. <a name='InputEventWiring'></a>4.2 Input Event Wiring
 
 ```js
 const textInput = document.getElementById("figlet-text");
@@ -279,7 +308,7 @@ textInput.addEventListener("blur", () => {
 });
 ```
 
-### 4.3 Card HTML Structure (updated)
+### 5.3. <a name='CardHTMLStructureupdated'></a>4.3 Card HTML Structure (updated)
 
 ```html
 <div class="font-card" data-font="Doom" data-category="Big & Bold">
@@ -298,7 +327,7 @@ textInput.addEventListener("blur", () => {
 </div>
 ```
 
-### 4.4 Loading States
+### 5.4. <a name='LoadingStates'></a>4.4 Loading States
 
 ```css
 .font-card pre.font-preview {
@@ -321,7 +350,7 @@ textInput.addEventListener("blur", () => {
 }
 ```
 
-### 4.5 Copy Current Render
+### 5.5. <a name='CopyCurrentRender'></a>4.5 Copy Current Render
 
 The "Copy" button now copies the *current dynamic render*, not a static sample.
 
@@ -340,7 +369,7 @@ document.addEventListener("click", (e) => {
 
 ---
 
-## 5. Complete Injectable Code
+## 6. <a name='CompleteInjectableCode'></a>5. Complete Injectable Code
 
 Drop-in module for the Fonts tab. Assumes `figlet.js` is loaded via script tag.
 
@@ -511,7 +540,7 @@ document.addEventListener("DOMContentLoaded", FigletRenderer.init);
 
 ---
 
-## 6. Font Name Mapping
+## 7. <a name='FontNameMapping'></a>6. Font Name Mapping
 
 figlet.js uses slightly different casing than pyfiglet for some fonts.
 Map between the two:
@@ -585,9 +614,9 @@ function getFigletName(pyfigletName) {
 
 ---
 
-## 7. Performance Notes
+## 8. <a name='PerformanceNotes'></a>7. Performance Notes
 
-### Font File Sizes (typical)
+### 8.1. <a name='FontFileSizestypical'></a>Font File Sizes (typical)
 ```
 Font               .flf size    Category
 ────────────────   ─────────    ──────────
@@ -604,7 +633,7 @@ Average            ~3.5 KB
 62 fonts total     ~220 KB      (if all loaded)
 ```
 
-### Loading Timeline
+### 8.2. <a name='LoadingTimeline'></a>Loading Timeline
 ```
 T+0ms      Page loads, figlet.js script tag (~45KB gzipped)
 T+100ms    figlet.defaults() sets CDN font path
@@ -614,15 +643,15 @@ T+300ms+   IntersectionObserver triggers lazy loads as user scrolls
 T+500ms    User starts typing → debounced re-render every 200ms
 ```
 
-### Optimization Tips
-- **Max length 20**: Prevents massive renders that blow out card widths
-- **Debounce 200ms**: Prevents font re-render on every keystroke
-- **textSync when available**: Zero async overhead for loaded fonts
-- **IntersectionObserver rootMargin 300px**: Pre-fetches fonts just before visible
-- **Promise.allSettled**: One failed font doesn't block the rest
-- **CDN caching**: jsDelivr serves with long cache headers, repeat visits are instant
+### 8.3. <a name='OptimizationTips'></a>Optimization Tips
+* **Max length 20**: Prevents massive renders that blow out card widths
+* **Debounce 200ms**: Prevents font re-render on every keystroke
+* **textSync when available**: Zero async overhead for loaded fonts
+* **IntersectionObserver rootMargin 300px**: Pre-fetches fonts just before visible
+* **Promise.allSettled**: One failed font doesn't block the rest
+* **CDN caching**: jsDelivr serves with long cache headers, repeat visits are instant
 
-### Fallback Chain
+### 8.4. <a name='FallbackChain'></a>Fallback Chain
 ```
 1. Try figlet.textSync() — instant if font preloaded
 2. Try figlet.text() — async fetch from CDN
@@ -630,7 +659,7 @@ T+500ms    User starts typing → debounced re-render every 200ms
 4. Show "[Font unavailable]" error state
 ```
 
-### Memory Management
+### 8.5. <a name='MemoryManagement'></a>Memory Management
 For 62 fonts, each parsed font object sits at ~50-100KB in memory.
 Total worst case: ~6MB. This is fine for a single-page catalogue.
 If scaling to 500+ fonts, consider an LRU cache that evicts least-used fonts.
@@ -658,7 +687,21 @@ function trackFontAccess(fontName) {
 
 ---
 
-## Appendix: Minimal Working Example
+## Implementation Status Matrix
+
+| Requirement | Live Status |
+| --- | --- |
+| `figlet.js` CDN script + `fontPath` defaults | [x] |
+| Priority font preload (`Standard`, `Big`, `Small`, `Slant`, `Shadow`, `Banner`, `Block`, `Doom`, `ANSI Shadow`) | [x] |
+| IntersectionObserver lazy rendering (`rootMargin: 300px`) | [x] |
+| Runtime flow (`textSync` -> async `text`) | [x] |
+| Fallback chain to static sample and unavailable state | [x] |
+| UI contracts (`#figlet-text`, `.char-count`, `#figlet-reset`, `.font-card`, `.font-preview`) | [x] |
+| Copy action copies current dynamic render | [x] |
+
+---
+
+## 9. <a name='Appendix:MinimalWorkingExample'></a>Appendix: Minimal Working Example
 
 Standalone HTML that demonstrates the full dynamic flow. Open in browser, type anything.
 

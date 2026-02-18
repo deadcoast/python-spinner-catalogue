@@ -6,24 +6,71 @@
 
 ---
 
-## Table of Contents
+## 1. <a name='TableofContents'></a>Table of Contents
 
-1. [Unicode Box-Drawing Character Sets](#1-unicode-box-drawing-character-sets)
-2. [Rich Panel Styles](#2-rich-panel-styles)
-3. [Custom / ASCII Frames](#3-custom--ascii-frames)
-4. [Complete Character Maps](#4-complete-character-maps)
-5. [Data Format & JS Structure](#5-data-format--js-structure)
-6. [Python Code Snippets](#6-python-code-snippets)
-7. [Catalogue UI Spec](#7-catalogue-ui-spec)
+<!-- vscode-markdown-toc -->
+* 1. [Table of Contents](#TableofContents)
+* 2. [1. Unicode Box-Drawing Character Sets](#UnicodeBox-DrawingCharacterSets)
+	* 2.1. [1.1 `light` — Single Light Lines](#lightSingleLightLines)
+	* 2.2. [1.2 `heavy` — Single Heavy (Bold) Lines](#heavySingleHeavyBoldLines)
+	* 2.3. [1.3 `double` — Double Lines](#doubleDoubleLines)
+	* 2.4. [1.4 `rounded` — Rounded Corners (Light)](#roundedRoundedCornersLight)
+	* 2.5. [1.5 `light-heavy-mixed` — Light Top/Bottom, Heavy Sides](#light-heavy-mixedLightTopBottomHeavySides)
+	* 2.6. [1.6 `heavy-light-mixed` — Heavy Top/Bottom, Light Sides](#heavy-light-mixedHeavyTopBottomLightSides)
+	* 2.7. [1.7 `double-light-mixed` — Double Outer, Light Inner](#double-light-mixedDoubleOuterLightInner)
+	* 2.8. [1.8 `dashed-light` — Light Dashed Lines](#dashed-lightLightDashedLines)
+	* 2.9. [1.9 `dashed-heavy` — Heavy Dashed Lines](#dashed-heavyHeavyDashedLines)
+	* 2.10. [1.10 `triple-dash-light`](#triple-dash-light)
+	* 2.11. [1.11 `triple-dash-heavy`](#triple-dash-heavy)
+	* 2.12. [1.12 `quad-dash-light`](#quad-dash-light)
+* 3. [2. Rich Panel Styles](#RichPanelStyles)
+	* 3.1. [`box.ROUNDED` (default)](#box.ROUNDEDdefault)
+	* 3.2. [`box.SQUARE`](#box.SQUARE)
+	* 3.3. [`box.HEAVY`](#box.HEAVY)
+	* 3.4. [`box.DOUBLE`](#box.DOUBLE)
+	* 3.5. [`box.ASCII`](#box.ASCII)
+	* 3.6. [With Title](#WithTitle)
+	* 3.7. [With Title + Subtitle](#WithTitleSubtitle)
+* 4. [3. Custom / ASCII Frames](#CustomASCIIFrames)
+	* 4.1. [3.1 `ascii-basic`](#ascii-basic)
+	* 4.2. [3.2 `ascii-hash`](#ascii-hash)
+	* 4.3. [3.3 `ascii-star`](#ascii-star)
+	* 4.4. [3.4 `ascii-equals`](#ascii-equals)
+	* 4.5. [3.5 `ascii-tilde`](#ascii-tilde)
+	* 4.6. [3.6 `dos-single`](#dos-single)
+	* 4.7. [3.7 `dos-double`](#dos-double)
+	* 4.8. [3.8 `shadow-box`](#shadow-box)
+	* 4.9. [3.9 `block-shadow`](#block-shadow)
+	* 4.10. [3.10 `braille-frame`](#braille-frame)
+	* 4.11. [3.11 `parenthetical`](#parenthetical)
+	* 4.12. [3.12 `curly`](#curly)
+* 5. [4. Complete Character Maps](#CompleteCharacterMaps)
+	* 5.1. [Light Box Drawing](#LightBoxDrawing)
+	* 5.2. [Full Reference Grid](#FullReferenceGrid)
+* 6. [5. Data Format & JS Structure](#DataFormatJSStructure)
+	* 6.1. [Rendering function](#Renderingfunction)
+* 7. [6. Python Code Snippets](#PythonCodeSnippets)
+	* 7.1. [Rich Panel](#RichPanel)
+	* 7.2. [Manual box drawing (zero deps)](#Manualboxdrawingzerodeps)
+* 8. [7. Catalogue UI Spec](#CatalogueUISpec)
+	* 8.1. [Card Layout](#CardLayout)
+	* 8.2. [Category Filters](#CategoryFilters)
+	* 8.3. [Interactive Feature](#InteractiveFeature)
+
+<!-- vscode-markdown-toc-config
+	numbering=true
+	autoSave=true
+	/vscode-markdown-toc-config -->
+<!-- /vscode-markdown-toc -->
 
 ---
 
-## 1. Unicode Box-Drawing Character Sets
+## 2. <a name='UnicodeBox-DrawingCharacterSets'></a>1. Unicode Box-Drawing Character Sets
 
 The Unicode Block U+2500–U+257F defines 128 box-drawing characters.
 These group into logical sets based on line weight and style.
 
-### 1.1 `light` — Single Light Lines
+### 2.1. <a name='lightSingleLightLines'></a>1.1 `light` — Single Light Lines
 
 ```
 ┌──────────────────┐
@@ -34,7 +81,7 @@ These group into logical sets based on line weight and style.
 
 Characters: `┌ ─ ┐ │ └ ┘ ├ ┤ ┬ ┴ ┼`
 
-### 1.2 `heavy` — Single Heavy (Bold) Lines
+### 2.2. <a name='heavySingleHeavyBoldLines'></a>1.2 `heavy` — Single Heavy (Bold) Lines
 
 ```
 ┏━━━━━━━━━━━━━━━━━━┓
@@ -45,7 +92,7 @@ Characters: `┌ ─ ┐ │ └ ┘ ├ ┤ ┬ ┴ ┼`
 
 Characters: `┏ ━ ┓ ┃ ┗ ┛ ┣ ┫ ┳ ┻ ╋`
 
-### 1.3 `double` — Double Lines
+### 2.3. <a name='doubleDoubleLines'></a>1.3 `double` — Double Lines
 
 ```
 ╔══════════════════╗
@@ -56,7 +103,7 @@ Characters: `┏ ━ ┓ ┃ ┗ ┛ ┣ ┫ ┳ ┻ ╋`
 
 Characters: `╔ ═ ╗ ║ ╚ ╝ ╠ ╣ ╦ ╩ ╬`
 
-### 1.4 `rounded` — Rounded Corners (Light)
+### 2.4. <a name='roundedRoundedCornersLight'></a>1.4 `rounded` — Rounded Corners (Light)
 
 ```
 ╭──────────────────╮
@@ -67,7 +114,7 @@ Characters: `╔ ═ ╗ ║ ╚ ╝ ╠ ╣ ╦ ╩ ╬`
 
 Characters: `╭ ─ ╮ │ ╰ ╯` (corners only — rest from light set)
 
-### 1.5 `light-heavy-mixed` — Light Top/Bottom, Heavy Sides
+### 2.5. <a name='light-heavy-mixedLightTopBottomHeavySides'></a>1.5 `light-heavy-mixed` — Light Top/Bottom, Heavy Sides
 
 ```
 ┎──────────────────┒
@@ -78,7 +125,7 @@ Characters: `╭ ─ ╮ │ ╰ ╯` (corners only — rest from light set)
 
 Characters: `┎ ─ ┒ ┃ ┖ ┚`
 
-### 1.6 `heavy-light-mixed` — Heavy Top/Bottom, Light Sides
+### 2.6. <a name='heavy-light-mixedHeavyTopBottomLightSides'></a>1.6 `heavy-light-mixed` — Heavy Top/Bottom, Light Sides
 
 ```
 ┍━━━━━━━━━━━━━━━━━━┑
@@ -89,7 +136,7 @@ Characters: `┎ ─ ┒ ┃ ┖ ┚`
 
 Characters: `┍ ━ ┑ │ ┕ ┙`
 
-### 1.7 `double-light-mixed` — Double Outer, Light Inner
+### 2.7. <a name='double-light-mixedDoubleOuterLightInner'></a>1.7 `double-light-mixed` — Double Outer, Light Inner
 
 ```
 ╔──────────────────╗
@@ -100,7 +147,7 @@ Characters: `┍ ━ ┑ │ ┕ ┙`
 
 Note: Uses `╔╗╚╝║` but `─` for horizontals — a hybrid.
 
-### 1.8 `dashed-light` — Light Dashed Lines
+### 2.8. <a name='dashed-lightLightDashedLines'></a>1.8 `dashed-light` — Light Dashed Lines
 
 ```
 ┌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┐
@@ -111,7 +158,7 @@ Note: Uses `╔╗╚╝║` but `─` for horizontals — a hybrid.
 
 Characters: `╌` (light double dash), `╎` (light double dash vertical)
 
-### 1.9 `dashed-heavy` — Heavy Dashed Lines
+### 2.9. <a name='dashed-heavyHeavyDashedLines'></a>1.9 `dashed-heavy` — Heavy Dashed Lines
 
 ```
 ┏╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍┓
@@ -122,7 +169,7 @@ Characters: `╌` (light double dash), `╎` (light double dash vertical)
 
 Characters: `╍` (heavy double dash), `╏` (heavy double dash vertical)
 
-### 1.10 `triple-dash-light`
+### 2.10. <a name='triple-dash-light'></a>1.10 `triple-dash-light`
 
 ```
 ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┐
@@ -133,7 +180,7 @@ Characters: `╍` (heavy double dash), `╏` (heavy double dash vertical)
 
 Characters: `┄` (light triple dash), `┆` (light triple dash vertical)
 
-### 1.11 `triple-dash-heavy`
+### 2.11. <a name='triple-dash-heavy'></a>1.11 `triple-dash-heavy`
 
 ```
 ┏┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┓
@@ -144,7 +191,7 @@ Characters: `┄` (light triple dash), `┆` (light triple dash vertical)
 
 Characters: `┅` (heavy triple dash), `┇` (heavy triple dash vertical)
 
-### 1.12 `quad-dash-light`
+### 2.12. <a name='quad-dash-light'></a>1.12 `quad-dash-light`
 
 ```
 ┌┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┐
@@ -157,12 +204,12 @@ Characters: `┈` (light quad dash), `┊` (light quad dash vertical)
 
 ---
 
-## 2. Rich Panel Styles
+## 3. <a name='RichPanelStyles'></a>2. Rich Panel Styles
 
 Rich's `Panel` uses the same `box` constants as tables.
 Most useful for panels:
 
-### `box.ROUNDED` (default)
+### 3.1. <a name='box.ROUNDEDdefault'></a>`box.ROUNDED` (default)
 
 ```
 ╭──────────────────╮
@@ -170,7 +217,7 @@ Most useful for panels:
 ╰──────────────────╯
 ```
 
-### `box.SQUARE`
+### 3.2. <a name='box.SQUARE'></a>`box.SQUARE`
 
 ```
 ┌──────────────────┐
@@ -178,7 +225,7 @@ Most useful for panels:
 └──────────────────┘
 ```
 
-### `box.HEAVY`
+### 3.3. <a name='box.HEAVY'></a>`box.HEAVY`
 
 ```
 ┏━━━━━━━━━━━━━━━━━━┓
@@ -186,7 +233,7 @@ Most useful for panels:
 ┗━━━━━━━━━━━━━━━━━━┛
 ```
 
-### `box.DOUBLE`
+### 3.4. <a name='box.DOUBLE'></a>`box.DOUBLE`
 
 ```
 ╔══════════════════╗
@@ -194,7 +241,7 @@ Most useful for panels:
 ╚══════════════════╝
 ```
 
-### `box.ASCII`
+### 3.5. <a name='box.ASCII'></a>`box.ASCII`
 
 ```
 +------------------+
@@ -202,7 +249,7 @@ Most useful for panels:
 +------------------+
 ```
 
-### With Title
+### 3.6. <a name='WithTitle'></a>With Title
 
 ```
 ╭── Title ─────────╮
@@ -210,7 +257,7 @@ Most useful for panels:
 ╰──────────────────╯
 ```
 
-### With Title + Subtitle
+### 3.7. <a name='WithTitleSubtitle'></a>With Title + Subtitle
 
 ```
 ╭── Title ─────────╮
@@ -220,11 +267,11 @@ Most useful for panels:
 
 ---
 
-## 3. Custom / ASCII Frames
+## 4. <a name='CustomASCIIFrames'></a>3. Custom / ASCII Frames
 
 Hand-drawn ASCII frames for maximum retro compatibility.
 
-### 3.1 `ascii-basic`
+### 4.1. <a name='ascii-basic'></a>3.1 `ascii-basic`
 
 ```
 +------------------+
@@ -234,7 +281,7 @@ Hand-drawn ASCII frames for maximum retro compatibility.
 
 Characters: `+ - |`
 
-### 3.2 `ascii-hash`
+### 4.2. <a name='ascii-hash'></a>3.2 `ascii-hash`
 
 ```
 ####################
@@ -244,7 +291,7 @@ Characters: `+ - |`
 
 Characters: `#`
 
-### 3.3 `ascii-star`
+### 4.3. <a name='ascii-star'></a>3.3 `ascii-star`
 
 ```
 ********************
@@ -254,7 +301,7 @@ Characters: `#`
 
 Characters: `*`
 
-### 3.4 `ascii-equals`
+### 4.4. <a name='ascii-equals'></a>3.4 `ascii-equals`
 
 ```
 ====================
@@ -264,7 +311,7 @@ Characters: `*`
 
 Characters: `= |`
 
-### 3.5 `ascii-tilde`
+### 4.5. <a name='ascii-tilde'></a>3.5 `ascii-tilde`
 
 ```
 ~~~~~~~~~~~~~~~~~~~~
@@ -274,7 +321,7 @@ Characters: `= |`
 
 Characters: `~ |`
 
-### 3.6 `dos-single`
+### 4.6. <a name='dos-single'></a>3.6 `dos-single`
 
 Old-school DOS codepage 437 look using Unicode equivalents.
 
@@ -286,7 +333,7 @@ Old-school DOS codepage 437 look using Unicode equivalents.
 └──────────────────┘
 ```
 
-### 3.7 `dos-double`
+### 4.7. <a name='dos-double'></a>3.7 `dos-double`
 
 ```
 ╔══════════════════╗
@@ -296,7 +343,7 @@ Old-school DOS codepage 437 look using Unicode equivalents.
 ╚══════════════════╝
 ```
 
-### 3.8 `shadow-box`
+### 4.8. <a name='shadow-box'></a>3.8 `shadow-box`
 
 ```
 ┌──────────────────┐
@@ -308,7 +355,7 @@ Old-school DOS codepage 437 look using Unicode equivalents.
 
 Shadow effect using `▒` shade blocks.
 
-### 3.9 `block-shadow`
+### 4.9. <a name='block-shadow'></a>3.9 `block-shadow`
 
 ```
 ██████████████████████
@@ -320,7 +367,7 @@ Shadow effect using `▒` shade blocks.
 
 Full block `█` border with `░` shadow.
 
-### 3.10 `braille-frame`
+### 4.10. <a name='braille-frame'></a>3.10 `braille-frame`
 
 ```
 ⡏⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⢹
@@ -331,7 +378,7 @@ Full block `█` border with `░` shadow.
 
 Uses braille characters for a dot-matrix border.
 
-### 3.11 `parenthetical`
+### 4.11. <a name='parenthetical'></a>3.11 `parenthetical`
 
 ```
 (                    )
@@ -340,7 +387,7 @@ Uses braille characters for a dot-matrix border.
 (                    )
 ```
 
-### 3.12 `curly`
+### 4.12. <a name='curly'></a>3.12 `curly`
 
 ```
 {                    }
@@ -351,9 +398,9 @@ Uses braille characters for a dot-matrix border.
 
 ---
 
-## 4. Complete Character Maps
+## 5. <a name='CompleteCharacterMaps'></a>4. Complete Character Maps
 
-### Light Box Drawing
+### 5.1. <a name='LightBoxDrawing'></a>Light Box Drawing
 
 ```
       Top    Bottom   Vertical  Horizontal
@@ -362,7 +409,7 @@ Left  ├─┼┤   Tee chars
 Right ├─┼┤
 ```
 
-### Full Reference Grid
+### 5.2. <a name='FullReferenceGrid'></a>Full Reference Grid
 
 ```
 Corner chars:     ┌ ┐ └ ┘  (light)
@@ -392,7 +439,7 @@ Half lines:       ╴ ╵ ╶ ╷  (light)
 
 ---
 
-## 5. Data Format & JS Structure
+## 6. <a name='DataFormatJSStructure'></a>5. Data Format & JS Structure
 
 ```js
 const BOX_STYLES = {
@@ -470,7 +517,7 @@ const BOX_STYLES = {
 };
 ```
 
-### Rendering function
+### 6.1. <a name='Renderingfunction'></a>Rendering function
 
 ```js
 function renderBox(style, content, width) {
@@ -487,9 +534,9 @@ function renderBox(style, content, width) {
 
 ---
 
-## 6. Python Code Snippets
+## 7. <a name='PythonCodeSnippets'></a>6. Python Code Snippets
 
-### Rich Panel
+### 7.1. <a name='RichPanel'></a>Rich Panel
 
 ```python
 from rich.console import Console
@@ -515,7 +562,7 @@ for name in ["ASCII","SQUARE","ROUNDED","HEAVY","DOUBLE","MINIMAL"]:
     console.print(Panel(f"box.{name}", box=getattr(b, name), expand=False))
 ```
 
-### Manual box drawing (zero deps)
+### 7.2. <a name='Manualboxdrawingzerodeps'></a>Manual box drawing (zero deps)
 
 ```python
 def draw_box(text, style="light"):
@@ -539,9 +586,9 @@ draw_box("Hello, World!\nLine two", style="rounded")
 
 ---
 
-## 7. Catalogue UI Spec
+## 8. <a name='CatalogueUISpec'></a>7. Catalogue UI Spec
 
-### Card Layout
+### 8.1. <a name='CardLayout'></a>Card Layout
 
 ```
 ┌────────────────────────────────┐
@@ -558,19 +605,19 @@ draw_box("Hello, World!\nLine two", style="rounded")
 
 The bottom of each card shows the individual characters used in that box style.
 
-### Category Filters
+### 8.2. <a name='CategoryFilters'></a>Category Filters
 
 ```
 [All] [Unicode] [ASCII] [Braille] [Special]
 ```
 
-### Interactive Feature
+### 8.3. <a name='InteractiveFeature'></a>Interactive Feature
 
-- Click any box style → modal with:
-  - Full character map
-  - Python code (Rich + manual)
-  - Copy individual characters
-  - Live preview with custom text input
+* Click any box style → modal with:
+  * Full character map
+  * Python code (Rich + manual)
+  * Copy individual characters
+  * Live preview with custom text input
 
 ---
 

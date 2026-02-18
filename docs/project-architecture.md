@@ -1,6 +1,86 @@
 # Project Architecture
 
-## Overview
+## 1. <a name='TOC'></a>TOC
+
+<!-- vscode-markdown-toc -->
+* 1. [TOC](#TOC)
+* 2. [Overview](#Overview)
+	* 2.1. [[x] 1. New Spinners - ASCII/Unicode](#x1.NewSpinners-ASCIIUnicode)
+	* 2.2. [[x] 1.1 `radar`](#x1.1radar)
+	* 2.3. [[x] 1.2 `boxSpin`](#x1.2boxSpin)
+	* 2.4. [[x] 1.3 `boxSpinDouble`](#x1.3boxSpinDouble)
+	* 2.5. [[x] 1.4 `boxSpinRound`](#x1.4boxSpinRound)
+	* 2.6. [[x] 1.5 `snake`](#x1.5snake)
+	* 2.7. [[x] 1.6 `loadingDots`](#x1.6loadingDots)
+	* 2.8. [[x] 1.7 `matrix`](#x1.7matrix)
+	* 2.9. [[x] 1.8 `brailleWave`](#x1.8brailleWave)
+	* 2.10. [[x] 1.9 `brailleScroll`](#x1.9brailleScroll)
+	* 2.11. [[x] 1.10 `crosshair`](#x1.10crosshair)
+	* 2.12. [[x] 1.11 `shadeBlock`](#x1.11shadeBlock)
+	* 2.13. [[x] 1.12 `verticalSweep`](#x1.12verticalSweep)
+	* 2.14. [[x] 1.13 `equalizerWide`](#x1.13equalizerWide)
+	* 2.15. [[x] 1.14 `pipeFlow`](#x1.14pipeFlow)
+	* 2.16. [[x] 1.15 `arrowPulse`](#x1.15arrowPulse)
+	* 2.17. [[x] 1.16 `dotWave`](#x1.16dotWave)
+	* 2.18. [[x] 1.17 `spinner2x2`](#x1.17spinner2x2)
+	* 2.19. [[x] 1.18 `spinner2x2Fill`](#x1.18spinner2x2Fill)
+	* 2.20. [[x] 1.19 `xo`](#x1.19xo)
+	* 2.21. [[x] 1.20 `bulletTrain`](#x1.20bulletTrain)
+	* 2.22. [[x] 2. New Progress Bars](#x2.NewProgressBars)
+	* 2.23. [[x] Data Format](#xDataFormat)
+	* 2.24. [[x] 2.1 Classic ASCII](#x2.1ClassicASCII)
+	* 2.25. [[x] `hashBar`](#xhashBar)
+	* 2.26. [[x] `equalsBar`](#xequalsBar)
+	* 2.27. [[x] `dotFill`](#xdotFill)
+	* 2.28. [[x] `numericFill`](#xnumericFill)
+	* 2.29. [[x] `poundBar`](#xpoundBar)
+	* 2.30. [[x] 2.2 Unicode Smooth](#x2.2UnicodeSmooth)
+	* 2.31. [[x] `smoothBlock`](#xsmoothBlock)
+	* 2.32. [[x] `thinBar`](#xthinBar)
+	* 2.33. [[x] `roundBlock`](#xroundBlock)
+	* 2.34. [[x] `bubbleFill`](#xbubbleFill)
+	* 2.35. [[x] `pixelSmooth`](#xpixelSmooth)
+	* 2.36. [[x] 2.3 Retro / Themed](#x2.3RetroThemed)
+	* 2.37. [[x] `heartBar`](#xheartBar)
+	* 2.38. [[x] `starBar`](#xstarBar)
+	* 2.39. [[x] `diamondBar`](#xdiamondBar)
+	* 2.40. [[x] `dotCircle`](#xdotCircle)
+	* 2.41. [[x] `shadeBar`](#xshadeBar)
+	* 2.42. [[x] `boxFrame`](#xboxFrame)
+	* 2.43. [[x] `boxFrameDouble`](#xboxFrameDouble)
+	* 2.44. [[x] `bracePipe`](#xbracePipe)
+	* 2.45. [[x] `arrowFill`](#xarrowFill)
+	* 2.46. [[x] `underscoreSlide`](#xunderscoreSlide)
+	* 2.47. [[x] `brailleBar`](#xbrailleBar)
+	* 2.48. [[x] 2.4 Indeterminate / Bouncing Bars](#x2.4IndeterminateBouncingBars)
+	* 2.49. [[x] `bouncingBlock`](#xbouncingBlock)
+	* 2.50. [[x] `bouncingDash`](#xbouncingDash)
+	* 2.51. [[x] `scanLine`](#xscanLine)
+	* 2.52. [[x] `pulseBar`](#xpulseBar)
+	* 2.53. [[x] `elasticBar`](#xelasticBar)
+	* 2.54. [[x] 3. Structural Notes](#x3.StructuralNotes)
+	* 2.55. [[x] 3.1 Category Taxonomy](#x3.1CategoryTaxonomy)
+	* 2.56. [[x] 3.2 Tab Architecture](#x3.2TabArchitecture)
+	* 2.57. [[x] 3.3 Progress Bar Animation Logic](#x3.3ProgressBarAnimationLogic)
+	* 2.58. [[x] 3.4 Speed & Width Controls (Progress Bars)](#x3.4SpeedWidthControlsProgressBars)
+	* 2.59. [[x] 4. Python Code Snippets Per Bar Style](#x4.PythonCodeSnippetsPerBarStyle)
+	* 2.60. [[x] tqdm — ASCII](#xtqdmASCII)
+	* 2.61. [[x] tqdm — Unicode (default)](#xtqdmUnicodedefault)
+	* 2.62. [[x] tqdm — Custom characters](#xtqdmCustomcharacters)
+	* 2.63. [[x] Rich — Default bar](#xRichDefaultbar)
+	* 2.64. [[x] Rich — Custom bar](#xRichCustombar)
+	* 2.65. [[x] alive-progress](#xalive-progress)
+	* 2.66. [[x] Manual ASCII bar (zero deps)](#xManualASCIIbarzerodeps)
+	* 2.67. [[x] Manual box-framed bar (zero deps)](#xManualbox-framedbarzerodeps)
+* 3. [Appendix: Complete Injection-Ready JS](#Appendix:CompleteInjection-ReadyJS)
+
+<!-- vscode-markdown-toc-config
+	numbering=true
+	autoSave=true
+	/vscode-markdown-toc-config -->
+<!-- /vscode-markdown-toc -->
+
+## 2. <a name='Overview'></a>Overview
 
 > Lists of methods on display in the project
 > **Purpose:** Injectable data for the Python Spinners Catalogue v3.  
@@ -8,16 +88,16 @@
 > **Convention:** `frames[]` / `interval` (ms) / `category` / `lib` (source attribution)  
 > **Priority:** ASCII & Unicode first. Emoji only if exceptional.
 
-- [x] [New Spinners - ASCII/Unicode](#new-spinners-ascii-unicode)
-- [x] [New Progress Bars](#new-progress-bars)
-- [x] [Structural Notes](#structural-notes)
-- [x] [Python Code Snippets Per Bar Style](#python-code-snippets-per-bar-style)
+* [x] [New Spinners - ASCII/Unicode](#new-spinners-ascii-unicode)
+* [x] [New Progress Bars](#new-progress-bars)
+* [x] [Structural Notes](#structural-notes)
+* [x] [Python Code Snippets Per Bar Style](#python-code-snippets-per-bar-style)
 
 ---
 <a id="new-spinners-ascii-unicode"></a>
-### [x] 1. New Spinners - ASCII/Unicode
+### 2.1. <a name='x1.NewSpinners-ASCIIUnicode'></a>[x] 1. New Spinners - ASCII/Unicode
 
-### [x] 1.1 `radar`
+### 2.2. <a name='x1.1radar'></a>[x] 1.1 `radar`
 
 Quarter-circle rotation. Clean single-char, very retro CRT feel.
 
@@ -30,7 +110,7 @@ radar: {
 }
 ```
 
-### [x] 1.2 `boxSpin`
+### 2.3. <a name='x1.2boxSpin'></a>[x] 1.2 `boxSpin`
 
 Box-drawing corner rotation. Looks like a cursor tracing a box.
 
@@ -43,7 +123,7 @@ boxSpin: {
 }
 ```
 
-### [x] 1.3 `boxSpinDouble`
+### 2.4. <a name='x1.3boxSpinDouble'></a>[x] 1.3 `boxSpinDouble`
 
 Double-line variant for heavier visual weight.
 
@@ -56,7 +136,7 @@ boxSpinDouble: {
 }
 ```
 
-### [x] 1.4 `boxSpinRound`
+### 2.5. <a name='x1.4boxSpinRound'></a>[x] 1.4 `boxSpinRound`
 
 Rounded corner variant. Softer look.
 
@@ -69,7 +149,7 @@ boxSpinRound: {
 }
 ```
 
-### [x] 1.5 `snake`
+### 2.6. <a name='x1.5snake'></a>[x] 1.5 `snake`
 
 Box-drawing snake crawling through a cycle.
 
@@ -82,7 +162,7 @@ snake: {
 }
 ```
 
-### [x] 1.6 `loadingDots`
+### 2.7. <a name='x1.6loadingDots'></a>[x] 1.6 `loadingDots`
 
 Classic `Loading...` with cycling ellipsis erasure.
 
@@ -95,7 +175,7 @@ loadingDots: {
 }
 ```
 
-### [x] 1.7 `matrix`
+### 2.8. <a name='x1.7matrix'></a>[x] 1.7 `matrix`
 
 Random half-width katakana cycling — terminal rain aesthetic.
 
@@ -108,7 +188,7 @@ matrix: {
 }
 ```
 
-### [x] 1.8 `brailleWave`
+### 2.9. <a name='x1.8brailleWave'></a>[x] 1.8 `brailleWave`
 
 Multi-char braille bar — equalizer ripple across 4 cells.
 
@@ -124,7 +204,7 @@ brailleWave: {
 }
 ```
 
-### [x] 1.9 `brailleScroll`
+### 2.10. <a name='x1.9brailleScroll'></a>[x] 1.9 `brailleScroll`
 
 Single braille cell — vertical sweep pattern.
 
@@ -137,7 +217,7 @@ brailleScroll: {
 }
 ```
 
-### [x] 1.10 `crosshair`
+### 2.11. <a name='x1.10crosshair'></a>[x] 1.10 `crosshair`
 
 Targeting reticle rotation.
 
@@ -150,7 +230,7 @@ crosshair: {
 }
 ```
 
-### [x] 1.11 `shadeBlock`
+### 2.12. <a name='x1.11shadeBlock'></a>[x] 1.11 `shadeBlock`
 
 Cycling through shade block characters — smooth density pulse.
 
@@ -163,7 +243,7 @@ shadeBlock: {
 }
 ```
 
-### [x] 1.12 `verticalSweep`
+### 2.13. <a name='x1.12verticalSweep'></a>[x] 1.12 `verticalSweep`
 
 Three-cell vertical bar sweep — the VU meter look.
 
@@ -179,7 +259,7 @@ verticalSweep: {
 }
 ```
 
-### [x] 1.13 `equalizerWide`
+### 2.14. <a name='x1.13equalizerWide'></a>[x] 1.13 `equalizerWide`
 
 Five-cell equalizer bounce — full audio visualizer aesthetic.
 
@@ -196,7 +276,7 @@ equalizerWide: {
 }
 ```
 
-### [x] 1.14 `pipeFlow`
+### 2.15. <a name='x1.14pipeFlow'></a>[x] 1.14 `pipeFlow`
 
 Pipe characters showing directional flow.
 
@@ -209,7 +289,7 @@ pipeFlow: {
 }
 ```
 
-### [x] 1.15 `arrowPulse`
+### 2.16. <a name='x1.15arrowPulse'></a>[x] 1.15 `arrowPulse`
 
 Arrow head bouncing left/right in a field.
 
@@ -225,7 +305,7 @@ arrowPulse: {
 }
 ```
 
-### [x] 1.16 `dotWave`
+### 2.17. <a name='x1.16dotWave'></a>[x] 1.16 `dotWave`
 
 Cycling dots with rising/falling density.
 
@@ -238,7 +318,7 @@ dotWave: {
 }
 ```
 
-### [x] 1.17 `spinner2x2`
+### 2.18. <a name='x1.17spinner2x2'></a>[x] 1.17 `spinner2x2`
 
 2×2 block quadrant rotation — satisfying chunky pixel feel.
 
@@ -251,7 +331,7 @@ spinner2x2: {
 }
 ```
 
-### [x] 1.18 `spinner2x2Fill`
+### 2.19. <a name='x1.18spinner2x2Fill'></a>[x] 1.18 `spinner2x2Fill`
 
 2×2 block filling up then emptying.
 
@@ -264,7 +344,7 @@ spinner2x2Fill: {
 }
 ```
 
-### [x] 1.19 `xo`
+### 2.20. <a name='x1.19xo'></a>[x] 1.19 `xo`
 
 Classic retro `x` and `o` toggle. Dead simple.
 
@@ -277,7 +357,7 @@ xo: {
 }
 ```
 
-### [x] 1.20 `bulletTrain`
+### 2.21. <a name='x1.20bulletTrain'></a>[x] 1.20 `bulletTrain`
 
 Scrolling arrow characters — velocity feel.
 
@@ -297,14 +377,14 @@ bulletTrain: {
 ---
 
 <a id="new-progress-bars"></a>
-### [x] 2. New Progress Bars
+### 2.22. <a name='x2.NewProgressBars'></a>[x] 2. New Progress Bars
 
 > Progress bars are fundamentally different from spinners:  
 > they represent **percentage completion** (0→100%) rather than indeterminate activity.  
 > Each entry below defines the **fill character(s)**, **empty character(s)**, **tip/head character**, and optional **border** characters.  
 > The catalogue should animate these by sweeping fill from 0% to 100% in a loop.
 
-### [x] Data Format
+### 2.23. <a name='xDataFormat'></a>[x] Data Format
 
 ```js
 // Progress bar entry structure
@@ -321,9 +401,9 @@ bulletTrain: {
 }
 ```
 
-### [x] 2.1 Classic ASCII
+### 2.24. <a name='x2.1ClassicASCII'></a>[x] 2.1 Classic ASCII
 
-### [x] `hashBar`
+### 2.25. <a name='xhashBar'></a>[x] `hashBar`
 
 The OG. wget, curl, every 90s/2000s download manager.
 
@@ -340,7 +420,7 @@ hashBar: {
 }
 ```
 
-### [x] `equalsBar`
+### 2.26. <a name='xequalsBar'></a>[x] `equalsBar`
 
 Arrow-head style. Seen in wget, apt, old pip.
 
@@ -357,7 +437,7 @@ equalsBar: {
 }
 ```
 
-### [x] `dotFill`
+### 2.27. <a name='xdotFill'></a>[x] `dotFill`
 
 Period-based fill. Minimal, clean.
 
@@ -374,7 +454,7 @@ dotFill: {
 }
 ```
 
-### [x] `numericFill`
+### 2.28. <a name='xnumericFill'></a>[x] `numericFill`
 
 tqdm's ASCII fallback: fills with digits 1→9 then `#`.
 
@@ -391,7 +471,7 @@ numericFill: {
 }
 ```
 
-### [x] `poundBar`
+### 2.29. <a name='xpoundBar'></a>[x] `poundBar`
 
 Simple pound/hash with no framing. Pure 80s terminal.
 
@@ -408,9 +488,9 @@ poundBar: {
 }
 ```
 
-### [x] 2.2 Unicode Smooth
+### 2.30. <a name='x2.2UnicodeSmooth'></a>[x] 2.2 Unicode Smooth
 
-### [x] `smoothBlock`
+### 2.31. <a name='xsmoothBlock'></a>[x] `smoothBlock`
 
 tqdm default. Sub-character smooth fill via block elements.  
 Uses partial blocks `▏▎▍▌▋▊▉█` for fractional fill.
@@ -429,7 +509,7 @@ smoothBlock: {
 }
 ```
 
-### [x] `thinBar`
+### 2.32. <a name='xthinBar'></a>[x] `thinBar`
 
 Rich/pip modern style. Thin horizontal line aesthetic.
 
@@ -448,7 +528,7 @@ thinBar: {
 }
 ```
 
-### [x] `roundBlock`
+### 2.33. <a name='xroundBlock'></a>[x] `roundBlock`
 
 Smooth blocks with rounded cap.
 
@@ -465,7 +545,7 @@ roundBlock: {
 }
 ```
 
-### [x] `bubbleFill`
+### 2.34. <a name='xbubbleFill'></a>[x] `bubbleFill`
 
 tqdm `.oO0` style — bubbly fill pattern.
 
@@ -483,7 +563,7 @@ bubbleFill: {
 }
 ```
 
-### [x] `pixelSmooth`
+### 2.35. <a name='xpixelSmooth'></a>[x] `pixelSmooth`
 
 Sub-character fill using eighth blocks for ultra-smooth.
 
@@ -501,9 +581,9 @@ pixelSmooth: {
 }
 ```
 
-### [x] 2.3 Retro / Themed
+### 2.36. <a name='x2.3RetroThemed'></a>[x] 2.3 Retro / Themed
 
-### [x] `heartBar`
+### 2.37. <a name='xheartBar'></a>[x] `heartBar`
 
 HP bar energy — hearts filling up.
 
@@ -520,7 +600,7 @@ heartBar: {
 }
 ```
 
-### [x] `starBar`
+### 2.38. <a name='xstarBar'></a>[x] `starBar`
 
 Rating / XP style.
 
@@ -537,7 +617,7 @@ starBar: {
 }
 ```
 
-### [x] `diamondBar`
+### 2.39. <a name='xdiamondBar'></a>[x] `diamondBar`
 
 Crystal/gem collect aesthetic.
 
@@ -554,7 +634,7 @@ diamondBar: {
 }
 ```
 
-### [x] `dotCircle`
+### 2.40. <a name='xdotCircle'></a>[x] `dotCircle`
 
 Filled vs hollow dots — clean monospace look.
 
@@ -571,7 +651,7 @@ dotCircle: {
 }
 ```
 
-### [x] `shadeBar`
+### 2.41. <a name='xshadeBar'></a>[x] `shadeBar`
 
 Density gradient: full→dark→medium→light shade.
 
@@ -588,7 +668,7 @@ shadeBar: {
 }
 ```
 
-### [x] `boxFrame`
+### 2.42. <a name='xboxFrame'></a>[x] `boxFrame`
 
 Box-drawing framed bar. Very DOS/BIOS look.
 
@@ -605,7 +685,7 @@ boxFrame: {
 }
 ```
 
-### [x] `boxFrameDouble`
+### 2.43. <a name='xboxFrameDouble'></a>[x] `boxFrameDouble`
 
 Double-line box-drawing frame for extra weight.
 
@@ -622,7 +702,7 @@ boxFrameDouble: {
 }
 ```
 
-### [x] `bracePipe`
+### 2.44. <a name='xbracePipe'></a>[x] `bracePipe`
 
 Curly brace + pipe. Lisp energy.
 
@@ -639,7 +719,7 @@ bracePipe: {
 }
 ```
 
-### [x] `arrowFill`
+### 2.45. <a name='xarrowFill'></a>[x] `arrowFill`
 
 Directional arrow fill — convoy style.
 
@@ -656,7 +736,7 @@ arrowFill: {
 }
 ```
 
-### [x] `underscoreSlide`
+### 2.46. <a name='xunderscoreSlide'></a>[x] `underscoreSlide`
 
 Minimalist underline-style progress. Feels like a terminal cursor.
 
@@ -673,7 +753,7 @@ underscoreSlide: {
 }
 ```
 
-### [x] `brailleBar`
+### 2.47. <a name='xbrailleBar'></a>[x] `brailleBar`
 
 Braille-based progress fill — stays in dot matrix aesthetic.
 
@@ -690,11 +770,11 @@ brailleBar: {
 }
 ```
 
-### [x] 2.4 Indeterminate / Bouncing Bars
+### 2.48. <a name='x2.4IndeterminateBouncingBars'></a>[x] 2.4 Indeterminate / Bouncing Bars
 
 > These loop continuously like spinners — they represent **unknown duration**.
 
-### [x] `bouncingBlock`
+### 2.49. <a name='xbouncingBlock'></a>[x] `bouncingBlock`
 
 Single block sliding back and forth inside brackets.
 
@@ -710,7 +790,7 @@ bouncingBlock: {
 }
 ```
 
-### [x] `bouncingDash`
+### 2.50. <a name='xbouncingDash'></a>[x] `bouncingDash`
 
 Lightweight dash variant of the bouncing pattern.
 
@@ -726,7 +806,7 @@ bouncingDash: {
 }
 ```
 
-### [x] `scanLine`
+### 2.51. <a name='xscanLine'></a>[x] `scanLine`
 
 Knight Rider / KITT — scanning bar that grows and shrinks as it bounces.
 
@@ -746,7 +826,7 @@ scanLine: {
 }
 ```
 
-### [x] `pulseBar`
+### 2.52. <a name='xpulseBar'></a>[x] `pulseBar`
 
 Pulsing density — block fills and fades.
 
@@ -764,7 +844,7 @@ pulseBar: {
 }
 ```
 
-### [x] `elasticBar`
+### 2.53. <a name='xelasticBar'></a>[x] `elasticBar`
 
 Stretches out and snaps back. Rubber band feel.
 
@@ -786,9 +866,9 @@ elasticBar: {
 ---
 
 <a id="structural-notes"></a>
-### [x] 3. Structural Notes
+### 2.54. <a name='x3.StructuralNotes'></a>[x] 3. Structural Notes
 
-### [x] 3.1 Category Taxonomy
+### 2.55. <a name='x3.1CategoryTaxonomy'></a>[x] 3.1 Category Taxonomy
 
 **Spinners** (existing + additions):
 
@@ -802,7 +882,7 @@ Dots, Classic, Arrows, Bars & Blocks, Progress, Scenes, Misc, Emoji Spinners
 ASCII Classic, Unicode Smooth, Retro, Indeterminate
 ```
 
-### [x] 3.2 Tab Architecture
+### 2.56. <a name='x3.2TabArchitecture'></a>[x] 3.2 Tab Architecture
 
 The catalogue should have two top-level views:
 
@@ -812,12 +892,12 @@ The catalogue should have two top-level views:
 └──────────┴────────────────┘
 ```
 
-- **Spinners tab**: current grid, unchanged behavior
-- **Progress bars tab**: same grid layout, but each card shows an animated bar sweeping 0→100% on loop
-  - Bar cards include: name, fill/empty chars preview, Python snippet, bar width slider
-  - For Indeterminate bars: loop frames like spinners
+* **Spinners tab**: current grid, unchanged behavior
+* **Progress bars tab**: same grid layout, but each card shows an animated bar sweeping 0→100% on loop
+  * Bar cards include: name, fill/empty chars preview, Python snippet, bar width slider
+  * For Indeterminate bars: loop frames like spinners
 
-### [x] 3.3 Progress Bar Animation Logic
+### 2.57. <a name='x3.3ProgressBarAnimationLogic'></a>[x] 3.3 Progress Bar Animation Logic
 
 Determinate bars (those with `fill`/`empty` rather than `frames`) animate on a loop:
 
@@ -862,21 +942,21 @@ function renderSmoothBar(bar, progress) {
 }
 ```
 
-### [x] 3.4 Speed & Width Controls (Progress Bars)
+### 2.58. <a name='x3.4SpeedWidthControlsProgressBars'></a>[x] 3.4 Speed & Width Controls (Progress Bars)
 
 ```plaintext
 Speed  [===●======] 1×      Width  [=====●====] 20
 ```
 
-- **Speed**: same as spinners, 0.25×–3×
-- **Width**: 8–40 chars, default 20. Only applies to progress bars.
+* **Speed**: same as spinners, 0.25×–3×
+* **Width**: 8–40 chars, default 20. Only applies to progress bars.
 
 ---
 
 <a id="python-code-snippets-per-bar-style"></a>
-### [x] 4. Python Code Snippets Per Bar Style
+### 2.59. <a name='x4.PythonCodeSnippetsPerBarStyle'></a>[x] 4. Python Code Snippets Per Bar Style
 
-### [x] tqdm — ASCII
+### 2.60. <a name='xtqdmASCII'></a>[x] tqdm — ASCII
 
 ```python
 from tqdm import tqdm
@@ -887,7 +967,7 @@ for i in tqdm(range(100), ascii=True):
 # Output: |####5     | 50/100 [00:01<00:01, 50.0it/s]
 ```
 
-### [x] tqdm — Unicode (default)
+### 2.61. <a name='xtqdmUnicodedefault'></a>[x] tqdm — Unicode (default)
 
 ```python
 from tqdm import tqdm
@@ -898,7 +978,7 @@ for i in tqdm(range(100)):
 # Output: |█████░░░░░| 50/100 [00:01<00:01, 50.0it/s]
 ```
 
-### [x] tqdm — Custom characters
+### 2.62. <a name='xtqdmCustomcharacters'></a>[x] tqdm — Custom characters
 
 ```python
 from tqdm import tqdm
@@ -909,7 +989,7 @@ for i in tqdm(range(100), ascii=" .oO0"):
 # Output: |000Oo.    | 50/100
 ```
 
-### [x] Rich — Default bar
+### 2.63. <a name='xRichDefaultbar'></a>[x] Rich — Default bar
 
 ```python
 from rich.progress import track
@@ -920,7 +1000,7 @@ for step in track(range(100), description="Processing..."):
 # Output: Processing... ━━━━━━━━━━╸━━━━━━━━━━  50%
 ```
 
-### [x] Rich — Custom bar
+### 2.64. <a name='xRichCustombar'></a>[x] Rich — Custom bar
 
 ```python
 from rich.progress import Progress, BarColumn, TextColumn
@@ -936,7 +1016,7 @@ with Progress(
         progress.advance(task)
 ```
 
-### [x] alive-progress
+### 2.65. <a name='xalive-progress'></a>[x] alive-progress
 
 ```python
 from alive_progress import alive_bar
@@ -949,7 +1029,7 @@ with alive_bar(100, bar='smooth') as bar:
 # Also try: bar='classic', bar='blocks', bar='bubbles', bar='fish'
 ```
 
-### [x] Manual ASCII bar (zero deps)
+### 2.66. <a name='xManualASCIIbarzerodeps'></a>[x] Manual ASCII bar (zero deps)
 
 ```python
 import sys, time
@@ -964,7 +1044,7 @@ for i in range(total + 1):
 print()
 ```
 
-### [x] Manual box-framed bar (zero deps)
+### 2.67. <a name='xManualbox-framedbarzerodeps'></a>[x] Manual box-framed bar (zero deps)
 
 ```python
 import sys, time
@@ -981,7 +1061,7 @@ print()
 
 ---
 
-## Appendix: Complete Injection-Ready JS
+## 3. <a name='Appendix:CompleteInjection-ReadyJS'></a>Appendix: Complete Injection-Ready JS
 
 All new spinner entries, copy-paste ready:
 

@@ -184,34 +184,86 @@
     accent-color: var(--accent-secondary);
     cursor: pointer;
   }
-  .figlet-text-control,
+  .figlet-input-bar,
   .figlet-sort-control {
     display: none;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.55rem;
     font-size: 0.8rem;
     color: var(--text-secondary);
     font-family: 'JetBrains Mono', monospace;
   }
-  .figlet-text-control input,
+  .figlet-input-bar label {
+    color: var(--text-secondary);
+    font-size: 0.7rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+  .figlet-input-bar input,
   .figlet-sort-control select {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
+    background: #0d1118;
+    border: 1px solid #2a3147;
     border-radius: 8px;
     color: var(--text-primary);
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.75rem;
-    padding: 0.36rem 0.48rem;
+    padding: 0.42rem 0.58rem;
     outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
   }
-  .figlet-text-control input {
-    width: 150px;
+  .figlet-input-bar input:focus,
+  .figlet-sort-control select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(100, 255, 180, 0.14);
+    background: #0b1118;
+  }
+  .figlet-input-bar {
+    position: sticky;
+    top: 0.4rem;
+    z-index: 18;
+    padding: 0.52rem 0.68rem;
+    background: linear-gradient(180deg, rgba(16,19,30,0.96), rgba(15,18,28,0.86));
+    border: 1px solid #26304b;
+    border-radius: 11px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 26px rgba(4, 8, 18, 0.38), inset 0 1px 0 rgba(120, 150, 255, 0.08);
+  }
+  .figlet-input-bar input {
+    width: 200px;
   }
   .figlet-sort-control select {
     cursor: pointer;
   }
+  .figlet-char-count {
+    color: #96a5c7;
+    font-size: 0.68rem;
+    min-width: 4.2ch;
+    text-align: right;
+    padding: 0.18rem 0.32rem;
+    border-radius: 6px;
+    background: rgba(20, 29, 48, 0.72);
+    border: 1px solid rgba(58, 76, 114, 0.55);
+  }
+  .figlet-reset-btn {
+    background: linear-gradient(180deg, #161f35, #11192d);
+    border: 1px solid #2f4468;
+    border-radius: 7px;
+    color: #b7c4df;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    line-height: 1;
+    padding: 0.34rem 0.48rem;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s, transform 0.18s, background 0.2s;
+  }
+  .figlet-reset-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-1px);
+    background: linear-gradient(180deg, #182741, #132137);
+  }
   body.tab-progress .progress-width-control { display: flex; }
-  body.tab-figlet .figlet-text-control,
+  body.tab-figlet .figlet-input-bar,
   body.tab-figlet .figlet-sort-control { display: flex; }
   .filter-tags {
     display: flex;
@@ -360,24 +412,117 @@
     justify-content: space-between;
     gap: 1rem;
   }
-  .figlet-card .spinner-display {
-    display: block;
-    min-height: 112px;
-    padding: 0.62rem 0.72rem;
-  }
-  .figlet-preview {
+  .font-card .font-preview {
     margin: 0;
     white-space: pre;
-    line-height: 1.04;
+    line-height: 1.08;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.56rem;
+    font-size: 0.58rem;
     color: #89ffcb;
-    text-shadow: 0 0 10px rgba(100, 255, 180, 0.16);
+    text-shadow: 0 0 10px rgba(100, 255, 180, 0.2);
     overflow-x: auto;
     overflow-y: hidden;
   }
-  .figlet-meta {
+  .font-dims {
     color: var(--accent-secondary);
+    font-size: 0.67rem;
+    font-family: 'JetBrains Mono', monospace;
+    border: 1px solid rgba(70, 96, 148, 0.45);
+    background: rgba(20, 28, 46, 0.6);
+    border-radius: 7px;
+    padding: 0.18rem 0.38rem;
+  }
+  .font-card .font-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.62rem;
+    gap: 0.6rem;
+  }
+  .font-card {
+    background: linear-gradient(160deg, #121826 0%, #101623 52%, #0f1420 100%);
+  }
+  .font-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(120% 90% at 0% 0%, rgba(100, 136, 255, 0.08), transparent 45%);
+    opacity: 0.7;
+  }
+  .font-card:hover {
+    border-color: #33507a;
+    background: linear-gradient(160deg, #141c2b 0%, #111a29 52%, #111827 100%);
+    box-shadow: 0 12px 32px rgba(5, 10, 22, 0.34);
+  }
+  .font-card .font-name {
+    color: #74ffc0;
+  }
+  .font-card .font-preview {
+    position: relative;
+    min-height: 114px;
+    padding: 0.68rem 0.76rem;
+    background: linear-gradient(180deg, #080a12, #070910);
+    border-radius: 9px;
+    border: 1px solid #1f2940;
+    margin-bottom: 0.62rem;
+  }
+  .font-card .font-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+    position: relative;
+    z-index: 1;
+  }
+  .font-card .font-lib {
+    border: 1px solid #2c3e63;
+    background: rgba(20, 30, 48, 0.66);
+    color: #95a8ca;
+    border-radius: 6px;
+    padding: 0.18rem 0.42rem;
+    font-size: 0.62rem;
+  }
+  .font-card .font-actions {
+    display: inline-flex;
+    gap: 0.35rem;
+  }
+  .font-card .font-actions .btn-copy-art,
+  .font-card .font-actions .btn-show-code {
+    border: 1px solid var(--tag-border);
+    border-radius: 7px;
+    background: var(--tag-bg);
+    color: var(--text-secondary);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.64rem;
+    padding: 0.24rem 0.46rem;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .font-card .font-actions .btn-copy-art:hover,
+  .font-card .font-actions .btn-show-code:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .font-card .font-actions .btn-copy-art.copied {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .font-card.error .font-preview {
+    color: #ff9f9f;
+    opacity: 0.94;
+    border-color: rgba(255, 130, 130, 0.35);
+  }
+  .font-card:not(.loaded):not(.error) .font-preview {
+    opacity: 0.5;
+    color: var(--text-dim);
+    background-image: linear-gradient(90deg, rgba(27, 39, 64, 0.22), rgba(56, 77, 121, 0.22), rgba(27, 39, 64, 0.22));
+    background-size: 200% 100%;
+    animation: figletLoading 1.35s linear infinite;
+  }
+  @keyframes figletLoading {
+    0% { background-position: 200% 0; }
+    100% { background-position: 0 0; }
   }
   .category-header h2 {
     font-size: 1.1rem;
@@ -573,11 +718,9 @@
     opacity: 0.85;
     color: var(--accent-secondary);
   }
-  body.view-minimal .figlet-card .spinner-display {
-    min-height: 96px;
-    padding: 0.5rem 0.62rem;
-  }
-  body.view-minimal .figlet-preview {
+  body.view-minimal .font-card .font-preview {
+    min-height: 98px;
+    padding: 0.5rem 0.66rem;
     font-size: 0.51rem;
   }
   body.view-minimal .progress-card .spinner-char {
@@ -630,18 +773,26 @@
     letter-spacing: 0.015em;
     flex: 1;
   }
-  body.view-list .figlet-card {
+  body.view-list .font-card {
     grid-template-columns: minmax(145px, 180px) minmax(140px, 1fr) auto;
   }
-  body.view-list .figlet-card .spinner-display {
-    min-height: 62px;
-    padding: 0.36rem 0.5rem;
+  body.view-list .font-card .font-card-header {
+    margin: 0;
+    align-items: center;
+    gap: 0.4rem;
   }
-  body.view-list .figlet-preview {
+  body.view-list .font-card .font-preview {
+    margin: 0;
+    min-height: 62px;
+    padding: 0.38rem 0.54rem;
     font-size: 0.45rem;
     line-height: 1.02;
     max-height: 4.4em;
     overflow: hidden;
+  }
+  body.view-list .font-card .font-card-footer {
+    justify-content: flex-end;
+    align-items: center;
   }
   body.view-list .spinner-char { min-width: 1.6ch; }
   body.view-list .card-meta {
@@ -785,9 +936,11 @@
       <input type="range" id="barWidthSlider" min="8" max="40" step="1" value="20">
       <span id="barWidthLabel">20</span>
     </div>
-    <div class="figlet-text-control" id="figletTextControl">
-      <span>Sample</span>
-      <input type="text" id="figletTextInput" value="Hello" maxlength="24">
+    <div class="figlet-input-bar" id="figletInputBar">
+      <label for="figlet-text">Preview</label>
+      <input type="text" id="figlet-text" value="Hello" maxlength="20" autocomplete="off" spellcheck="false">
+      <span class="figlet-char-count char-count" id="figletCharCount">5/20</span>
+      <button class="figlet-reset-btn" id="figlet-reset" type="button" title="Reset sample text">↺</button>
     </div>
     <div class="figlet-sort-control" id="figletSortControl">
       <span>Sort</span>
@@ -1803,11 +1956,11 @@ let intervalIds = {};
 let animationFrames = {};
 let progressFrames = {};
 const figletRenderCache = {};
-let figletRenderToken = 0;
-let figletInputTimer = null;
-let figletConfigured = false;
 const figletLoadedFonts = new Set();
 const FIGLET_CDN_FONT_PATH = 'https://cdn.jsdelivr.net/npm/figlet@1.8.2/fonts/';
+const FIGLET_DEFAULT_TEXT = 'Hello';
+const FIGLET_MAX_LENGTH = 20;
+let figletObserver = null;
 const FONT_NAME_MAP = {
   standard: 'Standard', big: 'Big', small: 'Small', mini: 'Mini', banner: 'Banner', block: 'Block',
   lean: 'Lean', slant: 'Slant', shadow: 'Shadow', '3-d': '3-D', '3x5': '3x5', '5x7': '5x7',
@@ -1822,6 +1975,7 @@ const FONT_NAME_MAP = {
   cyberlarge: 'Cyberlarge', hex: 'Hex', lockergnome: 'Lockergnome', univers: 'Univers',
   js_stick_letters: 'JS Stick Letters'
 };
+const PRIORITY_FIGLET_KEYS = ['standard', 'big', 'small', 'slant', 'shadow', 'banner', 'block', 'doom', 'ansi_shadow'];
 
 const SPINNER_CATEGORY_ORDER = ['Dots','Classic','Arrows','Bars & Blocks','Progress','Indeterminate','Scenes','Misc','Emoji Spinners'];
 const PROGRESS_CATEGORY_ORDER = ['ASCII Classic','Unicode Smooth','Retro','Indeterminate'];
@@ -1870,7 +2024,7 @@ function updateTabUI() {
   subtitle.textContent = activeTab === 'progress'
     ? 'Animated terminal progress bar styles with determinate sweep previews and configurable width.'
     : activeTab === 'figlet'
-      ? 'Pre-rendered ASCII Figlet font gallery with live text rendering from local Python when available.'
+      ? 'Dynamic ASCII Figlet font gallery rendered in-browser with lazy font loading and live sample text.'
       : 'Live-animated preview of spinner styles from Python CLI libraries and custom terminal aesthetics.';
   const searchInput = document.getElementById('searchInput');
   searchInput.placeholder = activeTab === 'progress'
@@ -1880,7 +2034,8 @@ function updateTabUI() {
       : 'Search spinners by name, category, or library...';
   document.getElementById('barWidthSlider').value = progressBarWidth;
   document.getElementById('barWidthLabel').textContent = progressBarWidth;
-  document.getElementById('figletTextInput').value = figletText;
+  document.getElementById('figlet-text').value = figletText;
+  document.getElementById('figletCharCount').textContent = `${(figletText || '').length}/${FIGLET_MAX_LENGTH}`;
   document.getElementById('figletSortSelect').value = figletSort;
 }
 
@@ -2051,18 +2206,18 @@ function renderGrid() {
           </div>`;
         } else {
           html += `
-          <div class="card figlet-card" data-name="${name}" onclick="showFigletCode('${name}')">
-            <button class="copy-btn" onclick="event.stopPropagation(); copyFigletSample('${name}', this)" title="Copy sample">copy</button>
-            <div class="card-header">
-              <span class="spinner-name">${name}</span>
-              <span class="spinner-lib">${item.lib}</span>
+          <div class="card figlet-card font-card" data-name="${name}" data-font="${name}" data-category="${item.category}" onclick="showFigletCode('${name}')">
+            <div class="font-card-header">
+              <span class="spinner-name font-name">${name}</span>
+              <span class="font-dims" id="dims-${name}">${item.height}h × ${item.width}w</span>
             </div>
-            <div class="spinner-display">
-              <pre class="figlet-preview" id="figlet-${name}">${escapeHtml(item.sample.join('\n'))}</pre>
-            </div>
-            <div class="card-meta">
-              <span class="figlet-meta">${item.height}h × ${item.width}w</span>
-              <span>${item.category}</span>
+            <pre class="font-preview" id="figlet-${name}">${escapeHtml(item.sample.join('\n'))}</pre>
+            <div class="font-card-footer">
+              <span class="spinner-lib font-lib">${item.lib}</span>
+              <div class="font-actions">
+                <button class="btn-copy-art" type="button" onclick="event.stopPropagation(); copyFigletSample('${name}', this)" title="Copy ASCII art">Copy</button>
+                <button class="btn-show-code" type="button" onclick="event.stopPropagation(); showFigletCode('${name}')" title="Show Python code">Code</button>
+              </div>
             </div>
           </div>`;
         }
@@ -2082,7 +2237,7 @@ function renderGrid() {
   });
 
   if (activeTab === 'figlet') {
-    hydrateFigletSamples(filtered.map(([name]) => name));
+    FigletRenderer.onGridRendered(filtered.map(([name]) => name));
   }
 }
 
@@ -2183,9 +2338,10 @@ function copyFigletSample(name, btn) {
   const font = FIGLET_FONTS[name];
   const sample = (figletRenderCache[`${name}::${figletText}`] || font.sample).join('\n');
   navigator.clipboard.writeText(sample).then(() => {
-    btn.textContent = '✓';
+    const prev = btn.textContent;
+    btn.textContent = 'Copied!';
     btn.classList.add('copied');
-    setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 1500);
+    setTimeout(() => { btn.textContent = prev || 'Copy'; btn.classList.remove('copied'); }, 1500);
   });
 }
 
@@ -2229,66 +2385,203 @@ function getFigletRuntimeName(name) {
   return FONT_NAME_MAP[name] || name;
 }
 
-function initFigletRuntime() {
-  if (figletConfigured || typeof figlet === 'undefined') return;
-  figlet.defaults({ fontPath: FIGLET_CDN_FONT_PATH });
-  figletConfigured = true;
-}
+const FigletRenderer = (() => {
+  const DEBOUNCE_MS = 200;
+  let initialized = false;
+  let renderTimer = null;
 
-async function renderFigletClient(name, text) {
-  if (typeof figlet === 'undefined') return null;
-  initFigletRuntime();
-  const runtimeName = getFigletRuntimeName(name);
-  if (figletLoadedFonts.has(runtimeName)) {
-    try {
-      return figlet.textSync(text, { font: runtimeName });
-    } catch {}
+  function currentText() {
+    const text = (figletText || '').trim();
+    return text || FIGLET_DEFAULT_TEXT;
   }
-  try {
-    const result = await new Promise((resolve, reject) => {
-      figlet.text(text, { font: runtimeName }, (err, data) => {
-        if (err || !data) reject(err || new Error('No figlet data'));
-        else resolve(data);
-      });
-    });
-    figletLoadedFonts.add(runtimeName);
-    return result;
-  } catch {
+
+  function init() {
+    if (initialized) return;
+    if (typeof figlet !== 'undefined') {
+      figlet.defaults({ fontPath: FIGLET_CDN_FONT_PATH });
+      try {
+        const preload = PRIORITY_FIGLET_KEYS.map(getFigletRuntimeName);
+        figlet.preloadFonts(preload, () => {
+          preload.forEach(name => figletLoadedFonts.add(name));
+        });
+      } catch {}
+    }
+    setupInput();
+    initialized = true;
+  }
+
+  async function render(fontName, text) {
+    const runtimeName = getFigletRuntimeName(fontName);
+    if (typeof figlet !== 'undefined') {
+      if (figletLoadedFonts.has(runtimeName)) {
+        try {
+          return figlet.textSync(text, { font: runtimeName });
+        } catch {}
+      }
+      try {
+        const rendered = await new Promise((resolve, reject) => {
+          figlet.text(text, { font: runtimeName }, (err, data) => {
+            if (err || !data) reject(err || new Error('No figlet data'));
+            else resolve(data);
+          });
+        });
+        figletLoadedFonts.add(runtimeName);
+        return rendered;
+      } catch {}
+    }
+
+    const fallback = FIGLET_FONTS[fontName]?.sample;
+    if (Array.isArray(fallback) && fallback.length) return fallback.join('\n');
     return null;
   }
-}
 
-async function hydrateFigletSamples(fontNames) {
-  const text = figletText.trim() || 'Hello';
-  const token = ++figletRenderToken;
-  const names = Array.isArray(fontNames) ? fontNames : [];
-  await Promise.all(names.map(async name => {
+  function updateDims(fontName, artText) {
+    const dims = document.getElementById(`dims-${fontName}`);
+    if (!dims) return;
+    const lines = String(artText).replace(/\r/g, '').split('\n').filter(line => line.length > 0);
+    if (!lines.length) return;
+    const h = lines.length;
+    const w = Math.max(...lines.map(line => line.length));
+    dims.textContent = `${h}h × ${w}w`;
+  }
+
+  async function renderCardEl(card, text) {
+    const fontName = card.dataset.name;
+    if (!fontName) return;
+    const pre = card.querySelector('pre.font-preview');
+    if (!pre) return;
+    const key = `${fontName}::${text}`;
+    if (figletRenderCache[key]) {
+      pre.textContent = figletRenderCache[key].join('\n');
+      updateDims(fontName, pre.textContent);
+      card.classList.add('loaded');
+      card.classList.remove('error');
+      card.dataset.renderedText = text;
+      return;
+    }
     try {
-      const key = `${name}::${text}`;
-      if (figletRenderCache[key]) {
-        if (token !== figletRenderToken || activeTab !== 'figlet') return;
-        const elCached = document.getElementById(`figlet-${name}`);
-        if (elCached) elCached.textContent = figletRenderCache[key].join('\n');
-        return;
-      }
+      const rendered = await render(fontName, text);
       let lines = null;
-      const clientRender = await renderFigletClient(name, text);
-      if (typeof clientRender === 'string' && clientRender.trim()) {
-        lines = clientRender.replace(/\r/g, '').split('\n');
+      if (typeof rendered === 'string' && rendered.trim()) {
+        lines = rendered.replace(/\r/g, '').split('\n');
         while (lines.length && lines[lines.length - 1] === '') lines.pop();
       }
       if (!lines || !lines.length) {
-        lines = await fetchFigletSample(name, text);
+        lines = await fetchFigletSample(fontName, text);
       }
       figletRenderCache[key] = lines;
-      if (token !== figletRenderToken || activeTab !== 'figlet') return;
-      const el = document.getElementById(`figlet-${name}`);
-      if (el) el.textContent = lines.join('\n');
+      if (activeTab !== 'figlet') return;
+      pre.textContent = lines.join('\n');
+      updateDims(fontName, pre.textContent);
+      card.classList.add('loaded');
+      card.classList.remove('error');
+      card.dataset.renderedText = text;
     } catch {
-      // Keep bundled static sample when pyfiglet is unavailable.
+      const fallback = FIGLET_FONTS[fontName]?.sample;
+      if (Array.isArray(fallback) && fallback.length) {
+        pre.textContent = fallback.join('\n');
+      } else {
+        pre.textContent = `[${fontName} unavailable]`;
+      }
+      updateDims(fontName, pre.textContent);
+      card.classList.add('error');
+      card.classList.remove('loaded');
     }
-  }));
-}
+  }
+
+  async function renderAll(text) {
+    const cards = Array.from(document.querySelectorAll('.font-card'))
+      .filter(card => card.dataset.visible === '1');
+    await Promise.allSettled(cards.map(card => renderCardEl(card, text)));
+  }
+
+  function setupLazyLoading() {
+    if (figletObserver) {
+      figletObserver.disconnect();
+      figletObserver = null;
+    }
+    figletObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        const card = entry.target;
+        if (entry.isIntersecting) {
+          card.dataset.visible = '1';
+          if (card.dataset.renderedText !== currentText()) {
+            renderCardEl(card, currentText());
+          }
+          figletObserver.unobserve(card);
+        }
+      });
+    }, { rootMargin: '300px' });
+
+    document.querySelectorAll('.font-card').forEach(card => {
+      const name = card.dataset.name || '';
+      const isPriority = PRIORITY_FIGLET_KEYS.includes(name);
+      if (isPriority) {
+        card.dataset.visible = '1';
+      } else {
+        card.dataset.visible = '0';
+        figletObserver.observe(card);
+      }
+    });
+  }
+
+  function setupInput() {
+    const input = document.getElementById('figlet-text');
+    const counter = document.getElementById('figletCharCount');
+    const reset = document.getElementById('figlet-reset');
+    if (!input || !counter || !reset) return;
+    input.oninput = e => {
+      const next = e.target.value.slice(0, FIGLET_MAX_LENGTH);
+      e.target.value = next;
+      counter.textContent = `${next.length}/${FIGLET_MAX_LENGTH}`;
+      figletText = next || FIGLET_DEFAULT_TEXT;
+      localStorage.setItem('figletSampleText', figletText);
+      if (renderTimer) clearTimeout(renderTimer);
+      renderTimer = setTimeout(() => renderAll(currentText()), DEBOUNCE_MS);
+    };
+    input.onblur = () => {
+      if (input.value.trim()) return;
+      input.value = FIGLET_DEFAULT_TEXT;
+      counter.textContent = `${FIGLET_DEFAULT_TEXT.length}/${FIGLET_MAX_LENGTH}`;
+      figletText = FIGLET_DEFAULT_TEXT;
+      localStorage.setItem('figletSampleText', figletText);
+      renderAll(FIGLET_DEFAULT_TEXT);
+    };
+    reset.onclick = () => {
+      input.value = FIGLET_DEFAULT_TEXT;
+      counter.textContent = `${FIGLET_DEFAULT_TEXT.length}/${FIGLET_MAX_LENGTH}`;
+      figletText = FIGLET_DEFAULT_TEXT;
+      localStorage.setItem('figletSampleText', figletText);
+      if (renderTimer) clearTimeout(renderTimer);
+      renderAll(FIGLET_DEFAULT_TEXT);
+    };
+  }
+
+  function onGridRendered(fontNames) {
+    init();
+    setupLazyLoading();
+    const names = Array.isArray(fontNames) ? fontNames : [];
+    const immediate = [...new Set([
+      ...names.filter(name => PRIORITY_FIGLET_KEYS.includes(name)),
+      ...names.slice(0, 10)
+    ])];
+    immediate.forEach(name => {
+      const card = document.querySelector(`.font-card[data-name="${name}"]`);
+      if (card) card.dataset.visible = '1';
+    });
+    renderAll(currentText());
+  }
+
+  return {
+    init,
+    render,
+    renderAll,
+    renderCardEl,
+    setupInput,
+    setupLazyLoading,
+    onGridRendered
+  };
+})();
 
 function closeAllViewMenus() {
   document.querySelectorAll('.view-control.open').forEach(ctrl => {
@@ -2454,21 +2747,13 @@ document.getElementById('barWidthSlider').addEventListener('input', e => {
   localStorage.setItem('progressBarWidth', String(progressBarWidth));
   if (activeTab === 'progress') renderGrid();
 });
-document.getElementById('figletTextInput').addEventListener('input', e => {
-  const next = e.target.value.slice(0, 24);
-  figletText = next || 'Hello';
-  localStorage.setItem('figletSampleText', figletText);
-  if (figletInputTimer) clearTimeout(figletInputTimer);
-  figletInputTimer = setTimeout(() => {
-    if (activeTab === 'figlet') renderGrid();
-  }, 180);
-});
 document.getElementById('figletSortSelect').addEventListener('change', e => {
   figletSort = e.target.value;
   localStorage.setItem('figletSort', figletSort);
   if (activeTab === 'figlet') renderGrid();
 });
 
+FigletRenderer.init();
 buildTopTabs();
 updateTabUI();
 if (getActiveCategory() !== 'All' && !getCategoryOrder().includes(getActiveCategory())) {

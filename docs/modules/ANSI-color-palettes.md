@@ -6,18 +6,45 @@
 
 ---
 
-## Table of Contents
+## 1. <a name='TableofContents'></a>Table of Contents
 
-1. [ANSI Standard Overview](#1-ansi-standard-overview)
-2. [Color Palettes](#2-color-palettes)
-3. [Data Format & JS Structure](#3-data-format--js-structure)
-4. [Python Code Snippets](#4-python-code-snippets)
-5. [Escape Code Reference](#5-escape-code-reference)
-6. [Catalogue UI Spec](#6-catalogue-ui-spec)
+<!-- vscode-markdown-toc -->
+* 1. [Table of Contents](#TableofContents)
+* 2. [1. ANSI Standard Overview](#ANSIStandardOverview)
+* 3. [2. Color Palettes](#ColorPalettes)
+	* 3.1. [2.1 Solarized Dark](#SolarizedDark)
+	* 3.2. [2.2 Solarized Light](#SolarizedLight)
+	* 3.3. [2.3 Dracula](#Dracula)
+	* 3.4. [2.4 Monokai](#Monokai)
+	* 3.5. [2.5 Nord](#Nord)
+	* 3.6. [2.6 Gruvbox Dark](#GruvboxDark)
+	* 3.7. [2.7 Catppuccin Mocha](#CatppuccinMocha)
+	* 3.8. [2.8 Tokyo Night](#TokyoNight)
+* 4. [3. Data Format & JS Structure](#DataFormatJSStructure)
+* 5. [4. Python Code Snippets](#PythonCodeSnippets)
+	* 5.1. [Print all 16 ANSI colors](#Printall16ANSIcolors)
+	* 5.2. [Print color swatches with background](#Printcolorswatcheswithbackground)
+	* 5.3. [Rich color display](#Richcolordisplay)
+	* 5.4. [Set terminal colors with escape sequences](#Setterminalcolorswithescapesequences)
+	* 5.5. [Colorama (cross-platform)](#Coloramacross-platform)
+* 6. [5. Escape Code Reference](#EscapeCodeReference)
+	* 6.1. [Text Attributes](#TextAttributes)
+	* 6.2. [256-Color Mode](#ColorMode)
+	* 6.3. [True Color (24-bit)](#TrueColor24-bit)
+* 7. [6. Catalogue UI Spec](#CatalogueUISpec)
+	* 7.1. [Palette Card Layout](#PaletteCardLayout)
+	* 7.2. [Features](#Features)
+	* 7.3. [Warmth Metric](#WarmthMetric)
+
+<!-- vscode-markdown-toc-config
+	numbering=true
+	autoSave=true
+	/vscode-markdown-toc-config -->
+<!-- /vscode-markdown-toc -->
 
 ---
 
-## 1. ANSI Standard Overview
+## 2. <a name='ANSIStandardOverview'></a>1. ANSI Standard Overview
 
 The standard ANSI 16-color palette maps to escape codes 30–37 (normal) and 90–97 (bright):
 
@@ -44,9 +71,9 @@ Index  Name           Code (FG)  Code (BG)   Role
 
 ---
 
-## 2. Color Palettes
+## 3. <a name='ColorPalettes'></a>2. Color Palettes
 
-### 2.1 Solarized Dark
+### 3.1. <a name='SolarizedDark'></a>2.1 Solarized Dark
 
 **Author:** Ethan Schoonover | **Year:** 2011 | **Philosophy:** CIELAB-symmetric lightness for reduced eye strain
 
@@ -73,12 +100,12 @@ Background: #002b36    Foreground: #839496
  15     Bright White    #fdf6e3   (253, 246, 227)
 ```
 
-### 2.2 Solarized Light
+### 3.2. <a name='SolarizedLight'></a>2.2 Solarized Light
 
 **Background:** `#fdf6e3` | **Foreground:** `#657b83`  
 Same 16 accent colors as Solarized Dark — only bg/fg swap.
 
-### 2.3 Dracula
+### 3.3. <a name='Dracula'></a>2.3 Dracula
 
 **Author:** Zeno Rocha | **Year:** 2013 | **Philosophy:** Dark purple background, vivid accents
 
@@ -105,7 +132,7 @@ Background: #282a36    Foreground: #f8f8f2
  15     Bright White    #ffffff   (255, 255, 255)
 ```
 
-### 2.4 Monokai
+### 3.4. <a name='Monokai'></a>2.4 Monokai
 
 **Author:** Wimer Hazenberg | **Year:** 2006 | **Philosophy:** Warm, high-contrast for code readability
 
@@ -132,7 +159,7 @@ Background: #272822    Foreground: #f8f8f2
  15     Bright White    #f9f8f5   (249, 248, 245)
 ```
 
-### 2.5 Nord
+### 3.5. <a name='Nord'></a>2.5 Nord
 
 **Author:** Arctic Ice Studio | **Year:** 2016 | **Philosophy:** Arctic blue-grey palette inspired by polar landscapes
 
@@ -159,7 +186,7 @@ Background: #2e3440    Foreground: #d8dee9
  15     Bright White    #eceff4   (236, 239, 244)
 ```
 
-### 2.6 Gruvbox Dark
+### 3.6. <a name='GruvboxDark'></a>2.6 Gruvbox Dark
 
 **Author:** morhetz | **Year:** 2012 | **Philosophy:** Retro groove, warm earthy tones
 
@@ -186,7 +213,7 @@ Background: #282828    Foreground: #ebdbb2
  15     Bright White    #ebdbb2   (235, 219, 178)
 ```
 
-### 2.7 Catppuccin Mocha
+### 3.7. <a name='CatppuccinMocha'></a>2.7 Catppuccin Mocha
 
 **Author:** catppuccin | **Year:** 2021 | **Philosophy:** Soothing pastel tones for late-night coding
 
@@ -213,7 +240,7 @@ Background: #1e1e2e    Foreground: #cdd6f4
  15     Bright White    #a6adc8   (166, 173, 200)
 ```
 
-### 2.8 Tokyo Night
+### 3.8. <a name='TokyoNight'></a>2.8 Tokyo Night
 
 **Author:** folke | **Year:** 2021 | **Philosophy:** Inspired by Tokyo city lights at night
 
@@ -242,7 +269,7 @@ Background: #1a1b26    Foreground: #c0caf5
 
 ---
 
-## 3. Data Format & JS Structure
+## 4. <a name='DataFormatJSStructure'></a>3. Data Format & JS Structure
 
 ```js
 const COLOR_PALETTES = {
@@ -337,9 +364,9 @@ const ANSI_NAMES = [
 
 ---
 
-## 4. Python Code Snippets
+## 5. <a name='PythonCodeSnippets'></a>4. Python Code Snippets
 
-### Print all 16 ANSI colors
+### 5.1. <a name='Printall16ANSIcolors'></a>Print all 16 ANSI colors
 
 ```python
 # Print foreground colors
@@ -351,7 +378,7 @@ for i in range(8):
 print()
 ```
 
-### Print color swatches with background
+### 5.2. <a name='Printcolorswatcheswithbackground'></a>Print color swatches with background
 
 ```python
 for i in range(8):
@@ -362,7 +389,7 @@ for i in range(8):
 print()
 ```
 
-### Rich color display
+### 5.3. <a name='Richcolordisplay'></a>Rich color display
 
 ```python
 from rich.console import Console
@@ -390,7 +417,7 @@ for i, name in enumerate(names):
 console.print(table)
 ```
 
-### Set terminal colors with escape sequences
+### 5.4. <a name='Setterminalcolorswithescapesequences'></a>Set terminal colors with escape sequences
 
 ```python
 import sys
@@ -414,7 +441,7 @@ for i, color in enumerate(dracula):
 sys.stdout.flush()
 ```
 
-### Colorama (cross-platform)
+### 5.5. <a name='Coloramacross-platform'></a>Colorama (cross-platform)
 
 ```python
 from colorama import Fore, Back, Style, init
@@ -427,9 +454,9 @@ print(Fore.YELLOW + Back.BLUE + "Yellow on Blue" + Style.RESET_ALL)
 
 ---
 
-## 5. Escape Code Reference
+## 6. <a name='EscapeCodeReference'></a>5. Escape Code Reference
 
-### Text Attributes
+### 6.1. <a name='TextAttributes'></a>Text Attributes
 
 ```
 \e[0m   Reset all
@@ -443,7 +470,7 @@ print(Fore.YELLOW + Back.BLUE + "Yellow on Blue" + Style.RESET_ALL)
 \e[9m   Strikethrough
 ```
 
-### 256-Color Mode
+### 6.2. <a name='ColorMode'></a>256-Color Mode
 
 ```
 \e[38;5;{n}m    Foreground (n = 0-255)
@@ -455,7 +482,7 @@ print(Fore.YELLOW + Back.BLUE + "Yellow on Blue" + Style.RESET_ALL)
   232-255: Grayscale ramp (24 shades)
 ```
 
-### True Color (24-bit)
+### 6.3. <a name='TrueColor24-bit'></a>True Color (24-bit)
 
 ```
 \e[38;2;{r};{g};{b}m    Foreground RGB
@@ -464,9 +491,9 @@ print(Fore.YELLOW + Back.BLUE + "Yellow on Blue" + Style.RESET_ALL)
 
 ---
 
-## 6. Catalogue UI Spec
+## 7. <a name='CatalogueUISpec'></a>6. Catalogue UI Spec
 
-### Palette Card Layout
+### 7.1. <a name='PaletteCardLayout'></a>Palette Card Layout
 
 ```
 ┌─────────────────────────────────────────┐
@@ -488,16 +515,16 @@ print(Fore.YELLOW + Back.BLUE + "Yellow on Blue" + Style.RESET_ALL)
 
 Each numbered cell is a colored swatch rendered with the actual hex value as background.
 
-### Features
+### 7.2. <a name='Features'></a>Features
 
-- **Side-by-side comparison**: Select 2 palettes to compare visually
-- **Sample terminal preview**: Show simulated `ls`, `git diff`, or Python syntax output using the palette colors
-- **Copy individual hex**: Click any swatch → copy hex value
-- **Copy all**: Export as JSON, CSS variables, or Python dict
-- **Light/Dark toggle**: For Solarized which has both variants
-- **Sort by**: Year, warmth (calculated from avg hue), contrast ratio
+* **Side-by-side comparison**: Select 2 palettes to compare visually
+* **Sample terminal preview**: Show simulated `ls`, `git diff`, or Python syntax output using the palette colors
+* **Copy individual hex**: Click any swatch → copy hex value
+* **Copy all**: Export as JSON, CSS variables, or Python dict
+* **Light/Dark toggle**: For Solarized which has both variants
+* **Sort by**: Year, warmth (calculated from avg hue), contrast ratio
 
-### Warmth Metric
+### 7.3. <a name='WarmthMetric'></a>Warmth Metric
 
 Calculate average hue from colors 1-6 (the chromatic colors).
 Sort warm (Gruvbox, Monokai) → neutral (Solarized) → cool (Nord, Tokyo Night).
