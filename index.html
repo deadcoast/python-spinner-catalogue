@@ -903,9 +903,97 @@
     h1 { font-size: 1.8rem; }
     .container { padding: 1rem; }
     .grid { grid-template-columns: 1fr; }
-    .controls { flex-direction: column; }
+    .controls { flex-direction: column; align-items: stretch; gap: 0.75rem; }
     .search-wrap { flex: 1 1 100%; }
     .category-header { align-items: flex-end; }
+    .figlet-input-bar {
+      top: 0.2rem;
+      width: 100%;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      padding: 0.55rem;
+      border-radius: 10px;
+    }
+    .figlet-input-bar label {
+      font-size: 0.64rem;
+      width: 100%;
+      opacity: 0.85;
+      margin-bottom: 0.1rem;
+    }
+    .figlet-input-bar input {
+      width: calc(100% - 5.6rem);
+      min-height: 38px;
+      font-size: 0.78rem;
+      padding: 0.5rem 0.6rem;
+    }
+    .figlet-char-count {
+      min-height: 38px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 4.8ch;
+      font-size: 0.66rem;
+    }
+    .figlet-reset-btn {
+      min-height: 38px;
+      min-width: 38px;
+      padding: 0.42rem 0.5rem;
+      font-size: 0.8rem;
+    }
+    .figlet-sort-control {
+      width: 100%;
+      justify-content: space-between;
+      padding: 0.35rem 0.1rem 0 0.1rem;
+    }
+    .figlet-sort-control select {
+      flex: 1;
+      min-height: 36px;
+      font-size: 0.75rem;
+    }
+    .font-card {
+      padding: 0.9rem 0.85rem;
+      border-radius: 12px;
+    }
+    .font-card .font-card-header {
+      margin-bottom: 0.5rem;
+    }
+    .font-card .font-name {
+      font-size: 0.8rem;
+      max-width: 65%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .font-card .font-preview {
+      min-height: 84px;
+      max-height: 148px;
+      padding: 0.48rem 0.54rem;
+      font-size: 0.45rem;
+      line-height: 1.03;
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
+    .font-card .font-card-footer {
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+    .font-card .font-actions {
+      width: 100%;
+      justify-content: flex-end;
+    }
+    body.view-list .font-card {
+      display: block;
+      padding: 0.72rem 0.72rem;
+    }
+    body.view-list .font-card .font-preview {
+      max-height: 4.1em;
+      min-height: 58px;
+    }
+    body.view-minimal .font-card .font-preview {
+      min-height: 74px;
+      max-height: 126px;
+      font-size: 0.43rem;
+    }
   }
 </style>
 </head>
