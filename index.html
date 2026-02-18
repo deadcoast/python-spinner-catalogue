@@ -301,6 +301,38 @@
     display: flex;
     align-items: center;
     min-width: 0;
+    gap: 0.55rem;
+  }
+  .fold-toggle {
+    width: 22px;
+    height: 22px;
+    border: 1px solid var(--tag-border);
+    border-radius: 7px;
+    background: linear-gradient(180deg, #121626, #0f1320);
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.2s, color 0.2s, transform 0.2s;
+    flex-shrink: 0;
+  }
+  .fold-toggle:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .fold-caret {
+    width: 0;
+    height: 0;
+    border-left: 5px solid currentColor;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    transform: rotate(90deg);
+    transform-origin: 35% 50%;
+    transition: transform 0.18s ease;
+  }
+  .category-header.is-collapsed .fold-caret {
+    transform: rotate(0deg);
   }
   .category-header .cat-count {
     font-size: 0.75rem;
@@ -311,6 +343,27 @@
   .view-control {
     position: relative;
     flex-shrink: 0;
+  }
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    flex-shrink: 0;
+  }
+  .collapse-btn {
+    padding: 0.36rem 0.55rem;
+    border-radius: 9px;
+    border: 1px solid var(--tag-border);
+    background: linear-gradient(180deg, #121626, #0f1320);
+    color: var(--text-secondary);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .collapse-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
   }
   .view-toggle {
     display: flex;
@@ -721,6 +774,7 @@ const SPINNERS = {
 let speedMultiplier = 1;
 let activeCategory = 'All';
 let viewMode = localStorage.getItem('spinnerViewMode') || 'tile';
+let collapsedCategories = new Set(JSON.parse(localStorage.getItem('collapsedCategories') || '[]'));
 let intervalIds = {};
 let animationFrames = {};
 const CATEGORY_ORDER = ['Dots','Classic','Arrows','Bars & Blocks','Progress','Scenes','Misc','Emoji Spinners'];
@@ -781,24 +835,34 @@ function renderGrid() {
   const orderedCats = CATEGORY_ORDER.filter(c => grouped[c]);
   for (const category of orderedCats) {
     const items = grouped[category];
+    const isCollapsed = collapsedCategories.has(category);
     html += `
-      <div class="category-header">
+      <div class="category-header ${isCollapsed ? 'is-collapsed' : ''}">
         <div class="category-headline">
+          <button class="fold-toggle" type="button" onclick="toggleCategory(event, '${category}')"
+            title="${isCollapsed ? 'Expand section' : 'Collapse section'}" aria-label="${isCollapsed ? 'Expand section' : 'Collapse section'}">
+            <span class="fold-caret"></span>
+          </button>
           <h2>${category}<span class="cat-count">${items.length}</span></h2>
         </div>
-        <div class="view-control">
-          <button class="view-toggle" type="button" onclick="toggleViewMenu(event)" aria-expanded="false">
-            <span>View</span>
-            <span class="view-value">${viewMode}</span>
-            <span class="view-caret"></span>
-          </button>
-          <div class="view-menu">
-            <button class="view-option ${viewMode === 'tile' ? 'active' : ''}" type="button" onclick="setViewMode('tile')">Tile</button>
-            <button class="view-option ${viewMode === 'minimal' ? 'active' : ''}" type="button" onclick="setViewMode('minimal')">Minimal</button>
-            <button class="view-option ${viewMode === 'list' ? 'active' : ''}" type="button" onclick="setViewMode('list')">List</button>
+        <div class="header-actions">
+          <button class="collapse-btn" type="button" onclick="collapseAllCategories()" title="Collapse all sections">Collapse All</button>
+          <button class="collapse-btn" type="button" onclick="expandAllCategories()" title="Expand all sections">Expand All</button>
+          <div class="view-control">
+            <button class="view-toggle" type="button" onclick="toggleViewMenu(event)" aria-expanded="false">
+              <span>View</span>
+              <span class="view-value">${viewMode}</span>
+              <span class="view-caret"></span>
+            </button>
+            <div class="view-menu">
+              <button class="view-option ${viewMode === 'tile' ? 'active' : ''}" type="button" onclick="setViewMode('tile')">Tile</button>
+              <button class="view-option ${viewMode === 'minimal' ? 'active' : ''}" type="button" onclick="setViewMode('minimal')">Minimal</button>
+              <button class="view-option ${viewMode === 'list' ? 'active' : ''}" type="button" onclick="setViewMode('list')">List</button>
+            </div>
           </div>
         </div>
       </div>`;
+    if (isCollapsed) continue;
     items.forEach(([name, spinner]) => {
       const badge = HIGHLIGHTED.includes(name) ? `<div class="highlight-badge">★ Vertical Bar</div>` : '';
       html += `
@@ -889,6 +953,29 @@ function setViewMode(mode) {
       document.body.classList.remove('view-transitioning');
     });
   });
+}
+
+function toggleCategory(event, category) {
+  event.stopPropagation();
+  if (collapsedCategories.has(category)) {
+    collapsedCategories.delete(category);
+  } else {
+    collapsedCategories.add(category);
+  }
+  localStorage.setItem('collapsedCategories', JSON.stringify([...collapsedCategories]));
+  renderGrid();
+}
+
+function collapseAllCategories() {
+  collapsedCategories = new Set(CATEGORY_ORDER);
+  localStorage.setItem('collapsedCategories', JSON.stringify([...collapsedCategories]));
+  renderGrid();
+}
+
+function expandAllCategories() {
+  collapsedCategories = new Set();
+  localStorage.setItem('collapsedCategories', JSON.stringify([]));
+  renderGrid();
 }
 
 function showCode(name) {
