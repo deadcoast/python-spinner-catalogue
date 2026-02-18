@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Spinners Catalogue</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #0a0a0f;
+    --bg-card: #12121a;
+    --bg-card-hover: #1a1a26;
+    --border: #1e1e2e;
+    --border-hover: #2e2e44;
+    --text-primary: #e2e2ef;
+    --text-secondary: #7a7a9a;
+    --text-dim: #4a4a66;
+    --accent: #64ffb4;
+    --accent-dim: #64ffb420;
+    --accent-secondary: #6488ff;
+    --accent-warn: #ffa864;
+    --spinner-glow: #64ffb430;
+    --tag-bg: #1a1a2e;
+    --tag-border: #2a2a44;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    font-family: 'Outfit', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 60px 60px;
+    opacity: 0.15;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem 2rem 4rem;
+    position: relative;
+    z-index: 1;
+  }
+  header {
+    text-align: center;
+    padding: 3rem 0 2rem;
+    position: relative;
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  }
+  .logo-line {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    opacity: 0.7;
+  }
+  h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+  }
+  .subtitle {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    font-weight: 300;
+    max-width: 580px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+  .controls {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 2.5rem 0 1.5rem;
+  }
+  .search-wrap {
+    position: relative;
+    flex: 0 1 360px;
+  }
+  .search-wrap svg {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-dim);
+    width: 16px;
+    height: 16px;
+  }
+  .search-input {
+    width: 100%;
+    padding: 0.7rem 1rem 0.7rem 2.6rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text-primary);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .search-input::placeholder { color: var(--text-dim); }
+  .search-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-dim);
+  }
+  .speed-control {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .speed-control input[type="range"] {
+    width: 100px;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+  .filter-tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+  }
+  .filter-tag {
+    padding: 0.4rem 0.85rem;
+    background: var(--tag-bg);
+    border: 1px solid var(--tag-border);
+    border-radius: 20px;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .filter-tag:hover { border-color: var(--accent); color: var(--text-primary); }
+  .filter-tag.active {
+    background: var(--accent-dim);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .stats-bar {
+    text-align: center;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    margin-bottom: 1.5rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .stats-bar span { color: var(--accent); }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.25rem;
+    transition: all 0.25s ease;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .card:hover {
+    border-color: var(--border-hover);
+    background: var(--bg-card-hover);
+    transform: translateY(-2px);
+  }
+  .card:hover::before { opacity: 1; }
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+  }
+  .spinner-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .spinner-lib {
+    font-size: 0.62rem;
+    font-weight: 500;
+    padding: 0.2rem 0.5rem;
+    border-radius: 6px;
+    background: var(--tag-bg);
+    border: 1px solid var(--tag-border);
+    color: var(--text-secondary);
+    white-space: nowrap;
+  }
+  .spinner-display {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.9rem 1rem;
+    background: #08080e;
+    border-radius: 8px;
+    margin-bottom: 0.85rem;
+    min-height: 52px;
+    border: 1px solid #1a1a28;
+  }
+  .spinner-char {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.4rem;
+    min-width: 2ch;
+    text-align: center;
+    color: var(--accent);
+    text-shadow: 0 0 12px var(--spinner-glow);
+    line-height: 1;
+    white-space: pre;
+  }
+  .spinner-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    opacity: 0.7;
+  }
+  .card-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .copy-btn {
+    position: absolute;
+    top: 10px; right: 10px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-dim);
+    padding: 4px 6px;
+    cursor: pointer;
+    font-size: 0.65rem;
+    font-family: 'JetBrains Mono', monospace;
+    opacity: 0;
+    transition: all 0.2s;
+  }
+  .card:hover .copy-btn { opacity: 1; }
+  .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .copy-btn.copied { color: var(--accent); border-color: var(--accent); }
+  .category-header {
+    grid-column: 1 / -1;
+    padding: 1.5rem 0 0.5rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 0.5rem;
+  }
+  .category-header h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+  }
+  .category-header .cat-count {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    font-weight: 400;
+    margin-left: 0.5rem;
+  }
+  .no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+  }
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+  }
+  .modal-overlay.active { display: flex; }
+  .modal {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  .modal h3 {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent);
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+  .modal pre {
+    background: #08080e;
+    border-radius: 8px;
+    padding: 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: auto;
+    border: 1px solid #1a1a28;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+  .modal-btns { display: flex; gap: 0.5rem; margin-top: 1rem; }
+  .modal .close-btn, .modal .copy-code-btn {
+    padding: 0.5rem 1.2rem;
+    background: var(--accent-dim);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    color: var(--accent);
+    cursor: pointer;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    transition: all 0.2s;
+  }
+  .modal .close-btn { background: var(--tag-bg); border-color: var(--tag-border); color: var(--text-secondary); }
+  .highlight-badge {
+    position: absolute;
+    top: -1px; left: 20px;
+    background: var(--accent);
+    color: var(--bg-deep);
+    font-size: 0.55rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 0 0 6px 6px;
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  @media (max-width: 640px) {
+    h1 { font-size: 1.8rem; }
+    .container { padding: 1rem; }
+    .grid { grid-template-columns: 1fr; }
+    .controls { flex-direction: column; }
+    .search-wrap { flex: 1 1 100%; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="logo-line">/// reference · v2.0</div>
+    <h1>Python Spinners Catalogue</h1>
+    <p class="subtitle">Live-animated preview of every spinner available in Python CLI libraries. 97 spinners from cli-spinners, Rich, Halo, Yaspin & alive-progress — no terminal required.</p>
+  </header>
+  <div class="controls">
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" class="search-input" id="searchInput" placeholder="Search spinners by name, category, or library...">
+    </div>
+    <div class="speed-control">
+      <span>Speed</span>
+      <input type="range" id="speedSlider" min="0.25" max="3" step="0.25" value="1">
+      <span id="speedLabel">1×</span>
+    </div>
+  </div>
+  <div class="filter-tags" id="filterTags"></div>
+  <div class="stats-bar" id="statsBar"></div>
+  <div class="grid" id="grid"></div>
+</div>
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <h3 id="modalTitle"></h3>
+    <pre id="modalCode"></pre>
+    <div class="modal-btns">
+      <button class="copy-code-btn" onclick="copyModalCode()">Copy Code</button>
+      <button class="close-btn" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+</div>
+<script>
+const SPINNERS = {
+  dots: { frames: ["\u280b", "\u2819", "\u2839", "\u2838", "\u283c", "\u2834", "\u2826", "\u2827", "\u2807", "\u280f"], interval: 80, category: "Dots", lib: "cli-spinners" },
+  dots2: { frames: ["\u28fe", "\u28fd", "\u28fb", "\u28bf", "\u287f", "\u28df", "\u28ef", "\u28f7"], interval: 80, category: "Dots", lib: "cli-spinners" },
+  dots3: { frames: ["\u280b", "\u2819", "\u281a", "\u281e", "\u2816", "\u2826", "\u2834", "\u2832", "\u2833", "\u2813"], interval: 80, category: "Dots", lib: "cli-spinners" },
+  dots4: { frames: ["\u2804", "\u2806", "\u2807", "\u280b", "\u2819", "\u2838", "\u2830", "\u2820", "\u2830", "\u2838", "\u2819", "\u280b", "\u2807", "\u2806"], interval: 80, category: "Dots", lib: "cli-spinners" },
+  dots5: { frames: ["\u280b", "\u2819", "\u281a", "\u2812", "\u2802", "\u2802", "\u2812", "\u2832", "\u2834", "\u2826", "\u2816", "\u2812", "\u2810", "\u2810", "\u2812", "\u2813", "\u280b"], interval: 80, category: "Dots", lib: "cli-spinners" },
+  dots6: { frames: ["\u2801", "\u2809", "\u2819", "\u281a", "\u2812", "\u2802", "\u2802", "\u2812", "\u2832", "\u2834", "\u2824", "\u2804", "\u2804", "\u2824", "\u2834", "\u2832", "\u2812", "\u2802", "\u2802", "\u2812", "\u281a", "\u2819", "\u2809", "\u2801"], interval: 80, category: "Dots", lib: "cli-spinners" },
+  dots7: { frames: ["\u2808", "\u2809", "\u280b", "\u2813", "\u2812", "\u2810", "\u2810", "\u2812", "\u2816", "\u2826", "\u2824", "\u2820", "\u2820", "\u2824", "\u2826", "\u2816", "\u2812", "\u2810", "\u2810", "\u2812", "\u2813", "\u280b", "\u2809", "\u2808"], interval: 80, category: "Dots", lib: "cli-spinners" },
+  dots8: { frames: ["\u2801", "\u2801", "\u2809", "\u2819", "\u281a", "\u2812", "\u2802", "\u2802", "\u2812", "\u2832", "\u2834", "\u2824", "\u2804", "\u2804", "\u2824", "\u2820", "\u2820", "\u2824", "\u2826", "\u2816", "\u2812", "\u2810", "\u2810", "\u2812", "\u2813", "\u280b", "\u2809", "\u2808", "\u2808"], interval: 80, category: "Dots", lib: "cli-spinners" },
+  dots9: { frames: ["\u28b9", "\u28ba", "\u28bc", "\u28f8", "\u28c7", "\u2867", "\u2857", "\u284f"], interval: 80, category: "Dots", lib: "cli-spinners" },
+  dots10: { frames: ["\u2884", "\u2882", "\u2881", "\u2841", "\u2848", "\u2850", "\u2860"], interval: 80, category: "Dots", lib: "cli-spinners" },
+  dots11: { frames: ["\u2801", "\u2802", "\u2804", "\u2840", "\u2880", "\u2820", "\u2810", "\u2808"], interval: 100, category: "Dots", lib: "cli-spinners" },
+  dots12: { frames: ["\u2880\u2800", "\u2840\u2800", "\u2804\u2800", "\u2882\u2800", "\u2842\u2800", "\u2805\u2800", "\u2883\u2800", "\u2843\u2800", "\u280d\u2800", "\u288b\u2800", "\u284b\u2800", "\u280d\u2801", "\u288b\u2801", "\u284b\u2801", "\u280d\u2809", "\u280b\u2809", "\u280b\u2809", "\u2809\u2819", "\u2809\u2819", "\u2809\u2829", "\u2808\u2899", "\u2808\u2859", "\u2888\u2829", "\u2840\u2899", "\u2804\u2859", "\u2882\u2829", "\u2842\u2898", "\u2805\u2858", "\u2883\u2828", "\u2843\u2890", "\u280d\u2850", "\u288b\u2820", "\u284b\u2880", "\u280d\u2841", "\u288b\u2801", "\u284b\u2801", "\u280d\u2809", "\u280b\u2809", "\u280b\u2809", "\u2809\u2819", "\u2809\u2819", "\u2809\u2829", "\u2808\u2899", "\u2808\u2859", "\u2808\u2829", "\u2800\u2899", "\u2800\u2859", "\u2800\u2829", "\u2800\u2898", "\u2800\u2858", "\u2800\u2828", "\u2800\u2890", "\u2800\u2850", "\u2800\u2820", "\u2800\u2880", "\u2800\u2840"], interval: 80, category: "Dots", lib: "cli-spinners" },
+  dots13: { frames: ["\u28fc", "\u28f9", "\u28bb", "\u283f", "\u285f", "\u28cf", "\u28e7", "\u28f6"], interval: 80, category: "Dots", lib: "cli-spinners" },
+  dots14: { frames: ["\u2809\u2809", "\u2808\u2819", "\u2800\u2839", "\u2800\u28b8", "\u2800\u28f0", "\u2880\u28e0", "\u28c0\u28c0", "\u28c4\u2840", "\u28c6\u2800", "\u2847\u2800", "\u280f\u2800", "\u280b\u2801"], interval: 80, category: "Dots", lib: "cli-spinners" },
+  braille: { frames: ["\u28fe", "\u28f7", "\u28ef", "\u28df", "\u287f", "\u28ff", "\u28fb", "\u28fd"], interval: 100, category: "Dots", lib: "yaspin" },
+  dots3d: { frames: ["\u280b", "\u2819", "\u2839", "\u2838", "\u283c", "\u2834", "\u2826", "\u2827", "\u2807", "\u280f"], interval: 80, category: "Dots", lib: "halo" },
+  dots8Bit: { frames: ["\u2800", "\u2801", "\u2802", "\u2803", "\u2804", "\u2805", "\u2806", "\u2807", "\u2840", "\u2841", "\u2842", "\u2843", "\u2844", "\u2845", "\u2846", "\u2847", "\u2808", "\u2809", "\u280a", "\u280b", "\u280c", "\u280d", "\u280e", "\u280f", "\u2848", "\u2849", "\u284a", "\u284b", "\u284c", "\u284d", "\u284e", "\u284f", "\u2810", "\u2811", "\u2812", "\u2813", "\u2814", "\u2815", "\u2816", "\u2817", "\u2850", "\u2851", "\u2852", "\u2853", "\u2854", "\u2855", "\u2856", "\u2857", "\u2818", "\u2819", "\u281a", "\u281b", "\u281c", "\u281d", "\u281e", "\u281f", "\u2858", "\u2859", "\u285a", "\u285b", "\u285c", "\u285d", "\u285e", "\u285f", "\u2820", "\u2821", "\u2822", "\u2823", "\u2824", "\u2825", "\u2826", "\u2827", "\u2860", "\u2861", "\u2862", "\u2863", "\u2864", "\u2865", "\u2866", "\u2867", "\u2828", "\u2829", "\u282a", "\u282b", "\u282c", "\u282d", "\u282e", "\u282f", "\u2868", "\u2869", "\u286a", "\u286b", "\u286c", "\u286d", "\u286e", "\u286f", "\u2830", "\u2831", "\u2832", "\u2833", "\u2834", "\u2835", "\u2836", "\u2837", "\u2870", "\u2871", "\u2872", "\u2873", "\u2874", "\u2875", "\u2876", "\u2877", "\u2838", "\u2839", "\u283a", "\u283b", "\u283c", "\u283d", "\u283e", "\u283f", "\u2878", "\u2879", "\u287a", "\u287b", "\u287c", "\u287d", "\u287e", "\u287f", "\u2880", "\u2881", "\u2882", "\u2883", "\u2884", "\u2885", "\u2886", "\u2887", "\u28c0", "\u28c1", "\u28c2", "\u28c3", "\u28c4", "\u28c5", "\u28c6", "\u28c7", "\u2888", "\u2889", "\u288a", "\u288b", "\u288c", "\u288d", "\u288e", "\u288f", "\u28c8", "\u28c9", "\u28ca", "\u28cb", "\u28cc", "\u28cd", "\u28ce", "\u28cf", "\u2890", "\u2891", "\u2892", "\u2893", "\u2894", "\u2895", "\u2896", "\u2897", "\u28d0", "\u28d1", "\u28d2", "\u28d3", "\u28d4", "\u28d5", "\u28d6", "\u28d7", "\u2898", "\u2899", "\u289a", "\u289b", "\u289c", "\u289d", "\u289e", "\u289f", "\u28d8", "\u28d9", "\u28da", "\u28db", "\u28dc", "\u28dd", "\u28de", "\u28df", "\u28a0", "\u28a1", "\u28a2", "\u28a3", "\u28a4", "\u28a5", "\u28a6", "\u28a7", "\u28e0", "\u28e1", "\u28e2", "\u28e3", "\u28e4", "\u28e5", "\u28e6", "\u28e7", "\u28a8", "\u28a9", "\u28aa", "\u28ab", "\u28ac", "\u28ad", "\u28ae", "\u28af", "\u28e8", "\u28e9", "\u28ea", "\u28eb", "\u28ec", "\u28ed", "\u28ee", "\u28ef", "\u28b0", "\u28b1", "\u28b2", "\u28b3", "\u28b4", "\u28b5", "\u28b6", "\u28b7", "\u28f0", "\u28f1", "\u28f2", "\u28f3", "\u28f4", "\u28f5", "\u28f6", "\u28f7", "\u28b8", "\u28b9", "\u28ba", "\u28bb", "\u28bc", "\u28bd", "\u28be", "\u28bf", "\u28f8", "\u28f9", "\u28fa", "\u28fb", "\u28fc", "\u28fd", "\u28fe", "\u28ff"], interval: 80, category: "Dots", lib: "cli-spinners" },
+  dotsCircle: { frames: ["\u288e ", "\u280e\u2801", "\u280a\u2811", "\u2808\u2831", " \u2871", "\u2880\u2870", "\u2884\u2860", "\u2886\u2840"], interval: 80, category: "Dots", lib: "cli-spinners" },
+  sand: { frames: ["\u2801", "\u2802", "\u2804", "\u2840", "\u2848", "\u2850", "\u2860", "\u28c0", "\u28c1", "\u28c2", "\u28c4", "\u28cc", "\u28d4", "\u28e4", "\u28e5", "\u28e6", "\u28ee", "\u28f6", "\u28f7", "\u28ff", "\u287f", "\u283f", "\u289f", "\u281f", "\u285b", "\u281b", "\u282b", "\u288b", "\u280b", "\u280d", "\u2849", "\u2809", "\u2811", "\u2821", "\u2881"], interval: 80, category: "Dots", lib: "cli-spinners" },
+  line: { frames: ["-", "\\", "|", "/"], interval: 130, category: "Classic", lib: "cli-spinners" },
+  line2: { frames: ["\u2802", "-", "\u2013", "\u2014", "\u2013", "-"], interval: 100, category: "Classic", lib: "cli-spinners" },
+  rollingLine: { frames: ["/  ", " - ", " \\ ", "  |", "  |", " \\ ", " - ", "/  "], interval: 80, category: "Classic", lib: "cli-spinners" },
+  pipe: { frames: ["\u2524", "\u2518", "\u2534", "\u2514", "\u251c", "\u250c", "\u252c", "\u2510"], interval: 100, category: "Classic", lib: "cli-spinners" },
+  simpleDots: { frames: [".  ", ".. ", "...", "   "], interval: 400, category: "Classic", lib: "cli-spinners" },
+  simpleDotsScrolling: { frames: [".  ", ".. ", "...", " ..", "  .", "   "], interval: 200, category: "Classic", lib: "cli-spinners" },
+  star: { frames: ["\u2736", "\u2738", "\u2739", "\u273a", "\u2739", "\u2737"], interval: 70, category: "Classic", lib: "cli-spinners" },
+  star2: { frames: ["+", "x", "*"], interval: 80, category: "Classic", lib: "cli-spinners" },
+  flip: { frames: ["_", "_", "_", "-", "`", "`", "'", "\u00b4", "-", "_", "_", "_"], interval: 70, category: "Classic", lib: "cli-spinners" },
+  hamburger: { frames: ["\u2631", "\u2632", "\u2634"], interval: 100, category: "Classic", lib: "cli-spinners" },
+  growVertical: { frames: ["\u2581", "\u2583", "\u2584", "\u2585", "\u2586", "\u2587", "\u2586", "\u2585", "\u2584", "\u2583"], interval: 120, category: "Bars & Blocks", lib: "cli-spinners" },
+  growHorizontal: { frames: ["\u258f", "\u258e", "\u258d", "\u258c", "\u258b", "\u258a", "\u2589", "\u258a", "\u258b", "\u258c", "\u258d", "\u258e"], interval: 120, category: "Bars & Blocks", lib: "cli-spinners" },
+  bar: { frames: ["[    ]", "[=   ]", "[==  ]", "[=== ]", "[====]", "[ ===]", "[  ==]", "[   =]", "[    ]", "[   =]", "[  ==]", "[ ===]", "[====]", "[=== ]", "[==  ]", "[=   ]"], interval: 80, category: "Bars & Blocks", lib: "custom" },
+  balloon: { frames: [" ", ".", "o", "O", "@", "*", " "], interval: 140, category: "Misc", lib: "cli-spinners" },
+  balloon2: { frames: [".", "o", "O", "\u00b0", "O", "o", "."], interval: 120, category: "Misc", lib: "cli-spinners" },
+  noise: { frames: ["\u2593", "\u2592", "\u2591"], interval: 100, category: "Misc", lib: "cli-spinners" },
+  bounce: { frames: ["\u2801", "\u2802", "\u2804", "\u2802"], interval: 120, category: "Misc", lib: "cli-spinners" },
+  boxBounce: { frames: ["\u2596", "\u2598", "\u259d", "\u2597"], interval: 120, category: "Bars & Blocks", lib: "cli-spinners" },
+  boxBounce2: { frames: ["\u258c", "\u2580", "\u2590", "\u2584"], interval: 100, category: "Bars & Blocks", lib: "cli-spinners" },
+  triangle: { frames: ["\u25e2", "\u25e3", "\u25e4", "\u25e5"], interval: 50, category: "Bars & Blocks", lib: "cli-spinners" },
+  binary: { frames: ["010010", "001100", "100101", "111010", "111101", "010111", "101011", "111000", "110011", "110101"], interval: 80, category: "Progress", lib: "cli-spinners" },
+  arc: { frames: ["\u25dc", "\u25e0", "\u25dd", "\u25de", "\u25e1", "\u25df"], interval: 100, category: "Misc", lib: "cli-spinners" },
+  circle: { frames: ["\u25e1", "\u2299", "\u25e0"], interval: 120, category: "Misc", lib: "cli-spinners" },
+  squareCorners: { frames: ["\u25f0", "\u25f3", "\u25f2", "\u25f1"], interval: 180, category: "Bars & Blocks", lib: "cli-spinners" },
+  circleQuarters: { frames: ["\u25f4", "\u25f7", "\u25f6", "\u25f5"], interval: 120, category: "Misc", lib: "cli-spinners" },
+  circleHalves: { frames: ["\u25d0", "\u25d3", "\u25d1", "\u25d2"], interval: 50, category: "Misc", lib: "cli-spinners" },
+  squish: { frames: ["\u256b", "\u256a"], interval: 100, category: "Bars & Blocks", lib: "cli-spinners" },
+  toggle: { frames: ["\u22b6", "\u22b7"], interval: 250, category: "Bars & Blocks", lib: "cli-spinners" },
+  toggle2: { frames: ["\u25ab", "\u25aa"], interval: 80, category: "Bars & Blocks", lib: "cli-spinners" },
+  toggle3: { frames: ["\u25a1", "\u25a0"], interval: 120, category: "Bars & Blocks", lib: "cli-spinners" },
+  toggle4: { frames: ["\u25a0", "\u25a1", "\u25aa", "\u25ab"], interval: 100, category: "Bars & Blocks", lib: "cli-spinners" },
+  toggle5: { frames: ["\u25ae", "\u25af"], interval: 100, category: "Bars & Blocks", lib: "cli-spinners" },
+  toggle6: { frames: ["\u101d", "\u1040"], interval: 300, category: "Bars & Blocks", lib: "cli-spinners" },
+  toggle7: { frames: ["\u29be", "\u29bf"], interval: 80, category: "Bars & Blocks", lib: "cli-spinners" },
+  toggle8: { frames: ["\u25cd", "\u25cc"], interval: 100, category: "Bars & Blocks", lib: "cli-spinners" },
+  toggle9: { frames: ["\u25c9", "\u25ce"], interval: 100, category: "Bars & Blocks", lib: "cli-spinners" },
+  toggle10: { frames: ["\u3282", "\u3280", "\u3281"], interval: 100, category: "Bars & Blocks", lib: "cli-spinners" },
+  toggle11: { frames: ["\u29c7", "\u29c6"], interval: 50, category: "Bars & Blocks", lib: "cli-spinners" },
+  toggle12: { frames: ["\u2617", "\u2616"], interval: 120, category: "Bars & Blocks", lib: "cli-spinners" },
+  toggle13: { frames: ["=", "*", "-"], interval: 80, category: "Bars & Blocks", lib: "cli-spinners" },
+  arrow: { frames: ["\u2190", "\u2196", "\u2191", "\u2197", "\u2192", "\u2198", "\u2193", "\u2199"], interval: 100, category: "Arrows", lib: "cli-spinners" },
+  arrow2: { frames: ["\u2b06\ufe0f ", "\u2197\ufe0f ", "\u27a1\ufe0f ", "\u2198\ufe0f ", "\u2b07\ufe0f ", "\u2199\ufe0f ", "\u2b05\ufe0f ", "\u2196\ufe0f "], interval: 80, category: "Emoji Spinners", lib: "cli-spinners" },
+  arrow3: { frames: ["\u25b9\u25b9\u25b9\u25b9\u25b9", "\u25b8\u25b9\u25b9\u25b9\u25b9", "\u25b9\u25b8\u25b9\u25b9\u25b9", "\u25b9\u25b9\u25b8\u25b9\u25b9", "\u25b9\u25b9\u25b9\u25b8\u25b9", "\u25b9\u25b9\u25b9\u25b9\u25b8"], interval: 120, category: "Arrows", lib: "cli-spinners" },
+  bouncingBar: { frames: ["[    ]", "[=   ]", "[==  ]", "[=== ]", "[====]", "[ ===]", "[  ==]", "[   =]", "[    ]", "[   =]", "[  ==]", "[ ===]", "[====]", "[=== ]", "[==  ]", "[=   ]"], interval: 80, category: "Arrows", lib: "cli-spinners" },
+  bouncingBall: { frames: ["( \u25cf    )", "(  \u25cf   )", "(   \u25cf  )", "(    \u25cf )", "(     \u25cf)", "(    \u25cf )", "(   \u25cf  )", "(  \u25cf   )", "( \u25cf    )", "(\u25cf     )"], interval: 80, category: "Arrows", lib: "cli-spinners" },
+  smiley: { frames: ["\ud83d\ude04 ", "\ud83d\ude1d "], interval: 200, category: "Emoji Spinners", lib: "cli-spinners" },
+  monkey: { frames: ["\ud83d\ude48 ", "\ud83d\ude48 ", "\ud83d\ude49 ", "\ud83d\ude4a "], interval: 300, category: "Emoji Spinners", lib: "cli-spinners" },
+  hearts: { frames: ["\ud83d\udc9b ", "\ud83d\udc99 ", "\ud83d\udc9c ", "\ud83d\udc9a ", "\ud83d\udc97 "], interval: 100, category: "Emoji Spinners", lib: "cli-spinners" },
+  clock: { frames: ["\ud83d\udd5b ", "\ud83d\udd50 ", "\ud83d\udd51 ", "\ud83d\udd52 ", "\ud83d\udd53 ", "\ud83d\udd54 ", "\ud83d\udd55 ", "\ud83d\udd56 ", "\ud83d\udd57 ", "\ud83d\udd58 ", "\ud83d\udd59 ", "\ud83d\udd5a "], interval: 100, category: "Emoji Spinners", lib: "cli-spinners" },
+  earth: { frames: ["\ud83c\udf0d ", "\ud83c\udf0e ", "\ud83c\udf0f "], interval: 180, category: "Emoji Spinners", lib: "cli-spinners" },
+  material: { frames: ["\u2588\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581", "\u2588\u2588\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581", "\u2588\u2588\u2588\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581", "\u2588\u2588\u2588\u2588\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581", "\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581", "\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581", "\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581", "\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581", "\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581", "\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581", "\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581", "\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581", "\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581\u2581\u2581\u2581\u2581", "\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581\u2581\u2581\u2581", "\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581\u2581\u2581\u2581", "\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581\u2581\u2581", "\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581\u2581\u2581", "\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581\u2581\u2581", "\u2581\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581\u2581", "\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581", "\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581", "\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581", "\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581", "\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581", "\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581", "\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581", "\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588", "\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588\u2588", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588", "\u2588\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588", "\u2588\u2588\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588", "\u2588\u2588\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588", "\u2588\u2588\u2588\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588", "\u2588\u2588\u2588\u2588\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588", "\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588", "\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588", "\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588", "\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581", "\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581", "\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581", "\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581", "\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581", "\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581", "\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581", "\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581", "\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581\u2581\u2581\u2581", "\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581\u2581\u2581\u2581", "\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581\u2581\u2581", "\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581\u2581\u2581", "\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581\u2581", "\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581", "\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581", "\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581\u2581", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581\u2581", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2581", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588\u2588\u2588", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588\u2588", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588\u2588", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588\u2588", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588\u2588", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2588", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581", "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581"], interval: 17, category: "Scenes", lib: "cli-spinners" },
+  moon: { frames: ["\ud83c\udf11 ", "\ud83c\udf12 ", "\ud83c\udf13 ", "\ud83c\udf14 ", "\ud83c\udf15 ", "\ud83c\udf16 ", "\ud83c\udf17 ", "\ud83c\udf18 "], interval: 80, category: "Emoji Spinners", lib: "cli-spinners" },
+  runner: { frames: ["\ud83d\udeb6 ", "\ud83c\udfc3 "], interval: 140, category: "Emoji Spinners", lib: "cli-spinners" },
+  pong: { frames: ["\u2590\u2802       \u258c", "\u2590\u2808       \u258c", "\u2590 \u2802      \u258c", "\u2590 \u2820      \u258c", "\u2590  \u2840     \u258c", "\u2590  \u2820     \u258c", "\u2590   \u2802    \u258c", "\u2590   \u2808    \u258c", "\u2590    \u2802   \u258c", "\u2590    \u2820   \u258c", "\u2590     \u2840  \u258c", "\u2590     \u2820  \u258c", "\u2590      \u2802 \u258c", "\u2590      \u2808 \u258c", "\u2590       \u2802\u258c", "\u2590       \u2820\u258c", "\u2590       \u2840\u258c", "\u2590      \u2820 \u258c", "\u2590      \u2802 \u258c", "\u2590     \u2808  \u258c", "\u2590     \u2802  \u258c", "\u2590    \u2820   \u258c", "\u2590    \u2840   \u258c", "\u2590   \u2820    \u258c", "\u2590   \u2802    \u258c", "\u2590  \u2808     \u258c", "\u2590  \u2802     \u258c", "\u2590 \u2820      \u258c", "\u2590 \u2840      \u258c", "\u2590\u2820       \u258c"], interval: 80, category: "Scenes", lib: "cli-spinners" },
+  shark: { frames: ["\u2590|\\____________\u258c", "\u2590_|\\___________\u258c", "\u2590__|\\__________\u258c", "\u2590___|\\_________\u258c", "\u2590____|\\________\u258c", "\u2590_____|\\_______\u258c", "\u2590______|\\______\u258c", "\u2590_______|\\_____\u258c", "\u2590________|\\____\u258c", "\u2590_________|\\___\u258c", "\u2590__________|\\__\u258c", "\u2590___________|\\_\u258c", "\u2590____________|\\\u258c", "\u2590____________/|\u258c", "\u2590___________/|_\u258c", "\u2590__________/|__\u258c", "\u2590_________/|___\u258c", "\u2590________/|____\u258c", "\u2590_______/|_____\u258c", "\u2590______/|______\u258c", "\u2590_____/|_______\u258c", "\u2590____/|________\u258c", "\u2590___/|_________\u258c", "\u2590__/|__________\u258c", "\u2590_/|___________\u258c", "\u2590/|____________\u258c"], interval: 120, category: "Scenes", lib: "cli-spinners" },
+  dqpb: { frames: ["d", "q", "p", "b"], interval: 100, category: "Misc", lib: "cli-spinners" },
+  weather: { frames: ["\u2600\ufe0f ", "\u2600\ufe0f ", "\u2600\ufe0f ", "\ud83c\udf24 ", "\u26c5\ufe0f ", "\ud83c\udf25 ", "\u2601\ufe0f ", "\ud83c\udf27 ", "\ud83c\udf28 ", "\ud83c\udf27 ", "\ud83c\udf28 ", "\ud83c\udf27 ", "\ud83c\udf28 ", "\u26c8 ", "\ud83c\udf28 ", "\ud83c\udf27 ", "\ud83c\udf28 ", "\u2601\ufe0f ", "\ud83c\udf25 ", "\u26c5\ufe0f ", "\ud83c\udf24 ", "\u2600\ufe0f ", "\u2600\ufe0f "], interval: 100, category: "Emoji Spinners", lib: "cli-spinners" },
+  christmas: { frames: ["\ud83c\udf32", "\ud83c\udf84"], interval: 400, category: "Emoji Spinners", lib: "cli-spinners" },
+  grenade: { frames: ["\u060c  ", "\u2032  ", " \u00b4 ", " \u203e ", "  \u2e0c", "  \u2e0a", "  |", "  \u204e", "  \u2055", " \u0df4 ", "  \u2053", "   ", "   ", "   "], interval: 80, category: "Misc", lib: "cli-spinners" },
+  point: { frames: ["\u2219\u2219\u2219", "\u25cf\u2219\u2219", "\u2219\u25cf\u2219", "\u2219\u2219\u25cf", "\u2219\u2219\u2219"], interval: 125, category: "Arrows", lib: "cli-spinners" },
+  layer: { frames: ["-", "=", "\u2261"], interval: 150, category: "Progress", lib: "cli-spinners" },
+  betaWave: { frames: ["\u03c1\u03b2\u03b2\u03b2\u03b2\u03b2\u03b2", "\u03b2\u03c1\u03b2\u03b2\u03b2\u03b2\u03b2", "\u03b2\u03b2\u03c1\u03b2\u03b2\u03b2\u03b2", "\u03b2\u03b2\u03b2\u03c1\u03b2\u03b2\u03b2", "\u03b2\u03b2\u03b2\u03b2\u03c1\u03b2\u03b2", "\u03b2\u03b2\u03b2\u03b2\u03b2\u03c1\u03b2", "\u03b2\u03b2\u03b2\u03b2\u03b2\u03b2\u03c1"], interval: 80, category: "Progress", lib: "cli-spinners" },
+  fingerDance: { frames: ["\ud83e\udd18 ", "\ud83e\udd1f ", "\ud83d\udd96 ", "\u270b ", "\ud83e\udd1a ", "\ud83d\udc46 "], interval: 160, category: "Emoji Spinners", lib: "cli-spinners" },
+  fistBump: { frames: ["\ud83e\udd1c\u3000\u3000\u3000\u3000\ud83e\udd1b ", "\ud83e\udd1c\u3000\u3000\u3000\u3000\ud83e\udd1b ", "\ud83e\udd1c\u3000\u3000\u3000\u3000\ud83e\udd1b ", "\u3000\ud83e\udd1c\u3000\u3000\ud83e\udd1b\u3000 ", "\u3000\u3000\ud83e\udd1c\ud83e\udd1b\u3000\u3000 ", "\u3000\ud83e\udd1c\u2728\ud83e\udd1b\u3000\u3000 ", "\ud83e\udd1c\u3000\u2728\u3000\ud83e\udd1b\u3000 "], interval: 80, category: "Emoji Spinners", lib: "cli-spinners" },
+  soccerHeader: { frames: [" \ud83e\uddd1\u26bd\ufe0f       \ud83e\uddd1 ", "\ud83e\uddd1  \u26bd\ufe0f      \ud83e\uddd1 ", "\ud83e\uddd1   \u26bd\ufe0f     \ud83e\uddd1 ", "\ud83e\uddd1    \u26bd\ufe0f    \ud83e\uddd1 ", "\ud83e\uddd1     \u26bd\ufe0f   \ud83e\uddd1 ", "\ud83e\uddd1      \u26bd\ufe0f  \ud83e\uddd1 ", "\ud83e\uddd1       \u26bd\ufe0f\ud83e\uddd1  ", "\ud83e\uddd1      \u26bd\ufe0f  \ud83e\uddd1 ", "\ud83e\uddd1     \u26bd\ufe0f   \ud83e\uddd1 ", "\ud83e\uddd1    \u26bd\ufe0f    \ud83e\uddd1 ", "\ud83e\uddd1   \u26bd\ufe0f     \ud83e\uddd1 ", "\ud83e\uddd1  \u26bd\ufe0f      \ud83e\uddd1 "], interval: 80, category: "Emoji Spinners", lib: "cli-spinners" },
+  mindblown: { frames: ["\ud83d\ude10 ", "\ud83d\ude10 ", "\ud83d\ude2e ", "\ud83d\ude2e ", "\ud83d\ude26 ", "\ud83d\ude26 ", "\ud83d\ude27 ", "\ud83d\ude27 ", "\ud83e\udd2f ", "\ud83d\udca5 ", "\u2728 ", "\u3000 ", "\u3000 ", "\u3000 "], interval: 160, category: "Emoji Spinners", lib: "cli-spinners" },
+  speaker: { frames: ["\ud83d\udd08 ", "\ud83d\udd09 ", "\ud83d\udd0a ", "\ud83d\udd09 "], interval: 160, category: "Emoji Spinners", lib: "cli-spinners" },
+  orangePulse: { frames: ["\ud83d\udd38 ", "\ud83d\udd36 ", "\ud83d\udfe0 ", "\ud83d\udfe0 ", "\ud83d\udd36 "], interval: 100, category: "Emoji Spinners", lib: "cli-spinners" },
+  bluePulse: { frames: ["\ud83d\udd39 ", "\ud83d\udd37 ", "\ud83d\udd35 ", "\ud83d\udd35 ", "\ud83d\udd37 "], interval: 100, category: "Emoji Spinners", lib: "cli-spinners" },
+  orangeBluePulse: { frames: ["\ud83d\udd38 ", "\ud83d\udd36 ", "\ud83d\udfe0 ", "\ud83d\udfe0 ", "\ud83d\udd36 ", "\ud83d\udd39 ", "\ud83d\udd37 ", "\ud83d\udd35 ", "\ud83d\udd35 ", "\ud83d\udd37 "], interval: 100, category: "Emoji Spinners", lib: "cli-spinners" },
+  timeTravel: { frames: ["\ud83d\udd5b ", "\ud83d\udd5a ", "\ud83d\udd59 ", "\ud83d\udd58 ", "\ud83d\udd57 ", "\ud83d\udd56 ", "\ud83d\udd55 ", "\ud83d\udd54 ", "\ud83d\udd53 ", "\ud83d\udd52 ", "\ud83d\udd51 ", "\ud83d\udd50 "], interval: 100, category: "Emoji Spinners", lib: "cli-spinners" },
+  aesthetic: { frames: ["\u25b0\u25b1\u25b1\u25b1\u25b1\u25b1\u25b1", "\u25b0\u25b0\u25b1\u25b1\u25b1\u25b1\u25b1", "\u25b0\u25b0\u25b0\u25b1\u25b1\u25b1\u25b1", "\u25b0\u25b0\u25b0\u25b0\u25b1\u25b1\u25b1", "\u25b0\u25b0\u25b0\u25b0\u25b0\u25b1\u25b1", "\u25b0\u25b0\u25b0\u25b0\u25b0\u25b0\u25b1", "\u25b0\u25b0\u25b0\u25b0\u25b0\u25b0\u25b0", "\u25b0\u25b1\u25b1\u25b1\u25b1\u25b1\u25b1"], interval: 80, category: "Progress", lib: "cli-spinners" },
+  aesthetic2: { frames: ["\u25b0\u25b1\u25b1\u25b1\u25b1", "\u25b0\u25b0\u25b1\u25b1\u25b1", "\u25b0\u25b0\u25b0\u25b1\u25b1", "\u25b0\u25b0\u25b0\u25b0\u25b1", "\u25b0\u25b0\u25b0\u25b0\u25b0", "\u25b1\u25b0\u25b0\u25b0\u25b0", "\u25b1\u25b1\u25b0\u25b0\u25b0", "\u25b1\u25b1\u25b1\u25b0\u25b0", "\u25b1\u25b1\u25b1\u25b1\u25b0", "\u25b1\u25b1\u25b1\u25b1\u25b1"], interval: 100, category: "Progress", lib: "rich" },
+  dwarfFortress: { frames: [" \u2588\u2588\u2588\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", "\u263a\u2588\u2588\u2588\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", "\u263a\u2588\u2588\u2588\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", "\u263a\u2593\u2588\u2588\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", "\u263a\u2593\u2588\u2588\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", "\u263a\u2592\u2588\u2588\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", "\u263a\u2592\u2588\u2588\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", "\u263a\u2591\u2588\u2588\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", "\u263a\u2591\u2588\u2588\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", "\u263a \u2588\u2588\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", " \u263a\u2588\u2588\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", " \u263a\u2588\u2588\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", " \u263a\u2593\u2588\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", " \u263a\u2593\u2588\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", " \u263a\u2592\u2588\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", " \u263a\u2592\u2588\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", " \u263a\u2591\u2588\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", " \u263a\u2591\u2588\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", " \u263a \u2588\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", "  \u263a\u2588\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", "  \u263a\u2588\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", "  \u263a\u2593\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", "  \u263a\u2593\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", "  \u263a\u2592\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", "  \u263a\u2592\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", "  \u263a\u2591\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", "  \u263a\u2591\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", "  \u263a \u2588\u2588\u2588\u00a3\u00a3\u00a3  ", "   \u263a\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", "   \u263a\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", "   \u263a\u2593\u2588\u2588\u00a3\u00a3\u00a3  ", "   \u263a\u2593\u2588\u2588\u00a3\u00a3\u00a3  ", "   \u263a\u2592\u2588\u2588\u00a3\u00a3\u00a3  ", "   \u263a\u2592\u2588\u2588\u00a3\u00a3\u00a3  ", "   \u263a\u2591\u2588\u2588\u00a3\u00a3\u00a3  ", "   \u263a\u2591\u2588\u2588\u00a3\u00a3\u00a3  ", "   \u263a \u2588\u2588\u00a3\u00a3\u00a3  ", "    \u263a\u2588\u2588\u00a3\u00a3\u00a3  ", "    \u263a\u2588\u2588\u00a3\u00a3\u00a3  ", "    \u263a\u2593\u2588\u00a3\u00a3\u00a3  ", "    \u263a\u2593\u2588\u00a3\u00a3\u00a3  ", "    \u263a\u2592\u2588\u00a3\u00a3\u00a3  ", "    \u263a\u2592\u2588\u00a3\u00a3\u00a3  ", "    \u263a\u2591\u2588\u00a3\u00a3\u00a3  ", "    \u263a\u2591\u2588\u00a3\u00a3\u00a3  ", "    \u263a \u2588\u00a3\u00a3\u00a3  ", "     \u263a\u2588\u00a3\u00a3\u00a3  ", "     \u263a\u2588\u00a3\u00a3\u00a3  ", "     \u263a\u2593\u00a3\u00a3\u00a3  ", "     \u263a\u2593\u00a3\u00a3\u00a3  ", "     \u263a\u2592\u00a3\u00a3\u00a3  ", "     \u263a\u2592\u00a3\u00a3\u00a3  ", "     \u263a\u2591\u00a3\u00a3\u00a3  ", "     \u263a\u2591\u00a3\u00a3\u00a3  ", "     \u263a \u00a3\u00a3\u00a3  ", "      \u263a\u00a3\u00a3\u00a3  ", "      \u263a\u00a3\u00a3\u00a3  ", "      \u263a\u2593\u00a3\u00a3  ", "      \u263a\u2593\u00a3\u00a3  ", "      \u263a\u2592\u00a3\u00a3  ", "      \u263a\u2592\u00a3\u00a3  ", "      \u263a\u2591\u00a3\u00a3  ", "      \u263a\u2591\u00a3\u00a3  ", "      \u263a \u00a3\u00a3  ", "       \u263a\u00a3\u00a3  ", "       \u263a\u00a3\u00a3  ", "       \u263a\u2593\u00a3  ", "       \u263a\u2593\u00a3  ", "       \u263a\u2592\u00a3  ", "       \u263a\u2592\u00a3  ", "       \u263a\u2591\u00a3  ", "       \u263a\u2591\u00a3  ", "       \u263a \u00a3  ", "        \u263a\u00a3  ", "        \u263a\u00a3  ", "        \u263a\u2593  ", "        \u263a\u2593  ", "        \u263a\u2592  ", "        \u263a\u2592  ", "        \u263a\u2591  ", "        \u263a\u2591  ", "        \u263a   ", "        \u263a  &", "        \u263a \u263c&", "       \u263a \u263c &", "       \u263a\u263c  &", "      \u263a\u263c  & ", "      \u203c   & ", "     \u263a   &  ", "    \u203c    &  ", "   \u263a    &   ", "  \u203c     &   ", " \u263a     &    ", "\u203c      &    ", "      &     ", "      &     ", "     &   \u2591  ", "     &   \u2592  ", "    &    \u2593  ", "    &    \u00a3  ", "   &    \u2591\u00a3  ", "   &    \u2592\u00a3  ", "  &     \u2593\u00a3  ", "  &     \u00a3\u00a3  ", " &     \u2591\u00a3\u00a3  ", " &     \u2592\u00a3\u00a3  ", "&      \u2593\u00a3\u00a3  ", "&      \u00a3\u00a3\u00a3  ", "      \u2591\u00a3\u00a3\u00a3  ", "      \u2592\u00a3\u00a3\u00a3  ", "      \u2593\u00a3\u00a3\u00a3  ", "      \u2588\u00a3\u00a3\u00a3  ", "     \u2591\u2588\u00a3\u00a3\u00a3  ", "     \u2592\u2588\u00a3\u00a3\u00a3  ", "     \u2593\u2588\u00a3\u00a3\u00a3  ", "     \u2588\u2588\u00a3\u00a3\u00a3  ", "    \u2591\u2588\u2588\u00a3\u00a3\u00a3  ", "    \u2592\u2588\u2588\u00a3\u00a3\u00a3  ", "    \u2593\u2588\u2588\u00a3\u00a3\u00a3  ", "    \u2588\u2588\u2588\u00a3\u00a3\u00a3  ", "   \u2591\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", "   \u2592\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", "   \u2593\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", "   \u2588\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", "  \u2591\u2588\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", "  \u2592\u2588\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", "  \u2593\u2588\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", "  \u2588\u2588\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", " \u2591\u2588\u2588\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", " \u2592\u2588\u2588\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", " \u2593\u2588\u2588\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", " \u2588\u2588\u2588\u2588\u2588\u2588\u00a3\u00a3\u00a3  ", " \u2588\u2588\u2588\u2588\u2588\u2588\u00a3\u00a3\u00a3  "], interval: 80, category: "Scenes", lib: "cli-spinners" },
+  fish: { frames: ["~~~~~~~~~~~~~~~~~~~~", "> ~~~~~~~~~~~~~~~~~~", "\u00ba> ~~~~~~~~~~~~~~~~~", "(\u00ba> ~~~~~~~~~~~~~~~~", "((\u00ba> ~~~~~~~~~~~~~~~", "<((\u00ba> ~~~~~~~~~~~~~~", "><((\u00ba> ~~~~~~~~~~~~~", " ><((\u00ba> ~~~~~~~~~~~~", "~ ><((\u00ba> ~~~~~~~~~~~", "~~ <>((\u00ba> ~~~~~~~~~~", "~~~ ><((\u00ba> ~~~~~~~~~", "~~~~ <>((\u00ba> ~~~~~~~~", "~~~~~ ><((\u00ba> ~~~~~~~", "~~~~~~ <>((\u00ba> ~~~~~~", "~~~~~~~ ><((\u00ba> ~~~~~", "~~~~~~~~ <>((\u00ba> ~~~~", "~~~~~~~~~ ><((\u00ba> ~~~", "~~~~~~~~~~ <>((\u00ba> ~~", "~~~~~~~~~~~ ><((\u00ba> ~", "~~~~~~~~~~~~ <>((\u00ba> ", "~~~~~~~~~~~~~ ><((\u00ba>", "~~~~~~~~~~~~~~ <>((\u00ba", "~~~~~~~~~~~~~~~ ><((", "~~~~~~~~~~~~~~~~ <>(", "~~~~~~~~~~~~~~~~~ ><", "~~~~~~~~~~~~~~~~~~ <", "~~~~~~~~~~~~~~~~~~~~"], interval: 80, category: "Scenes", lib: "cli-spinners" },
+  fishCat: { frames: ["|\\-. ", "move", "|\\.  ", "|\\-  ", "|\\-- ", "|\\.--"], interval: 120, category: "Scenes", lib: "alive-progress" },
+  growUp: { frames: ["▁","▂","▃","▄","▅","▆","▇","█","▇","▆","▅","▄","▃","▂"], interval: 100, category: "Bars & Blocks", lib: "custom" },
+  growUpOnly: { frames: ["▁","▂","▃","▄","▅","▆","▇","█"," "], interval: 120, category: "Bars & Blocks", lib: "custom" },
+  verticalBars: { frames: ["▁","▂","▃","▄","▅","▆","▇","█","█","▇","▆","▅","▄","▃","▂","▁"], interval: 80, category: "Bars & Blocks", lib: "custom" },
+  pulse: { frames: [".", "o", "O", "o"], interval: 120, category: "Misc", lib: "alive-progress" },
+  classic: { frames: ["|","/","-","\\"], interval: 100, category: "Classic", lib: "alive-progress" },
+  waves: { frames: ["▁","▂","▃","▄","▅","▆","▇","█","▇","▆","▅","▄","▃","▂"], interval: 100, category: "Misc", lib: "alive-progress" },
+  hourglass: { frames: ["⏳","⌛"], interval: 400, category: "Emoji Spinners", lib: "custom" }
+};
+
+// ═══════════════════════════════════════════
+//  APP STATE & LOGIC
+// ═══════════════════════════════════════════
+let speedMultiplier = 1;
+let activeCategory = 'All';
+let intervalIds = {};
+let animationFrames = {};
+const CATEGORY_ORDER = ['Dots','Classic','Arrows','Bars & Blocks','Progress','Scenes','Misc','Emoji Spinners'];
+const categories = ['All', ...CATEGORY_ORDER];
+const totalCount = Object.keys(SPINNERS).length;
+const HIGHLIGHTED = ['growUp','growUpOnly','verticalBars'];
+
+function buildFilterTags() {
+  const container = document.getElementById('filterTags');
+  categories.forEach(cat => {
+    const tag = document.createElement('div');
+    tag.className = 'filter-tag' + (cat === 'All' ? ' active' : '');
+    const count = cat === 'All' ? totalCount : Object.values(SPINNERS).filter(s => s.category === cat).length;
+    tag.textContent = `${cat} (${count})`;
+    tag.dataset.category = cat;
+    tag.addEventListener('click', () => {
+      document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
+      tag.classList.add('active');
+      activeCategory = cat;
+      renderGrid();
+    });
+    container.appendChild(tag);
+  });
+}
+
+function renderGrid() {
+  const grid = document.getElementById('grid');
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  Object.values(intervalIds).forEach(id => clearInterval(id));
+  intervalIds = {};
+  animationFrames = {};
+
+  const filtered = Object.entries(SPINNERS).filter(([name, spinner]) => {
+    const matchCat = activeCategory === 'All' || spinner.category === activeCategory;
+    const matchSearch = !search || name.toLowerCase().includes(search) ||
+      spinner.category.toLowerCase().includes(search) ||
+      spinner.lib.toLowerCase().includes(search);
+    return matchCat && matchSearch;
+  });
+
+  document.getElementById('statsBar').innerHTML = `Showing <span>${filtered.length}</span> of <span>${totalCount}</span> spinners`;
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div class="no-results">No spinners match your search.</div>';
+    return;
+  }
+
+  const grouped = {};
+  filtered.forEach(([name, spinner]) => {
+    if (!grouped[spinner.category]) grouped[spinner.category] = [];
+    grouped[spinner.category].push([name, spinner]);
+  });
+
+  let html = '';
+  const orderedCats = CATEGORY_ORDER.filter(c => grouped[c]);
+  for (const category of orderedCats) {
+    const items = grouped[category];
+    html += `<div class="category-header"><h2>${category}<span class="cat-count">${items.length}</span></h2></div>`;
+    items.forEach(([name, spinner]) => {
+      const badge = HIGHLIGHTED.includes(name) ? `<div class="highlight-badge">★ Vertical Bar</div>` : '';
+      html += `
+        <div class="card" data-name="${name}" onclick="showCode('${name}')">
+          ${badge}
+          <button class="copy-btn" onclick="event.stopPropagation(); copyFrames('${name}', this)" title="Copy frames">copy</button>
+          <div class="card-header">
+            <span class="spinner-name">${name}</span>
+            <span class="spinner-lib">${spinner.lib.split(' / ')[0]}</span>
+          </div>
+          <div class="spinner-display">
+            <span class="spinner-char" id="spin-${name}">${spinner.frames[0]}</span>
+            <span class="spinner-text">Loading...</span>
+          </div>
+          <div class="card-meta">
+            <span>${spinner.frames.length} frames</span>
+            <span>${spinner.interval}ms</span>
+          </div>
+        </div>`;
+    });
+  }
+  grid.innerHTML = html;
+  filtered.forEach(([name, spinner]) => {
+    animationFrames[name] = 0;
+    startAnim(name, spinner);
+  });
+}
+
+function startAnim(name, spinner) {
+  const el = document.getElementById(`spin-${name}`);
+  if (!el) return;
+  intervalIds[name] = setInterval(() => {
+    animationFrames[name] = (animationFrames[name] + 1) % spinner.frames.length;
+    el.textContent = spinner.frames[animationFrames[name]];
+  }, spinner.interval / speedMultiplier);
+}
+
+function restartAll() {
+  Object.entries(SPINNERS).forEach(([name, spinner]) => {
+    if (intervalIds[name]) {
+      clearInterval(intervalIds[name]);
+      startAnim(name, spinner);
+    }
+  });
+}
+
+function copyFrames(name, btn) {
+  const spinner = SPINNERS[name];
+  navigator.clipboard.writeText(JSON.stringify(spinner.frames)).then(() => {
+    btn.textContent = '✓';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 1500);
+  });
+}
+
+function showCode(name) {
+  const spinner = SPINNERS[name];
+  const modal = document.getElementById('modalOverlay');
+  document.getElementById('modalTitle').textContent = name;
+  const framesStr = JSON.stringify(spinner.frames, null, 2);
+  const code = `# ── Rich ──────────────────────────────────
+from rich.console import Console
+console = Console()
+with console.status("Loading...", spinner="${name}"):
+    pass  # your code
+
+# ── Halo ──────────────────────────────────
+from halo import Halo
+spinner = Halo(text="Loading...", spinner={
+    "interval": ${spinner.interval},
+    "frames": ${framesStr}
+})
+spinner.start()
+spinner.stop()
+
+# ── Yaspin ────────────────────────────────
+from yaspin import yaspin
+from yaspin.spinners import Spinners
+with yaspin(Spinners.${name}, text="Loading..."):
+    pass  # your code
+
+# ── Raw frames ────────────────────────────
+frames = ${framesStr}
+interval = ${spinner.interval}  # ms`;
+  document.getElementById('modalCode').textContent = code;
+  modal.classList.add('active');
+}
+
+function copyModalCode() {
+  const code = document.getElementById('modalCode').textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.querySelector('.copy-code-btn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.textContent = 'Copy Code'; }, 1500);
+  });
+}
+
+function closeModal() { document.getElementById('modalOverlay').classList.remove('active'); }
+document.getElementById('modalOverlay').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+document.getElementById('searchInput').addEventListener('input', () => renderGrid());
+document.getElementById('speedSlider').addEventListener('input', e => {
+  speedMultiplier = parseFloat(e.target.value);
+  document.getElementById('speedLabel').textContent = speedMultiplier + '×';
+  restartAll();
+});
+
+buildFilterTags();
+renderGrid();
+</script>
+</body>
+</html>
