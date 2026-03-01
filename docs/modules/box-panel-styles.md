@@ -359,8 +359,8 @@ Shadow effect using `▒` shade blocks.
 
 ```
 ██████████████████████
-█  Hello, World!   █░
-█  Line two here   █░
+█  Hello, World!     █░
+█  Line two here     █░
 ██████████████████████░
  ░░░░░░░░░░░░░░░░░░░░░
 ```
@@ -371,8 +371,8 @@ Full block `█` border with `░` shadow.
 
 ```
 ⡏⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⢹
-⡇  Hello, World!   ⢸
-⡇  Line two here   ⢸
+⡇  Hello, World!     ⢸
+⡇  Line two here     ⢸
 ⣇⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣸
 ```
 
